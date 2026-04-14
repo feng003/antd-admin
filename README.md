@@ -62,6 +62,16 @@ cd apps/basic && vp install && vp dev
 cd apps/with-lingui && vp install && vp dev
 ```
 
+### 文档站（Nextra）
+
+中文使用文档位于 **`apps/docs`**（Next.js + Nextra）。在仓库根或该目录安装依赖后：
+
+```bash
+cd apps/docs && pnpm install && pnpm dev
+```
+
+浏览器打开 [http://localhost:3000](http://localhost:3000)。模板 Vite+ 应用仍为 [http://localhost:5173](http://localhost:5173)。开发与构建命令说明见 [`apps/docs/README.md`](./apps/docs/README.md)。
+
 Core Playwright flows (from the app you are working in):
 
 ```bash
