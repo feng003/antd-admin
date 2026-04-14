@@ -13,7 +13,6 @@ import { DataTable } from "@/components/DataTable";
 import { useResourceCRUD } from "@/hooks/useResourceCRUD";
 import { Toolbar } from "./-Toolbar";
 import { FormModal } from "./-FormModal";
-import { vercelAvatarUrl } from "@/utils/avatarUrl";
 
 const UserSearchParamsSchema = z.object({
   limit: z.number().int().positive().catch(100),
@@ -188,7 +187,7 @@ function UsersPage() {
       sorter: true,
       sortOrder: search.sortField === "username" ? search.sortOrder : null,
       render: (_: unknown, record: User) => {
-        const src = record.avatar?.trim() || vercelAvatarUrl(record.username);
+        const src = (record.avatar ?? "").trim() || undefined;
         return (
           <Flex align="center" gap={token.marginSM} style={{ minWidth: 0 }}>
             <Avatar size={24} src={src} shape="circle" style={{ flexShrink: 0 }}>

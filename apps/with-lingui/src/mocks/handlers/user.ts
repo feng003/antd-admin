@@ -1,6 +1,6 @@
 import { http } from "msw";
 import { MOCK_USERS } from "../data";
-import { filterUsers, paginateList, parsePaginationParams } from "../filterUtils";
+import { filterUsers, paginateList, parsePaginationParams } from "../utils";
 import { withDelay, successResponse, errorResponse, ERROR_CODES } from "../createHandler";
 
 let users = [...MOCK_USERS];

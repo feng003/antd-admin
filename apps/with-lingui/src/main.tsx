@@ -7,7 +7,7 @@ import { messages as enMessages } from "./locales/en/messages.po";
 import { messages as zhMessages } from "./locales/zh/messages.po";
 import { useSettingsStore } from "./stores/settings";
 import { useAuthStore } from "./stores/auth";
-import { fetchSessionAndApplyToStore } from "./auth/session";
+import { fetchSessionAndApplyToStore } from "./utils/session";
 
 i18n.load("en", enMessages);
 i18n.load("zh", zhMessages);

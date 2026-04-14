@@ -1,6 +1,11 @@
 /**
- * Common filtering utilities for mock user handlers.
+ * Mock-only helpers: demo avatars, list filtering, pagination.
  */
+
+/** Deterministic demo avatar URL from username (mock seed data only). */
+export function vercelAvatarUrl(username: string): string {
+  return `https://vercel.com/api/www/avatar?u=${encodeURIComponent(username)}`;
+}
 
 export interface User {
   id: string;

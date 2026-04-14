@@ -104,6 +104,8 @@ src/
 │       ├── UserMenu/     # User dropdown in sidebar: index.tsx + index.css
 │       └── Header/       # Top bar: index.tsx
 ├── hooks/
+│   ├── tokenBuilders.ts  # Shared Ant Design token/config builders
+│   ├── useAppTheme.ts    # Theme selection hook (ConfigProvider)
 │   ├── usePermission.ts  # Permission check hook
 │   └── useResourceCRUD.ts # Shared CRUD query/mutation wiring
 ├── utils/
@@ -116,7 +118,7 @@ src/
 │   ├── browser.ts        # MSW worker setup
 │   ├── createHandler.ts  # Shared MSW success/error/delay helpers
 │   ├── data.ts           # Mock seed data (users, menus)
-│   ├── filterUtils.ts    # Mock-only filtering and pagination helpers
+│   ├── utils.ts          # Mock-only helpers (filters, pagination, demo avatar URLs)
 │   └── handlers/         # Request handlers (auth, user CRUD)
 ├── routes/               # TanStack Router file-based routes
 │   ├── __root.tsx        # Root layout (QueryClient, ConfigProvider, I18n)
@@ -131,9 +133,6 @@ src/
 │   ├── auth.ts           # Auth store (tokens, user, menus, permissions)
 │   ├── createPersistentStore.ts # Shared persisted-store factory
 │   └── settings.ts       # Settings store (darkMode, locale, sidebar)
-├── theme/
-│   ├── tokenBuilders.ts  # Shared Ant Design token/config builders
-│   └── useAppTheme.ts    # Theme selection hook
 └── main.tsx              # Entry point (MSW init → React render)
 
 tests/

@@ -8,7 +8,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore } from "@/stores/settings";
 import { AUTH_ENDPOINTS } from "@/api/auth";
 import { LoginRequestSchema, AuthTokensSchema } from "@/api/schemas";
-import { fetchSessionAndApplyToStore } from "@/auth/session";
+import { fetchSessionAndApplyToStore } from "@/utils/session";
 import type { LoginRequest } from "@/api/schemas";
 import { APP_BRAND_NAME, APP_FAVICON_SRC } from "@/utils/constants";
 import { Languages } from "lucide-react";

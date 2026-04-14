@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { useSettingsStore } from "@/stores/settings";
-import { useAppTheme } from "@/theme";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { NotFound } from "@/components/NotFound";
 import "@/index.css";
 

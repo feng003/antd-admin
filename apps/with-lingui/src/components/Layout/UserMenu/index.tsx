@@ -1,7 +1,6 @@
 import { Avatar, Button, Dropdown, Flex, Typography, theme } from "antd";
 import type { MenuProps } from "antd";
 import type { User } from "@/api/schemas";
-import { vercelAvatarUrl } from "@/utils/avatarUrl";
 import { MoreVertical } from "lucide-react";
 import "./index.css";
 
@@ -16,8 +15,7 @@ interface UserMenuProps {
 export function UserMenu({ collapsed, user, userMenuItems }: UserMenuProps) {
   const { token } = theme.useToken();
 
-  const avatarSrc =
-    (user?.avatar ?? "").trim() || (user?.username ? vercelAvatarUrl(user.username) : undefined);
+  const avatarSrc = (user?.avatar ?? "").trim() || undefined;
   const avatarSize = collapsed ? 32 : token.controlHeight;
 
   const avatar = (
