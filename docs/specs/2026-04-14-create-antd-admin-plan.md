@@ -171,7 +171,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(__dirname, "../..");
+/** From `packages/create/scripts/`, three levels up = monorepo root. */
+const repoRoot = path.resolve(__dirname, "../../..");
 const appsDir = path.join(repoRoot, "apps");
 const outFile = path.resolve(__dirname, "../dist/examples.json");
 
