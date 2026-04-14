@@ -3,15 +3,10 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { i18n } from "@lingui/core";
-import { messages as enMessages } from "./locales/en/messages.po";
-import { messages as zhMessages } from "./locales/zh/messages.po";
+import { loadLocaleCatalog } from "./locales/loadLocaleCatalog";
 import { useSettingsStore } from "./stores/settings";
 import { useAuthStore } from "./stores/auth";
 import { fetchSessionAndApplyToStore } from "./utils/session";
-
-i18n.load("en", enMessages);
-i18n.load("zh", zhMessages);
-i18n.activate(useSettingsStore.getState().locale);
 
 const router = createRouter({ routeTree });
 
@@ -30,6 +25,13 @@ async function enableMocking() {
 
 enableMocking()
   .then(async () => {
+    await useSettingsStore.persist.rehydrate();
+    const initialLocale = useSettingsStore.getState().locale;
+    const messages = await loadLocaleCatalog(initialLocale);
+    i18n.load(initialLocale, messages);
+    i18n.activate(initialLocale);
+    document.documentElement.lang = initialLocale === "zh" ? "zh" : "en";
+
     await useAuthStore.persist.rehydrate();
     const { isAuthenticated, tokens } = useAuthStore.getState();
     if (isAuthenticated && tokens) {
