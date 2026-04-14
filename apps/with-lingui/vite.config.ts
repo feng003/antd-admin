@@ -1,0 +1,44 @@
+import { defineConfig } from "vite-plus";
+import react from "@vitejs/plugin-react-swc";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { lingui } from "@lingui/vite-plugin";
+
+export default defineConfig({
+  plugins: [
+    tanstackRouter({
+      routesDirectory: "./src/routes",
+      generatedRouteTree: "./src/routeTree.gen.ts",
+    }),
+    react({
+      plugins: [["@lingui/swc-plugin", {}]],
+    }),
+    lingui(),
+  ],
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id: string) => {
+          if (id.includes("node_modules/antd")) {
+            return "vendor-antd";
+          }
+          if (id.includes("@tanstack/react-router") || id.includes("@tanstack/react-query")) {
+            return "vendor-tanstack";
+          }
+          if (id.includes("lucide-react")) {
+            return "vendor-ui";
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1024,
+  },
+  staged: {
+    "*": "vp check --fix",
+  },
+  lint: { options: { typeAware: true, typeCheck: true } },
+});
