@@ -42,3 +42,5 @@ yarn-error.log*
 # Git worktrees
 .worktrees/
 .cursor
+
+./docs/superpowers

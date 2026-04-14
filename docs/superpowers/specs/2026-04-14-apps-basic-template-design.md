@@ -9,17 +9,17 @@ Add a new workspace app `apps/basic` created by copying `apps/with-lingui` and r
 **Goals**
 
 - Parity with `with-lingui` for product features: auth, RBAC, menus, CRUD, MSW, Playwright, build/lint stack.
-- No `@lingui/*` dependencies, no `.po` catalogs, no `i18n:*` npm scripts, no Lingui Vite/SWC plugins.
+- No `@lingui/`* dependencies, no `.po` catalogs, no `i18n:*` npm scripts, no Lingui Vite/SWC plugins.
 - No runtime language switcher; `document.documentElement.lang` set to `en` once at app shell level.
 
 **Non-goals**
 
-- No shared `packages/*` extraction to deduplicate `basic` vs `with-lingui`.
+- No shared `packages/`* extraction to deduplicate `basic` vs `with-lingui`.
 - No changes to `with-lingui` behavior unless a follow-up explicitly requests README or cross-app consistency edits beyond what is listed here.
 
 ## 3. Recommended approach
 
-**Copy-and-subtract (directory fork)** — duplicate `apps/with-lingui` → `apps/basic`, then delete Lingui artifacts and replace `t`/`msg` usage with equivalent English strings. **Rationale:** Clear mapping from source to target, predictable Turbo/pnpm layout (`apps/*` already wired), minimal architectural risk.
+**Copy-and-subtract (directory fork)** — duplicate `apps/with-lingui` → `apps/basic`, then delete Lingui artifacts and replace `t`/`msg` usage with equivalent English strings. **Rationale:** Clear mapping from source to target, predictable Turbo/pnpm layout (`apps/`* already wired), minimal architectural risk.
 
 Alternatives rejected: shared core package (too large for this request); documentation-only template (does not deliver a runnable app).
 
@@ -41,7 +41,7 @@ Alternatives rejected: shared core package (too large for this request); documen
 
 - Remove dependencies: `@lingui/core`, `@lingui/react`, `@lingui/cli`, `@lingui/swc-plugin`, `@lingui/vite-plugin`.
 - Remove scripts: `i18n:extract`, `i18n:compile` (if present).
-- Set `name` to a **unique** workspace package name (e.g. `antd-admin-basic`). The source app currently uses `antd-admin`; duplicate `name` values across `apps/*` can confuse tooling, so `basic` must not reuse the same `name`.
+- Set `name` to a **unique** workspace package name (e.g. `antd-admin-basic`). The source app currently uses `antd-admin`; duplicate `name` values across `apps/`* can confuse tooling, so `basic` must not reuse the same `name`.
 
 ### 5.3 `vite.config.ts`
 
@@ -49,8 +49,8 @@ Alternatives rejected: shared core package (too large for this request); documen
 
 ### 5.4 Entry and root
 
-- **`src/main.tsx`:** Remove Lingui `i18n` load/activate and `.po` imports; keep React DOM render unchanged otherwise.
-- **`src/routes/__root.tsx`:** Remove `I18nProvider`, `i18n` import/effects; wrap tree with `ConfigProvider` using fixed `enUS`; set `document.documentElement.lang = "en"` once (e.g. `useLayoutEffect` on mount or equivalent pattern already used in codebase).
+- `**src/main.tsx`:** Remove Lingui `i18n` load/activate and `.po` imports; keep React DOM render unchanged otherwise.
+- `**src/routes/__root.tsx`:** Remove `I18nProvider`, `i18n` import/effects; wrap tree with `ConfigProvider` using fixed `enUS`; set `document.documentElement.lang = "en"` once (e.g. `useLayoutEffect` on mount or equivalent pattern already used in codebase).
 
 ### 5.5 Settings store
 
@@ -87,12 +87,12 @@ Replace Lingui in every file that currently imports `useLingui` / `msg` / macro 
 
 ## 8. Documentation
 
-- **`apps/basic/README.md` (if present after copy):** State English-only, no Lingui, pointer to `with-lingui` for i18n variant.
+- `**apps/basic/README.md` (if present after copy):** State English-only, no Lingui, pointer to `with-lingui` for i18n variant.
 - **Root `README.md`:** Add a short "Templates" (or equivalent) subsection: describe `apps/with-lingui` vs `apps/basic`, how to run each (`vp dev` from app directory or documented `pnpm`/`turbo` filter), remove or soften global wording that implies a single Lingui-only stack if it would mislead (e.g. tech table row for i18n should clarify it applies to the Lingui app).
 
 ## 9. Maintenance note (drift control)
 
-Two apps will duplicate business logic until a future extraction. **Convention for this repo:** feature and bugfix work lands in **`with-lingui` first** unless the change is basic-only; port to `basic` in the same PR when behavior should stay aligned, or document exception. This is guidance for contributors, not enforced by tooling.
+Two apps will duplicate business logic until a future extraction. **Convention for this repo:** feature and bugfix work lands in `**with-lingui` first** unless the change is basic-only; port to `basic` in the same PR when behavior should stay aligned, or document exception. This is guidance for contributors, not enforced by tooling.
 
 ## 10. Implementation handoff
 
