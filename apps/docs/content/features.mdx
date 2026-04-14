@@ -1,0 +1,22 @@
+---
+title: 功能与约定
+description: 能力概览并指向各应用 README 与源码
+---
+
+# 功能与约定
+
+本 monorepo 在 **`apps/basic`** 与 **`apps/with-lingui`** 中提供同一套产品能力（JWT、动态菜单与 RBAC、表格 URL 状态、MSW、Playwright 等）。差异主要在 **国际化与包名**，详见 [模板对比](/templates)。
+
+## 进一步阅读
+
+- **Basic 应用说明：** [apps/basic/README.md](https://github.com/zuiidea/antd-admin/blob/master/apps/basic/README.md)
+- **Lingui 变体说明：** [apps/with-lingui/README.md](https://github.com/zuiidea/antd-admin/blob/master/apps/with-lingui/README.md)
+- **通用 AI 指引（Vite+）：** 各应用目录下的 `AGENTS.md`
+
+## 源码入口（便于跳转）
+
+| 主题 | 路径（两应用结构类似） |
+|------|-------------------------|
+| 根路由与 Ant Design 包裹 | `src/routes/__root.tsx` |
+| 持久化 Store 工厂 | `src/stores/createPersistentStore.ts` |
+| 设置与主题 | `src/stores/settings.ts` |

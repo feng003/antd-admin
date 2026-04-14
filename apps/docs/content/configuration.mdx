@@ -1,0 +1,17 @@
+---
+title: 配置参考
+description: 环境变量与构建相关简短说明
+---
+
+# 配置参考
+
+## 模板应用（`apps/basic`、`apps/with-lingui`）
+
+- 使用 **Vite+**（`vp`）管理依赖与开发/构建；具体脚本见各目录 `package.json`。
+- **MSW** 在开发环境拦截 API；worker 目录由各应用 `package.json` 的 `msw.workerDirectory` 配置。
+- 更完整的栈说明、目录树与测试命令见对应应用的 **README**（仓库内 `apps/basic/README.md`、`apps/with-lingui/README.md`）。
+
+## 文档站（`apps/docs`）
+
+- **Next.js + Nextra**，无首期 `basePath`；生产构建：`pnpm run build`。
+- 本地开发端口 **3000**，见 [apps/docs README](https://github.com/zuiidea/antd-admin/blob/master/apps/docs/README.md) 与设计说明 `docs/specs/2026-04-15-apps-docs-nextra-design.md`（若存在于仓库中）。
