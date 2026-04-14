@@ -6,7 +6,7 @@ declare const process: { env: { CI?: string } };
 const ci = Boolean(process.env.CI);
 
 export default defineConfig({
-  testDir: "./tests/e2e",
+  testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: ci,
   retries: ci ? 2 : 0,

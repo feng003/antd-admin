@@ -12,7 +12,7 @@
     "lint": "vp lint",
     "check": "vp check --no-fmt",
     "test:e2e": "playwright test",
-    "test:e2e:core": "playwright test tests/e2e/login.spec.ts tests/e2e/users.spec.ts",
+    "test:e2e:core": "playwright test e2e/login.spec.ts e2e/users.spec.ts",
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {

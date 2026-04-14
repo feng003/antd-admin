@@ -8,7 +8,7 @@
 
 <div align="center">
 
-Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. AI-friendly with clear patterns, shared abstractions, scoped AI instructions, and type-safe contracts at every boundary.
+English-only admin scaffold (no Lingui): MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. For Lingui-based i18n (en + zh), use the sibling app [`apps/with-lingui`](../with-lingui/).
 
 [![antd](https://img.shields.io/badge/AntD-^6.0.0-1890ff?style=flat-square&logo=ant-design)](https://github.com/ant-design/ant-design)
 [![react](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)](https://react.dev)
@@ -31,7 +31,7 @@ Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and 
 | Async State  | [TanStack Query v5](https://tanstack.com/query)                        |
 | Local State  | [Zustand](https://zustand.docs.pmnd.rs) (persisted auth & settings)    |
 | Validation   | [Zod v4](https://zod.dev) (schemas, API contracts, form validation)    |
-| i18n         | [LinguiJS](https://lingui.dev) (en + zh catalogs)                      |
+| UI language  | English strings in source (no i18n framework)                          |
 | Icons        | [lucide-react](https://lucide.dev/guide/packages/lucide-react)         |
 | API Mocking  | [MSW 2.x](https://mswjs.io) (Service Worker based)                     |
 | E2E Testing  | [Playwright](https://playwright.dev)                                   |
@@ -42,7 +42,7 @@ Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and 
 - **JWT Authentication** — Login with access/refresh token flow, persisted via Zustand
 - **Dynamic Menu & RBAC** — Backend-driven sidebar menu with permission guards and 403 page
 - **URL-First State** — Table search params (page, pageSize, keyword, sort) synced to URL
-- **i18n** — LinguiJS with English (`en`) and Chinese (`zh`); Ant Design locales wired in root
+- **English-only** — No Lingui or locale catalogs; Ant Design uses a fixed `en_US` locale. See [`apps/with-lingui`](../with-lingui/) for bilingual LinguiJS.
 - **Dark Mode** — One-click toggle with Ant Design theme algorithm
 - **Full Type Safety** — Zod schemas validate API boundaries at runtime where used
 - **Zero-Config Mocking** — MSW intercepts API calls in development, no backend needed
@@ -56,7 +56,10 @@ Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and 
 
 ### Install & Run
 
+From the monorepo root, or after `cd apps/basic`:
+
 ```bash
+cd apps/basic
 vp install
 vp dev
 ```
@@ -75,9 +78,10 @@ vp preview
 ### E2E Tests
 
 ```bash
-vp run test:e2e
-vp run test:e2e:core
-vp run test:e2e:ui   # interactive UI mode
+cd apps/basic
+pnpm run test:e2e
+pnpm run test:e2e:core
+pnpm run test:e2e:ui   # interactive UI mode
 ```
 
 `test:e2e:core` runs the scaffold's highest-value flows only: login and users CRUD.
@@ -111,9 +115,6 @@ src/
 ├── utils/
 │   ├── constants.ts      # API base URL, static assets
 │   └── http.ts           # HTTP client with JWT injection & error handling
-├── locales/              # LinguiJS catalogs (.po + compiled .js)
-│   ├── en/messages.po
-│   └── zh/messages.po
 ├── mocks/
 │   ├── browser.ts        # MSW worker setup
 │   ├── createHandler.ts  # Shared MSW success/error/delay helpers
@@ -121,7 +122,7 @@ src/
 │   ├── utils.ts          # Mock-only helpers (filters, pagination, demo avatar URLs)
 │   └── handlers/         # Request handlers (auth, user CRUD)
 ├── routes/               # TanStack Router file-based routes
-│   ├── __root.tsx        # Root layout (QueryClient, ConfigProvider, I18n)
+│   ├── __root.tsx        # Root layout (QueryClient, ConfigProvider, en_US)
 │   ├── _auth.tsx         # Auth guard layout (redirects to /login)
 │   ├── _auth/dashboard/index.tsx
 │   ├── _auth/users/index.tsx   # Full CRUD with URL-synced search params
@@ -132,33 +133,25 @@ src/
 ├── stores/
 │   ├── auth.ts           # Auth store (tokens, user, menus, permissions)
 │   ├── createPersistentStore.ts # Shared persisted-store factory
-│   └── settings.ts       # Settings store (darkMode, locale, sidebar)
+│   └── settings.ts       # Settings store (darkMode, sidebar)
 └── main.tsx              # Entry point (MSW init → React render)
 
-tests/
-└── e2e/                  # Playwright E2E tests
-    ├── helpers.ts
-    ├── login.spec.ts
-    └── users.spec.ts
+e2e/                    # Playwright E2E tests
+├── helpers.ts
+├── login.spec.ts
+└── users.spec.ts
 ```
 
-## Internationalization (i18n)
+## Language & i18n
 
-The project uses [LinguiJS](https://lingui.dev) with compile-time macros. Locales: `**en**` (source) and `**zh**`.
+This template is **English-only**: user-facing copy lives in components and routes as plain strings; there is no Lingui catalog or language switcher.
 
-### Workflow
-
-```bash
-vp run i18n:extract
-vp run i18n:compile
-```
-
-Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`.
+For **LinguiJS** (English + Chinese, `.po` extract/compile, and Ant Design locale switching), use [`apps/with-lingui`](../with-lingui/).
 
 ## Extending the template
 
 - **Real backend:** Point `VITE_API_BASE_URL` in env and disable or remove MSW in `main.tsx` when you no longer need mocks.
-- **Drop i18n:** Remove Lingui packages, vite/swc plugins, and replace `t` macros with plain strings (larger refactor).
+- **Add i18n:** Start from [`apps/with-lingui`](../with-lingui/) or port Lingui setup from that app; this `basic` tree intentionally omits it.
 
 ## Developer Notes
 

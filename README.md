@@ -8,7 +8,7 @@
 
 <div align="center">
 
-Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. AI-friendly with clear patterns, shared abstractions, scoped AI instructions, and type-safe contracts at every boundary.
+Balanced admin monorepo: MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. Ship either an **English-only** app (`apps/basic`) or a **Lingui i18n** variant (`apps/with-lingui`); see [Templates](#templates) below.
 
 [![antd](https://img.shields.io/badge/AntD-^6.0.0-1890ff?style=flat-square&logo=ant-design)](https://github.com/ant-design/ant-design)
 [![react](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)](https://react.dev)
@@ -31,7 +31,7 @@ Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and 
 | Async State  | [TanStack Query v5](https://tanstack.com/query)                        |
 | Local State  | [Zustand](https://zustand.docs.pmnd.rs) (persisted auth & settings)    |
 | Validation   | [Zod v4](https://zod.dev) (schemas, API contracts, form validation)    |
-| i18n         | [LinguiJS](https://lingui.dev) (en + zh catalogs)                      |
+| i18n         | [LinguiJS](https://lingui.dev) in **`apps/with-lingui` only** (`apps/basic` is English-only, no Lingui) |
 | Icons        | [lucide-react](https://lucide.dev/guide/packages/lucide-react)         |
 | API Mocking  | [MSW 2.x](https://mswjs.io) (Service Worker based)                     |
 | E2E Testing  | [Playwright](https://playwright.dev)                                   |
@@ -42,10 +42,31 @@ Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and 
 - **JWT Authentication** — Login with access/refresh token flow, persisted via Zustand
 - **Dynamic Menu & RBAC** — Backend-driven sidebar menu with permission guards and 403 page
 - **URL-First State** — Table search params (page, pageSize, keyword, sort) synced to URL
-- **i18n** — LinguiJS with English (`en`) and Chinese (`zh`); Ant Design locales wired in root
+- **i18n (with-lingui app)** — LinguiJS with English (`en`) and Chinese (`zh`); Ant Design locales follow the active locale in `apps/with-lingui`
 - **Dark Mode** — One-click toggle with Ant Design theme algorithm
 - **Full Type Safety** — Zod schemas validate API boundaries at runtime where used
 - **Zero-Config Mocking** — MSW intercepts API calls in development, no backend needed
+
+## Templates
+
+| Directory            | Use when |
+| -------------------- | -------- |
+| [`apps/with-lingui`](./apps/with-lingui/) | You want **LinguiJS** (en + zh), `.po` extract/compile, and a language switcher — this is the fuller reference stack. |
+| [`apps/basic`](./apps/basic/) | You want the **same product surface** with **English-only** UI (no Lingui, fixed `en_US` for Ant Design). |
+
+Pick one app directory, install, and run Vite+ from there:
+
+```bash
+cd apps/basic && vp install && vp dev
+# or
+cd apps/with-lingui && vp install && vp dev
+```
+
+Core Playwright flows (from the app you are working in):
+
+```bash
+cd apps/basic && pnpm run test:e2e:core
+```
 
 ## Getting Started
 
@@ -56,7 +77,10 @@ Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and 
 
 ### Install & Run
 
+From the repository root, choose an app under `apps/` (see [Templates](#templates)), then:
+
 ```bash
+cd apps/with-lingui   # or: cd apps/basic
 vp install
 vp dev
 ```
@@ -74,10 +98,13 @@ vp preview
 
 ### E2E Tests
 
+Run from the app package (example: `apps/basic`):
+
 ```bash
-vp run test:e2e
-vp run test:e2e:core
-vp run test:e2e:ui   # interactive UI mode
+cd apps/basic
+pnpm run test:e2e
+pnpm run test:e2e:core
+pnpm run test:e2e:ui   # interactive UI mode
 ```
 
 `test:e2e:core` runs the scaffold's highest-value flows only: login and users CRUD.
