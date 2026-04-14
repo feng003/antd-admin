@@ -2,7 +2,6 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { Form, Input, Button, Card, App, theme, Typography, Flex, Checkbox, Space } from "antd";
 import type { CSSProperties } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useLingui } from "@lingui/react/macro";
 import { httpClient } from "@/utils/http";
 import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore } from "@/stores/settings";
@@ -11,7 +10,6 @@ import { LoginRequestSchema, AuthTokensSchema } from "@/api/schemas";
 import { fetchSessionAndApplyToStore } from "@/utils/session";
 import type { LoginRequest } from "@/api/schemas";
 import { APP_BRAND_NAME, APP_FAVICON_SRC } from "@/utils/constants";
-import { Languages } from "lucide-react";
 import { Theme } from "@/components/Icon";
 import { AppFooter } from "@/components/Layout/AppFooter";
 import { Aurora } from "@/components/Aurora";
@@ -30,10 +28,7 @@ export const Route = createFileRoute("/login/")({
 function LoginPage() {
   const navigate = useNavigate();
   const { message } = App.useApp();
-  const { t } = useLingui();
   const setTokens = useAuthStore((s) => s.setTokens);
-  const locale = useSettingsStore((s) => s.locale);
-  const setLocale = useSettingsStore((s) => s.setLocale);
   const toggleDarkMode = useSettingsStore((s) => s.toggleDarkMode);
   const darkMode = useSettingsStore((s) => s.darkMode);
   const { token } = theme.useToken();
@@ -47,17 +42,13 @@ function LoginPage() {
       await fetchSessionAndApplyToStore();
     },
     onSuccess: () => {
-      message.success(t`Login successful`);
+      message.success("Login successful");
       void navigate({ to: "/dashboard" });
     },
     onError: (err) => {
-      message.error(err instanceof Error ? err.message : t`Login failed`);
+      message.error(err instanceof Error ? err.message : "Login failed");
     },
   });
-
-  const toggleLocale = () => {
-    setLocale(locale === "en" ? "zh" : "en");
-  };
 
   const shellStyle: CSSProperties = {
     position: "relative",
@@ -146,12 +137,12 @@ function LoginPage() {
             >
               <Form.Item
                 name="username"
-                label={<span style={{ fontWeight: 500 }}>{t`Username`}</span>}
-                rules={[{ required: true, message: t`Please enter username` }]}
+                label={<span style={{ fontWeight: 500 }}>Username</span>}
+                rules={[{ required: true, message: "Please enter username" }]}
               >
                 <Input
                   id="login-username"
-                  aria-label={t`Username`}
+                  aria-label="Username"
                   placeholder="admin"
                   size="large"
                 />
@@ -159,13 +150,13 @@ function LoginPage() {
 
               <Form.Item
                 name="password"
-                label={<span style={{ fontWeight: 500 }}>{t`Password`}</span>}
-                rules={[{ required: true, message: t`Please enter password` }]}
+                label={<span style={{ fontWeight: 500 }}>Password</span>}
+                rules={[{ required: true, message: "Please enter password" }]}
                 style={{ marginBottom: token.marginLG }}
               >
                 <Input.Password
                   id="login-password"
-                  aria-label={t`Password`}
+                  aria-label="Password"
                   placeholder="admin"
                   size="large"
                 />
@@ -178,14 +169,14 @@ function LoginPage() {
                 wrap="wrap"
               >
                 <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>{t`Auto login`}</Checkbox>
+                  <Checkbox>Auto login</Checkbox>
                 </Form.Item>
                 <Typography.Link
                   href="#"
                   onClick={(e) => e.preventDefault()}
                   style={{ fontSize: token.fontSizeSM }}
                 >
-                  {t`Forgot password?`}
+                  Forgot password?
                 </Typography.Link>
               </Flex>
 
@@ -197,7 +188,7 @@ function LoginPage() {
                   block
                   size="large"
                 >
-                  {t`Sign In`}
+                  Sign In
                 </Button>
               </Form.Item>
             </Form>
@@ -216,16 +207,9 @@ function LoginPage() {
               <Button
                 type="text"
                 size="small"
-                onClick={toggleLocale}
-                icon={<Languages size={token.size} />}
-                aria-label={t`Switch language`}
-              />
-              <Button
-                type="text"
-                size="small"
                 onClick={toggleDarkMode}
                 icon={<Theme size={token.size} />}
-                aria-label={t`Toggle Theme`}
+                aria-label="Toggle Theme"
               />
             </Space>
           </Flex>

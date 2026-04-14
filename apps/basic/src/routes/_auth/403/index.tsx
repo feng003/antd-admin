@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useLingui } from "@lingui/react/macro";
 import { Home, ShieldAlert } from "lucide-react";
 import { Button, Flex, Result, theme } from "antd";
 
@@ -9,7 +8,6 @@ export const Route = createFileRoute("/_auth/403/")({
 
 function ForbiddenPage() {
   const navigate = useNavigate();
-  const { t } = useLingui();
   const { token } = theme.useToken();
 
   const goDashboard = () => {
@@ -29,10 +27,10 @@ function ForbiddenPage() {
           <ShieldAlert size={64} strokeWidth={1.25} color={token.colorTextQuaternary} aria-hidden />
         }
         title="403"
-        subTitle={t`Sorry, you don't have permission to access this page.`}
+        subTitle="Sorry, you don't have permission to access this page."
         extra={
           <Button type="primary" icon={<Home size={16} aria-hidden />} onClick={goDashboard}>
-            {t`Back to Home`}
+            Back to Home
           </Button>
         }
       />

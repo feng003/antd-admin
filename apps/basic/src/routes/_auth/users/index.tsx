@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Avatar, Button, Space, Form, App, Dropdown, theme, Tag, Flex } from "antd";
 import type { TablePaginationConfig } from "antd/es/table/interface";
-import { useLingui } from "@lingui/react/macro";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { httpClient } from "@/utils/http";
 import { USER_ENDPOINTS } from "@/api/user";
@@ -38,7 +37,6 @@ function UsersPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const { message, modal } = App.useApp();
-  const { t } = useLingui();
   const { token } = theme.useToken();
   const [modalOpen, setModalOpen] = useState(false);
   const pageShellRef = useRef<HTMLDivElement>(null);
@@ -101,7 +99,7 @@ function UsersPage() {
     createLifecycle: {
       onSuccess: () => {
         message.success({
-          content: t`Created successfully`,
+          content: "Created successfully",
           key: MESSAGE_KEY_USER_CREATE,
         });
         setModalOpen(false);
@@ -109,7 +107,7 @@ function UsersPage() {
       },
       onError: () => {
         message.error({
-          content: t`Create failed`,
+          content: "Create failed",
           key: MESSAGE_KEY_USER_CREATE,
         });
       },
@@ -117,14 +115,14 @@ function UsersPage() {
     updateLifecycle: {
       onMutate: () => {
         message.loading({
-          content: t`Updating…`,
+          content: "Updating…",
           key: MESSAGE_KEY_USER_UPDATE,
           duration: 0,
         });
       },
       onSuccess: () => {
         message.success({
-          content: t`Updated successfully`,
+          content: "Updated successfully",
           key: MESSAGE_KEY_USER_UPDATE,
         });
         setModalOpen(false);
@@ -133,7 +131,7 @@ function UsersPage() {
       },
       onError: () => {
         message.error({
-          content: t`Update failed`,
+          content: "Update failed",
           key: MESSAGE_KEY_USER_UPDATE,
         });
       },
@@ -141,20 +139,20 @@ function UsersPage() {
     deleteLifecycle: {
       onMutate: () => {
         message.loading({
-          content: t`Deleting…`,
+          content: "Deleting…",
           key: MESSAGE_KEY_USER_DELETE,
           duration: 0,
         });
       },
       onSuccess: () => {
         message.success({
-          content: t`Deleted successfully`,
+          content: "Deleted successfully",
           key: MESSAGE_KEY_USER_DELETE,
         });
       },
       onError: () => {
         message.error({
-          content: t`Delete failed`,
+          content: "Delete failed",
           key: MESSAGE_KEY_USER_DELETE,
         });
       },
@@ -163,11 +161,11 @@ function UsersPage() {
 
   const confirmDelete = (record: User) => {
     modal.confirm({
-      title: t`Are you absolutely sure?`,
-      content: t`This action cannot be undone. This will permanently delete the user.`,
-      okText: t`Delete`,
+      title: "Are you absolutely sure?",
+      content: "This action cannot be undone. This will permanently delete the user.",
+      okText: "Delete",
       okType: "danger",
-      cancelText: t`Cancel`,
+      cancelText: "Cancel",
       onOk: () => deleteMutation.mutate(record.id),
     });
   };
@@ -181,7 +179,7 @@ function UsersPage() {
       sortOrder: search.sortField === "id" ? search.sortOrder : null,
     },
     {
-      title: t`Username`,
+      title: "Username",
       dataIndex: "username",
       key: "username",
       sorter: true,
@@ -207,14 +205,14 @@ function UsersPage() {
       },
     },
     {
-      title: t`Email`,
+      title: "Email",
       dataIndex: "email",
       key: "email",
       sorter: true,
       sortOrder: search.sortField === "email" ? search.sortOrder : null,
     },
     {
-      title: t`Roles`,
+      title: "Roles",
       dataIndex: "roles",
       key: "roles",
       sorter: true,
@@ -252,7 +250,7 @@ function UsersPage() {
               {
                 key: "edit",
                 icon: <Pencil size={token.fontSize} />,
-                label: t`Edit`,
+                label: "Edit",
                 onClick: () => {
                   setEditingUser(record);
                   form.setFieldsValue(record);
@@ -262,7 +260,7 @@ function UsersPage() {
               {
                 key: "delete",
                 icon: <Trash2 size={token.fontSize} />,
-                label: t`Delete`,
+                label: "Delete",
                 danger: true,
                 onClick: () => confirmDelete(record),
               },
@@ -391,7 +389,7 @@ function UsersPage() {
             current: currentPage,
             pageSize: search.limit,
             showSizeChanger: true,
-            showTotal: (total) => t`${total} rows`,
+            showTotal: (total) => `${total} rows`,
             onChange: (page, pageSize) => {
               void navigate({
                 search: {
@@ -403,7 +401,7 @@ function UsersPage() {
             },
           }
         : false,
-    [showPagination, data?.total, currentPage, search, navigate, t],
+    [showPagination, data?.total, currentPage, search, navigate],
   );
 
   return (

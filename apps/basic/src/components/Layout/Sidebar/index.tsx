@@ -1,8 +1,6 @@
 import { Menu, Layout, theme, Flex, Grid, Drawer, Button } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "@tanstack/react-router";
-import { useLingui } from "@lingui/react/macro";
-import { msg } from "@lingui/core/macro";
 import {
   Book,
   Briefcase,
@@ -26,14 +24,14 @@ import { UserMenu } from "../UserMenu";
 import "./index.css";
 
 const { Sider } = Layout;
-/** API menu `name` → Lingui descriptors (extracted into catalogs). */
-const MENU_LABELS: Record<string, ReturnType<typeof msg>> = {
-  Platform: msg`Platform`,
-  Projects: msg`Projects`,
-  Dashboard: msg`Dashboard`,
-  Users: msg`Users`,
-  "Design Engineering": msg`Design Engineering`,
-  "Sales & Marketing": msg`Sales & Marketing`,
+/** API menu `name` → English labels for known keys; unknown keys pass through as `menu.name`. */
+const MENU_LABELS: Record<string, string> = {
+  Platform: "Platform",
+  Projects: "Projects",
+  Dashboard: "Dashboard",
+  Users: "Users",
+  "Design Engineering": "Design Engineering",
+  "Sales & Marketing": "Sales & Marketing",
 };
 
 type AntMenuItem = Required<MenuProps>["items"][number];
@@ -64,7 +62,6 @@ function renderMenuIcon(icon: string | null, size = 16) {
 
 function buildMenuItems(
   menus: MenuItemType[],
-  t: ReturnType<typeof useLingui>["t"],
   token: ReturnType<typeof theme.useToken>["token"],
   collapsed = false,
   iconSize = 16,
@@ -76,11 +73,11 @@ function buildMenuItems(
   const items: AntMenuItem[] = [];
 
   for (const menu of sorted) {
-    const label = MENU_LABELS[menu.name] ? t(MENU_LABELS[menu.name]) : menu.name;
+    const label = MENU_LABELS[menu.name] ?? menu.name;
     const key = menu.id;
 
     if (menu.kind === "group") {
-      const built = buildMenuItems(menu.children, t, token, collapsed, iconSize, parentKeys);
+      const built = buildMenuItems(menu.children, token, collapsed, iconSize, parentKeys);
       Object.assign(keyToPath, built.keyToPath);
       Object.assign(pathToKeyChain, built.pathToKeyChain);
       if (built.items.length > 0) {
@@ -131,7 +128,7 @@ function buildMenuItems(
 
     let children: AntMenuItem[] | undefined;
     if (menu.children?.length) {
-      const built = buildMenuItems(menu.children, t, token, collapsed, iconSize, nextParents);
+      const built = buildMenuItems(menu.children, token, collapsed, iconSize, nextParents);
       Object.assign(keyToPath, built.keyToPath);
       Object.assign(pathToKeyChain, built.pathToKeyChain);
       children = built.items.length ? built.items : undefined;
@@ -157,14 +154,13 @@ export function Sidebar() {
   const toggleSidebar = useSettingsStore((s) => s.toggleSidebar);
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useLingui();
   const { token } = theme.useToken();
   const screens = Grid.useBreakpoint();
   const isMobile = !screens.lg;
   const mobileOpen = collapsed;
   const builtMenu = useMemo(
-    () => buildMenuItems(menus, t, token, !isMobile && collapsed, token.size),
-    [menus, t, token, isMobile, collapsed, token.size],
+    () => buildMenuItems(menus, token, !isMobile && collapsed, token.size),
+    [menus, token, isMobile, collapsed, token.size],
   );
   const { selectedKey, routeOpenKeys } = useMemo(() => {
     const chain = builtMenu.pathToKeyChain[location.pathname] ?? [];
@@ -191,7 +187,7 @@ export function Sidebar() {
   const userMenuItems: MenuProps["items"] = [
     {
       key: "logout",
-      label: t`Sign Out`,
+      label: "Sign Out",
       onClick: () => {
         if (isMobile) {
           setSidebarCollapsed(false);
@@ -265,7 +261,7 @@ export function Sidebar() {
                   className="sidebar-collapsed-brand__toggle"
                   onClick={toggleSidebar}
                   icon={<PanelLeft size={token.size} />}
-                  aria-label={t`Toggle sidebar`}
+                  aria-label="Toggle sidebar"
                 />
               </div>
             </div>
@@ -313,7 +309,7 @@ export function Sidebar() {
                   size="small"
                   onClick={toggleSidebar}
                   icon={<PanelLeft size={token.size} />}
-                  aria-label={t`Toggle sidebar`}
+                  aria-label="Toggle sidebar"
                   style={{ flexShrink: 0 }}
                 />
               ) : null}

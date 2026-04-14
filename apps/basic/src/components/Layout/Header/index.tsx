@@ -1,9 +1,8 @@
 import { Layout, Button, Space, theme, Breadcrumb, Flex, Divider, Grid } from "antd";
 import type { ItemType } from "antd/es/breadcrumb/Breadcrumb";
-import { useLingui } from "@lingui/react/macro";
-import { useSettingsStore, type Locale } from "@/stores/settings";
+import { useSettingsStore } from "@/stores/settings";
 import { Link, useLocation, useMatches } from "@tanstack/react-router";
-import { Home, Languages, PanelLeft, ShieldAlert, Users } from "lucide-react";
+import { Home, PanelLeft, ShieldAlert, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Theme } from "@/components/Icon";
@@ -32,11 +31,8 @@ export type HeaderProps = {
 export function Header({ showBreadcrumb: showBreadcrumbProp = true }: HeaderProps) {
   const toggleSidebar = useSettingsStore((s) => s.toggleSidebar);
   const toggleDarkMode = useSettingsStore((s) => s.toggleDarkMode);
-  const locale = useSettingsStore((s) => s.locale);
-  const setLocale = useSettingsStore((s) => s.setLocale);
   const location = useLocation();
   const matches = useMatches();
-  const { t } = useLingui();
   const { token } = theme.useToken();
   const screens = Grid.useBreakpoint();
   const isMobile = !screens.lg;
@@ -74,14 +70,7 @@ export function Header({ showBreadcrumb: showBreadcrumbProp = true }: HeaderProp
   const leafIcon: LucideIcon =
     firstSegmentPath === "/users" ? Users : firstSegmentPath === "/403" ? ShieldAlert : Home;
 
-  const leafLabel =
-    leafLabelKey === "Dashboard"
-      ? t`Dashboard`
-      : leafLabelKey === "Users"
-        ? t`Users`
-        : leafLabelKey === "403"
-          ? t`403`
-          : leafLabelKey;
+  const leafLabel = leafLabelKey;
 
   const breadcrumbItems: ItemType[] = [];
 
@@ -89,11 +78,11 @@ export function Header({ showBreadcrumb: showBreadcrumbProp = true }: HeaderProp
 
   if (onDashboard) {
     breadcrumbItems.push({
-      title: crumb(Home, t`Dashboard`),
+      title: crumb(Home, "Dashboard"),
     });
   } else {
     breadcrumbItems.push({
-      title: crumb(Home, t`Dashboard`, "/dashboard"),
+      title: crumb(Home, "Dashboard", "/dashboard"),
     });
 
     breadcrumbItems.push({
@@ -113,11 +102,6 @@ export function Header({ showBreadcrumb: showBreadcrumbProp = true }: HeaderProp
   const showBreadcrumb =
     showBreadcrumbProp && !hideBreadcrumbFromRoute && breadcrumbItems.length > 0;
 
-  const toggleLocale = () => {
-    const next: Locale = locale === "en" ? "zh" : "en";
-    setLocale(next);
-  };
-
   return (
     <AntHeader
       style={{
@@ -135,7 +119,7 @@ export function Header({ showBreadcrumb: showBreadcrumbProp = true }: HeaderProp
             size="small"
             onClick={toggleSidebar}
             icon={<PanelLeft size={token.size} />}
-            aria-label={t`Toggle sidebar`}
+            aria-label="Toggle sidebar"
           />
         ) : null}
         {showBreadcrumb ? (
@@ -148,15 +132,9 @@ export function Header({ showBreadcrumb: showBreadcrumbProp = true }: HeaderProp
       <Space>
         <Button
           type="text"
-          onClick={toggleLocale}
-          icon={<Languages size={token.size} />}
-          aria-label={t`Switch language`}
-        />
-        <Button
-          type="text"
           onClick={toggleDarkMode}
           icon={<Theme size={token.size} />}
-          aria-label={t`Toggle Theme`}
+          aria-label="Toggle Theme"
         />
       </Space>
     </AntHeader>

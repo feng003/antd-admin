@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Card, Col, Row, Typography, Avatar, theme, Flex, Skeleton } from "antd";
 import { useQuery } from "@tanstack/react-query";
-import { useLingui } from "@lingui/react/macro";
 import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
 import "./index.css";
 
@@ -115,7 +114,6 @@ function DashboardSkeleton() {
 }
 
 function DashboardPage() {
-  const { t } = useLingui();
   const { token } = theme.useToken();
   const { isPending } = useQuery({
     queryKey: ["dashboard"],
@@ -133,31 +131,31 @@ function DashboardPage() {
   const stats = useMemo(
     () => [
       {
-        title: t`Total Revenue`,
+        title: "Total Revenue",
         value: "$45,231.89",
-        description: t`+20.1% from last month`,
+        description: "+20.1% from last month",
         icon: <DollarSign style={{ color: token.colorTextSecondary }} />,
       },
       {
-        title: t`Subscriptions`,
+        title: "Subscriptions",
         value: "+2350",
-        description: t`+180.1% from last month`,
+        description: "+180.1% from last month",
         icon: <Users style={{ color: token.colorTextSecondary }} />,
       },
       {
-        title: t`Sales`,
+        title: "Sales",
         value: "+12,234",
-        description: t`+19% from last month`,
+        description: "+19% from last month",
         icon: <CreditCard style={{ color: token.colorTextSecondary }} />,
       },
       {
-        title: t`Active Now`,
+        title: "Active Now",
         value: "+573",
-        description: t`+201 since last hour`,
+        description: "+201 since last hour",
         icon: <Activity style={{ color: token.colorTextSecondary }} />,
       },
     ],
-    [t, token.colorTextSecondary],
+    [token.colorTextSecondary],
   );
 
   const recentSales = useMemo(
@@ -230,7 +228,7 @@ function DashboardPage() {
           <Card
             className="dash-card-interactive"
             style={{ ...cardHoverStyle, height: "100%" }}
-            title={<Title level={5} style={{ margin: 0 }}>{t`Overview`}</Title>}
+            title={<Title level={5} style={{ margin: 0 }}>Overview</Title>}
           >
             <Flex
               className="dash-chart-placeholder"
@@ -247,7 +245,7 @@ function DashboardPage() {
               }}
             >
               <Text type="secondary" style={{ fontSize: token.fontSizeSM }}>
-                {t`Chart Placeholder`}
+                Chart Placeholder
               </Text>
             </Flex>
           </Card>
@@ -256,7 +254,7 @@ function DashboardPage() {
           <Card
             className="dash-card-interactive"
             style={{ ...cardHoverStyle, height: "100%" }}
-            title={<Title level={5} style={{ margin: 0 }}>{t`Recent Sales`}</Title>}
+            title={<Title level={5} style={{ margin: 0 }}>Recent Sales</Title>}
           >
             <Flex
               vertical

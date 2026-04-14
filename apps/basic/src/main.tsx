@@ -2,16 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import { i18n } from "@lingui/core";
-import { messages as enMessages } from "./locales/en/messages.po";
-import { messages as zhMessages } from "./locales/zh/messages.po";
-import { useSettingsStore } from "./stores/settings";
 import { useAuthStore } from "./stores/auth";
 import { fetchSessionAndApplyToStore } from "./utils/session";
-
-i18n.load("en", enMessages);
-i18n.load("zh", zhMessages);
-i18n.activate(useSettingsStore.getState().locale);
 
 const router = createRouter({ routeTree });
 
