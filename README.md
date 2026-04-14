@@ -49,6 +49,8 @@ Balanced admin monorepo: MSW mocks, minimal RBAC, full CRUD, and Playwright E2E 
 
 ## Templates
 
+`pnpm dlx create-antd-admin@latest`
+
 | Directory            | Use when |
 | -------------------- | -------- |
 | [`apps/with-lingui`](./apps/with-lingui/) | You want **LinguiJS** (en + zh), `.po` extract/compile, and a language switcher — this is the fuller reference stack. |
