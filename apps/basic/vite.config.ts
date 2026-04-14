@@ -1,7 +1,6 @@
 import { defineConfig } from "vite-plus";
 import react from "@vitejs/plugin-react-swc";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
-import { lingui } from "@lingui/vite-plugin";
 
 export default defineConfig({
   plugins: [
@@ -9,10 +8,7 @@ export default defineConfig({
       routesDirectory: "./src/routes",
       generatedRouteTree: "./src/routeTree.gen.ts",
     }),
-    react({
-      plugins: [["@lingui/swc-plugin", {}]],
-    }),
-    lingui(),
+    react(),
   ],
   resolve: {
     alias: {
