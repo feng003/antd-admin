@@ -11,6 +11,7 @@
     "dist"
   ],
   "scripts": {
+    "prepublishOnly": "pnpm run build",
     "build": "tsup && node ./scripts/write-examples-json.mjs",
     "dev": "tsup --watch",
     "check-types": "tsc --noEmit",
