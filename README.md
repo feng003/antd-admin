@@ -1,41 +1,33 @@
-<p align="center">
-  <a href="http://github.com/zuiidea/antd-admin" target="_blank">
-    <img alt="antd-admin-logo" height="80" src="./apps/with-lingui/public/favicon.svg">
-  </a>
-</p>
-
-<h1 align="center">Antd Admin</h1>
-
-<div align="center">
+# Antd Admin
 
 Balanced admin monorepo: MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. Ship either an **English-only** app (`apps/basic`) or a **Lingui i18n** variant (`apps/with-lingui`); see [Templates](#templates) below.
 
-[![antd](https://img.shields.io/badge/AntD-^6.0.0-1890ff?style=flat-square&logo=ant-design)](https://github.com/ant-design/ant-design)
-[![react](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)](https://react.dev)
-[![vite](https://img.shields.io/badge/Vite+-Latest-646cff?style=flat-square&logo=vite)](https://viteplus.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![GitHub issues](https://img.shields.io/github/issues/zuiidea/antd-admin?style=flat-square)](https://github.com/zuiidea/antd-admin/issues)
-[![GitHub stars](https://img.shields.io/github/stars/zuiidea/antd-admin?style=flat-square)](https://github.com/zuiidea/antd-admin/stargazers)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](http://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/zuiidea/antd-admin/pulls)
-
-</div>
+[antd](https://github.com/ant-design/ant-design)
+[react](https://react.dev)
+[vite](https://viteplus.dev)
+[TypeScript](https://www.typescriptlang.org/)
+[GitHub issues](https://github.com/zuiidea/antd-admin/issues)
+[GitHub stars](https://github.com/zuiidea/antd-admin/stargazers)
+[License](http://opensource.org/licenses/MIT)
+[PRs Welcome](https://github.com/zuiidea/antd-admin/pulls)
 
 ## Tech Stack
 
-| Category     | Technology                                                             |
-| ------------ | ---------------------------------------------------------------------- |
-| Build Tool   | [Vite+](https://viteplus.dev) (VoidZero unified toolchain)             |
-| UI Framework | [Ant Design 6.x](https://ant.design)                                   |
-| Routing      | [TanStack Router](https://tanstack.com/router) (file-based, type-safe) |
-| Async State  | [TanStack Query v5](https://tanstack.com/query)                        |
-| Local State  | [Zustand](https://zustand.docs.pmnd.rs) (persisted auth & settings)    |
-| Validation   | [Zod v4](https://zod.dev) (schemas, API contracts, form validation)    |
-| i18n         | [LinguiJS](https://lingui.dev) in **`apps/with-lingui` only** (`apps/basic` is English-only, no Lingui) |
-| Icons        | [lucide-react](https://lucide.dev/guide/packages/lucide-react)         |
-| API Mocking  | [MSW 2.x](https://mswjs.io) (Service Worker based)                     |
-| E2E Testing  | [Playwright](https://playwright.dev)                                   |
-| Language     | TypeScript 5.9 (strict mode)                                           |
+
+| Category     | Technology                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------------------------- |
+| Build Tool   | [Vite+](https://viteplus.dev) (VoidZero unified toolchain)                                              |
+| UI Framework | [Ant Design 6.x](https://ant.design)                                                                    |
+| Routing      | [TanStack Router](https://tanstack.com/router) (file-based, type-safe)                                  |
+| Async State  | [TanStack Query v5](https://tanstack.com/query)                                                         |
+| Local State  | [Zustand](https://zustand.docs.pmnd.rs) (persisted auth & settings)                                     |
+| Validation   | [Zod v4](https://zod.dev) (schemas, API contracts, form validation)                                     |
+| i18n         | [LinguiJS](https://lingui.dev) in `**apps/with-lingui` only** (`apps/basic` is English-only, no Lingui) |
+| Icons        | [lucide-react](https://lucide.dev/guide/packages/lucide-react)                                          |
+| API Mocking  | [MSW 2.x](https://mswjs.io) (Service Worker based)                                                      |
+| E2E Testing  | [Playwright](https://playwright.dev)                                                                    |
+| Language     | TypeScript 5.9 (strict mode)                                                                            |
+
 
 ## Features
 
@@ -51,10 +43,12 @@ Balanced admin monorepo: MSW mocks, minimal RBAC, full CRUD, and Playwright E2E 
 
 `pnpm dlx create-antd-admin@latest`
 
-| Directory            | Use when |
-| -------------------- | -------- |
-| [`apps/with-lingui`](./apps/with-lingui/) | You want **LinguiJS** (en + zh), `.po` extract/compile, and a language switcher — this is the fuller reference stack. |
-| [`apps/basic`](./apps/basic/) | You want the **same product surface** with **English-only** UI (no Lingui, fixed `en_US` for Ant Design). |
+
+| Directory                                 | Use when                                                                                                              |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `[apps/with-lingui](./apps/with-lingui/)` | You want **LinguiJS** (en + zh), `.po` extract/compile, and a language switcher — this is the fuller reference stack. |
+| `[apps/basic](./apps/basic/)`             | You want the **same product surface** with **English-only** UI (no Lingui, fixed `en_US` for Ant Design).             |
+
 
 Pick one app directory, install, and run Vite+ from there:
 
@@ -66,13 +60,13 @@ cd apps/with-lingui && vp install && vp dev
 
 ### 文档站（Nextra）
 
-中文使用文档位于 **`apps/docs`**（Next.js + Nextra）。在仓库根或该目录安装依赖后：
+中文使用文档位于 `**apps/docs**`（Next.js + Nextra）。在仓库根或该目录安装依赖后：
 
 ```bash
 cd apps/docs && pnpm install && pnpm dev
 ```
 
-浏览器打开 [http://localhost:3000](http://localhost:3000)。模板 Vite+ 应用仍为 [http://localhost:5173](http://localhost:5173)。开发与构建命令说明见 [`apps/docs/README.md`](./apps/docs/README.md)。
+浏览器打开 [http://localhost:3000](http://localhost:3000)。模板 Vite+ 应用仍为 [http://localhost:5173](http://localhost:5173)。开发与构建命令说明见 `[apps/docs/README.md](./apps/docs/README.md)`。
 
 Core Playwright flows (from the app you are working in):
 
@@ -207,6 +201,7 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 
 ## Pages
 
+
 | Route        | Description                                                 |
 | ------------ | ----------------------------------------------------------- |
 | `/login`     | Login form with validation                                  |
@@ -214,6 +209,7 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 | `/users`     | User CRUD table with search, pagination, create/edit/delete |
 | `/403`       | Forbidden error page                                        |
 | `/404`       | Not found error page                                        |
+
 
 ## License
 
