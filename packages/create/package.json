@@ -1,14 +1,15 @@
 {
   "name": "create-antd-admin",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Create an Antd Admin app from official examples",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "create-antd-admin": "./dist/cli.js"
+    "create-antd-admin": "dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist/cli.js",
+    "dist/examples.json"
   ],
   "scripts": {
     "prepublishOnly": "pnpm run build",

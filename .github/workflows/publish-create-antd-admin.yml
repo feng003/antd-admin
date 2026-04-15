@@ -7,7 +7,7 @@
 #
 # Release:
 #   A) Manual: Actions → "Publish create-antd-admin" → Run workflow
-#   B) Tag:     git tag create-antd-admin-v1.0.0 && git push origin create-antd-admin-v1.0.0
+#   B) Tag:     git tag create-antd-admin-v1.0.3 && git push origin create-antd-admin-v1.0.3
 #               (tag suffix must match packages/create/package.json "version")
 
 name: Publish create-antd-admin
