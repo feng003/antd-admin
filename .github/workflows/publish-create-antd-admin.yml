@@ -62,8 +62,8 @@ jobs:
         working-directory: packages/create
 
       - name: Publish to npm
-        # provenance: see packages/create/package.json publishConfig (requires id-token: write)
-        run: npm publish --access public
+        # Provenance only in CI (OIDC). publishConfig must not force provenance or local npm publish fails.
+        run: npm publish --access public --provenance
         working-directory: packages/create
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
