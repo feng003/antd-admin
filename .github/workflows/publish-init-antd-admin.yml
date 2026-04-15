@@ -1,4 +1,4 @@
-# Publish npm package `antd-admin-cli` from packages/create
+# Publish npm package `init-antd-admin` from packages/create
 #
 # Setup (one-time):
 #   1. npmjs.com → Access Tokens → Granular or Automation token with publish rights
@@ -6,24 +6,24 @@
 #      Name: NPM_TOKEN   Value: <token>
 #
 # Release:
-#   A) Manual: Actions → "Publish antd-admin-cli" → Run workflow
-#   B) Tag:     git tag antd-admin-cli-v1.0.3 && git push origin antd-admin-cli-v1.0.3
+#   A) Manual: Actions → "Publish init-antd-admin" → Run workflow
+#   B) Tag:     git tag init-antd-admin-v1.0.3 && git push origin init-antd-admin-v1.0.3
 #               (tag suffix must match packages/create/package.json "version")
 
-name: Publish antd-admin-cli
+name: Publish init-antd-admin
 
 on:
   workflow_dispatch:
   push:
     tags:
-      - "antd-admin-cli-v*"
+      - "init-antd-admin-v*"
 
 permissions:
   contents: read
   id-token: write
 
 concurrency:
-  group: publish-antd-admin-cli
+  group: publish-init-antd-admin
   cancel-in-progress: true
 
 jobs:
@@ -53,11 +53,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Test antd-admin-cli
+      - name: Test init-antd-admin
         run: pnpm test
         working-directory: packages/create
 
-      - name: Build antd-admin-cli
+      - name: Build init-antd-admin
         run: pnpm run build
         working-directory: packages/create
 

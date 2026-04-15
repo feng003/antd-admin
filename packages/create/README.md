@@ -1,4 +1,4 @@
-# antd-admin-cli
+# init-antd-admin
 
 Scaffold a **standalone** [Antd Admin](https://github.com/zuiidea/antd-admin) style app from official monorepo examples (`apps/basic`, `apps/with-lingui`, …). Templates are fetched from GitHub at install time (similar idea to [create-turbo](https://github.com/vercel/turborepo/tree/main/packages/create-turbo)).
 
@@ -7,22 +7,22 @@ Scaffold a **standalone** [Antd Admin](https://github.com/zuiidea/antd-admin) st
 ## Usage
 
 ```bash
-npx antd-admin-cli@latest
-pnpm dlx antd-admin-cli@latest
-yarn dlx antd-admin-cli@latest
-bunx antd-admin-cli@latest
+npx init-antd-admin@latest
+pnpm dlx init-antd-admin@latest
+yarn dlx init-antd-admin@latest
+bunx init-antd-admin@latest
 ```
 
 Non-interactive example:
 
 ```bash
-pnpm dlx antd-admin-cli@latest my-app --example basic -m pnpm
+pnpm dlx init-antd-admin@latest my-app --example basic -m pnpm
 ```
 
 Skip dependency install (faster smoke test):
 
 ```bash
-pnpm dlx antd-admin-cli@latest my-app --example basic --skip-install
+pnpm dlx init-antd-admin@latest my-app --example basic --skip-install
 ```
 
 ### CLI options
@@ -41,7 +41,7 @@ pnpm dlx antd-admin-cli@latest my-app --example basic --skip-install
 | `-h, --help`               | Print help                                            |
 
 
-Run `antd-admin-cli --help` for the full help text.
+Run `init-antd-admin --help` for the full help text.
 
 ## Environment
 
@@ -72,12 +72,12 @@ Design and implementation notes live under `docs/specs/` in the monorepo (e.g. `
 
 ## Publish (maintainers)
 
-CI workflow: `.github/workflows/publish-antd-admin-cli.yml` in the monorepo (open on GitHub from the default branch).
+CI workflow: `.github/workflows/publish-init-antd-admin.yml` in the monorepo (open on GitHub from the default branch).
 
-1. Add repository secret **`NPM_TOKEN`** (npm automation or granular token with publish permission for `antd-admin-cli`).
+1. Add repository secret **`NPM_TOKEN`** (npm automation or granular token with publish permission for `init-antd-admin`).
 2. Bump **`version`** in this directory’s `package.json`, commit, then either:
-   - **Actions → “Publish antd-admin-cli” → Run workflow**, or  
-   - Push tag **`antd-admin-cli-v<version>`** (e.g. `antd-admin-cli-v1.0.3` must match `package.json` version `1.0.3`).
+   - **Actions → “Publish init-antd-admin” → Run workflow**, or  
+   - Push tag **`init-antd-admin-v<version>`** (e.g. `init-antd-admin-v1.0.3` must match `package.json` version `1.0.3`).
 3. Push a matching **`v<version>`** tag on the monorepo (e.g. `v1.0.3`) if users rely on the default template ref `v${version}` from the CLI.
 
 If **provenance** publish fails from your machine, publish from CI (this workflow passes `--provenance`) or see [npm provenance docs](https://docs.npmjs.com/generating-provenance-statements).
