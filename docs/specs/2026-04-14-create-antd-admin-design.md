@@ -1,4 +1,4 @@
-# create-antdadmin（packages/create）设计规格
+# antd-admin-cli（packages/create）设计规格
 
 > 状态：已定稿待实现审阅  
 > 日期：2026-04-14  
@@ -6,18 +6,18 @@
 
 ## 1. 背景与动机
 
-在 monorepo 中新增 **`packages/create`**，以 npm 包 **`create-antdadmin`** 发布，提供与 [create-turbo](https://github.com/vercel/turborepo/tree/main/packages/create-turbo) 相近体验的命令行工具：从 **GitHub 上的 `apps/<example>`** 拉取模板，在用户本机生成 **独立可运行** 的前端应用，并支持 **交互式选择模板**、**包管理器选择与安装**、**项目名称 transforms**。
+在 monorepo 中新增 **`packages/create`**，以 npm 包 **`antd-admin-cli`** 发布，提供与 [create-turbo](https://github.com/vercel/turborepo/tree/main/packages/create-turbo) 相近体验的命令行工具：从 **GitHub 上的 `apps/<example>`** 拉取模板，在用户本机生成 **独立可运行** 的前端应用，并支持 **交互式选择模板**、**包管理器选择与安装**、**项目名称 transforms**。
 
 ## 2. 目标与非目标
 
 ### 2.1 目标（v1）
 
-- 发布 **`create-antdadmin`**，`pnpm dlx create-antdadmin@latest` 可用；`bin` 指向构建产物 `dist/cli.js`；npm **`files`** 以 **`dist`**（及必要的内嵌清单）为主，对齐 create-turbo 的发布边界。
+- 发布 **`antd-admin-cli`**，`pnpm dlx antd-admin-cli@latest` 可用；`bin` 指向构建产物 `dist/cli.js`；npm **`files`** 以 **`dist`**（及必要的内嵌清单）为主，对齐 create-turbo 的发布边界。
 - **产物**：在当前工作区生成 **独立应用** 目录（或 `.`），不依赖用户已克隆本 monorepo。
 - **示例来源**：**运行时**从 **GitHub** 拉取 archive/tarball，解压后取 **`apps/<example>`** 子树物化到目标目录（create-turbo 模式）。
 - **示例清单**：**构建期**扫描本仓库 **`apps/*`**，生成 **`examples` 清单**写入 `dist`，**排除 `apps/docs`**；运行时短名示例必须落在该清单内。
 - **CLI**：
-  - 支持 `pnpm dlx create-antdadmin@latest --example basic`（及清单中的其它示例名）。
+  - 支持 `pnpm dlx antd-admin-cli@latest --example basic`（及清单中的其它示例名）。
   - **未传 `--example`** 时走 **交互**（选示例、目标目录、项目名称等）。
   - **`--example`** 支持 **短名** 或 **GitHub URL**；提供 **`--example-path`** 处理分支名含 `/` 等与 create-turbo 相同的边界。
 - **包管理器**：支持 **npm / yarn / pnpm / bun**，探测本机可用性；默认执行 **install**；支持 **`--skip-install`**。
@@ -43,8 +43,8 @@
 
 ### 4.1 命名与入口
 
-- 包名：**`create-antdadmin`**。
-- `bin`：**`create-antdadmin`** → `dist/cli.js`。
+- 包名：**`antd-admin-cli`**。
+- `bin`：**`antd-admin-cli`** → `dist/cli.js`。
 
 ### 4.2 参数（v1）
 
@@ -110,7 +110,7 @@
 
 | 话题 | 结论 |
 |------|------|
-| 包位置 | `packages/create`，发布名 `create-antdadmin`。 |
+| 包位置 | `packages/create`，发布名 `antd-admin-cli`。 |
 | 示例列表 | 构建期扫描 `apps/*`，排除 `docs`（用户曾希望「扫描」；发布物上落实为构建期扫描，避免 dlx 用户机无 monorepo）。 |
 | 产物位置 | 独立应用目录或 `.`（非向本仓库新增 `apps/<name>`）。 |
 | 模板分发 | create-turbo 式 **GitHub 拉取**，非主打本地打包模板。 |

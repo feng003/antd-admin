@@ -15,7 +15,7 @@ export function tryGitInit(root: string, enabled: boolean): boolean {
   spawnSync("git", ["add", "-A"], { cwd: root, stdio: "ignore" });
   spawnSync(
     "git",
-    ["commit", "-m", "chore: initial commit from create-antdadmin"],
+    ["commit", "-m", "chore: initial commit from antd-admin-cli"],
     { cwd: root, stdio: "ignore" }
   );
   return true;

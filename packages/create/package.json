@@ -1,11 +1,11 @@
 {
-  "name": "create-antdadmin",
+  "name": "antd-admin-cli",
   "version": "1.0.3",
   "description": "Create an Antd Admin app from official examples",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "create-antdadmin": "dist/cli.js"
+    "antd-admin-cli": "dist/cli.js"
   },
   "files": [
     "dist/cli.js",
