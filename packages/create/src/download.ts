@@ -7,7 +7,7 @@ import { CliError } from "./errors.js";
 export async function downloadExampleToTemp(
   gigetSource: string
 ): Promise<string> {
-  const dir = path.join(os.tmpdir(), `create-antd-admin-${randomUUID()}`);
+  const dir = path.join(os.tmpdir(), `create-antdadmin-${randomUUID()}`);
   try {
     const { dir: outDir } = await downloadTemplate(gigetSource, {
       dir,

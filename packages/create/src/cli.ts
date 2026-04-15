@@ -17,7 +17,7 @@ const pkg = JSON.parse(
 const program = new Command();
 
 program
-  .name("create-antd-admin")
+  .name("create-antdadmin")
   .description("Create an Antd Admin app from official examples")
   .version(pkg.version, "-v, --version")
   .argument("[project-directory]", "Directory for the new project")

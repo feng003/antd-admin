@@ -1,8 +1,8 @@
-# create-antd-admin（packages/create）Implementation Plan
+# create-antdadmin（packages/create）Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add workspace package `packages/create`, publishable as npm `create-antd-admin`, which downloads `apps/<example>` from `zuiidea/antd-admin` on GitHub (tag aligned to CLI version), runs interactive or flag-driven prompts, applies `package.json` name transforms, installs with the user’s package manager, and initializes git by default.
+**Goal:** Add workspace package `packages/create`, publishable as npm `create-antdadmin`, which downloads `apps/<example>` from `zuiidea/antd-admin` on GitHub (tag aligned to CLI version), runs interactive or flag-driven prompts, applies `package.json` name transforms, installs with the user’s package manager, and initializes git by default.
 
 **Architecture:** A small Node ESM CLI built with `tsup` into `dist/`; `commander` parses flags; `@inquirer/prompts` fills gaps; `giget` downloads `github:zuiidea/antd-admin/apps/<example>#<ref>` where `<ref>` defaults to `v<cliVersion>` with env overrides; a post-build script writes `dist/examples.json` by scanning `../../apps/*` and excluding `docs`; transforms are plain filesystem + JSON rewrites; install uses `child_process.spawn` with stdio inherited.
 
@@ -41,7 +41,7 @@
 | `packages/create/src/resolve-example-source.test.ts` | Tests for URL / path resolution |
 | `packages/create/src/integration/create-pipeline.test.ts` | Mocked download fixture → transforms (no network) |
 | `turbo.json` | Add `packages/create` to implicit discovery via workspace (no change if tasks already glob); ensure `build` `outputs` include `dist/**` for the new package (root `turbo.json` already has `dist/**`) |
-| `README.md` | One subsection line under Templates: `pnpm dlx create-antd-admin@latest` |
+| `README.md` | One subsection line under Templates: `pnpm dlx create-antdadmin@latest` |
 
 ---
 
@@ -55,13 +55,13 @@
 
 ```json
 {
-  "name": "create-antd-admin",
+  "name": "create-antdadmin",
   "version": "6.0.0",
   "description": "Create an Antd Admin app from official examples",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "create-antd-admin": "./dist/cli.js"
+    "create-antdadmin": "./dist/cli.js"
   },
   "files": [
     "dist"
@@ -125,7 +125,7 @@ Expected: lockfile updates; workspace links `packages/create`.
 
 ```bash
 git add packages/create/package.json packages/create/tsconfig.json pnpm-lock.yaml
-git commit -m "chore(create): scaffold create-antd-admin package"
+git commit -m "chore(create): scaffold create-antdadmin package"
 ```
 
 ---
@@ -160,7 +160,7 @@ export default defineConfig({
 
 ```typescript
 #!/usr/bin/env node
-console.log("create-antd-admin stub");
+console.log("create-antdadmin stub");
 ```
 
 - [ ] **Step 3: Add `packages/create/scripts/write-examples-json.mjs`**
@@ -602,7 +602,7 @@ import { CliError } from "./errors.js";
 export async function downloadExampleToTemp(
   gigetSource: string
 ): Promise<string> {
-  const dir = path.join(os.tmpdir(), `create-antd-admin-${randomUUID()}`);
+  const dir = path.join(os.tmpdir(), `create-antdadmin-${randomUUID()}`);
   try {
     const { dir: outDir } = await downloadTemplate(gigetSource, {
       dir,
@@ -797,7 +797,7 @@ export function tryGitInit(root: string, enabled: boolean): boolean {
   spawnSync("git", ["add", "-A"], { cwd: root, stdio: "ignore" });
   spawnSync(
     "git",
-    ["commit", "-m", "chore: initial commit from create-antd-admin"],
+    ["commit", "-m", "chore: initial commit from create-antdadmin"],
     { cwd: root, stdio: "ignore" }
   );
   return true;
@@ -935,7 +935,7 @@ import { CliError } from "./errors.js";
 const program = new Command();
 
 program
-  .name("create-antd-admin")
+  .name("create-antdadmin")
   .description("Create an Antd Admin app from official examples")
   .argument("[project-directory]", "Directory for the new project")
   .option(
@@ -1084,7 +1084,7 @@ git commit -m "test(create): integration test for transforms without network"
 Run:
 
 ```bash
-cd /Users/zuiidea/web/antd-admin && pnpm turbo run build --filter=create-antd-admin
+cd /Users/zuiidea/web/antd-admin && pnpm turbo run build --filter=create-antdadmin
 ```
 
 Expected: SUCCESS.
@@ -1094,7 +1094,7 @@ Expected: SUCCESS.
 ```markdown
 **CLI:** Scaffold a standalone app from an official example:
 
-`pnpm dlx create-antd-admin@latest`
+`pnpm dlx create-antdadmin@latest`
 ```
 
 - [ ] **Step 3: Add `prepublishOnly` to `packages/create/package.json`**
@@ -1107,14 +1107,14 @@ Expected: SUCCESS.
 
 ```bash
 git add README.md packages/create/package.json
-git commit -m "docs: document create-antd-admin dlx usage; prepublish build"
+git commit -m "docs: document create-antdadmin dlx usage; prepublish build"
 ```
 
 ---
 
 ## Release checklist (manual, not a code task)
 
-- Publish `create-antd-admin@6.0.0` to npm after ensuring GitHub tag **`v6.0.0`** exists on `zuiidea/antd-admin` pointing to a commit that contains the referenced `apps/basic` and `apps/with-lingui` trees (or temporarily document use of `CREATE_ANTD_ADMIN_REF=main` until tags are automated).
+- Publish `create-antdadmin@6.0.0` to npm after ensuring GitHub tag **`v6.0.0`** exists on `zuiidea/antd-admin` pointing to a commit that contains the referenced `apps/basic` and `apps/with-lingui` trees (or temporarily document use of `CREATE_ANTD_ADMIN_REF=main` until tags are automated).
 
 ---
 

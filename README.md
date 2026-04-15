@@ -41,7 +41,7 @@ Balanced admin monorepo: MSW mocks, minimal RBAC, full CRUD, and Playwright E2E 
 
 ## Templates
 
-`pnpm dlx create-antd-admin@latest`
+`npm create antdadmin@latest` · `pnpm dlx create-antdadmin@latest`
 
 
 | Directory                                 | Use when                                                                                                              |
