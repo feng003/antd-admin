@@ -1,6 +1,6 @@
 {
   "name": "create-antd-admin",
-  "version": "6.0.0",
+  "version": "1.0.0",
   "description": "Create an Antd Admin app from official examples",
   "license": "MIT",
   "type": "module",
@@ -17,6 +17,10 @@
     "check-types": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "engines": {
     "node": ">=20"
