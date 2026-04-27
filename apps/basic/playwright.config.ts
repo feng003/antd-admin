@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/** Node global when `tsconfig` does not include `@types/node` (pre-commit may lint before lockfile updates). */
 declare const process: { env: { CI?: string } };
 
 const ci = Boolean(process.env.CI);

@@ -1,11 +1,11 @@
 ---
 applyTo: "src/api/**/*.ts,src/mocks/**/*.ts,src/routes/_auth/**/*.tsx,e2e/**/*.spec.ts"
-description: "Use when adding a new CRUD resource (orders, roles, tenants, etc.). Keywords: add resource, new resource, scaffold, CRUD page."
+description: "Use when adding a new CRUD resource (roles, tenants, etc.). Keywords: add resource, new resource, scaffold, CRUD page."
 ---
 
 # Add Resource Recipe
 
-Add a list CRUD flow in `apps/with-lingui` that mirrors **Users** (TanStack Router + Query + MSW + Lingui). There is **no** codegen script: **copy and adapt by hand** using the steps below, or have an Agent follow this checklist. Primary references: `src/routes/_auth/users/`, the sample `src/routes/_auth/orders/`, and the matching `e2e/*.spec.ts` files.
+Add a list CRUD flow in `apps/with-lingui` that mirrors **Users** (TanStack Router + Query + MSW + Lingui). There is **no** codegen script: **copy and adapt by hand** using the steps below, or have an Agent follow this checklist. Primary references: `src/routes/_auth/users/` and the matching `e2e/*.spec.ts` files.
 
 ## 0. Verification commands (after your changes)
 
@@ -32,7 +32,7 @@ pnpm run test:e2e -- e2e/<slug>.spec.ts
 
 ## 4. MSW (`src/mocks/handlers/<slug>.ts` + `handlers/index.ts`)
 
-- Follow `handlers/user.ts` / `handlers/orders.ts`: paginated `GET` + optional `keyword`, `POST` / `PUT` / `DELETE`; use `successWithSchema` / `paginatedWithSchema` / `successWithNullBody` for success and `errorResponse` for errors.
+- Follow `handlers/user.ts`: paginated `GET` + optional `keyword`, `POST` / `PUT` / `DELETE`; use `successWithSchema` / `paginatedWithSchema` / `successWithNullBody` for success and `errorResponse` for errors.
 - Register `...<slug>Handlers` in `handlers/index.ts`.
 
 ## 5. Route page (`src/routes/_auth/<slug>/`)
@@ -42,7 +42,7 @@ pnpm run test:e2e -- e2e/<slug>.spec.ts
 
 ## 6. Menu and permissions (`src/utils/appMenu.ts`)
 
-- Add a menu entry to `APP_MENU_TREE`: `path: "/<slug>"`, `permissions: ["<slug>:view"]`, `icon` using a Sidebar-registered key such as `IconLucidePackage` (see existing `IconLucide*` entries in `Sidebar`).
+- Add a menu entry to `APP_MENU_TREE`: `path: "/<slug>"`, `permissions: ["<slug>:view"]`, `icon` using a Sidebar-registered key (see existing `IconLucide*` entries in `Sidebar`).
 - Keep behavior consistent with `canAccessPath` / 403.
 
 ## 6b. Sidebar labels and icons (`src/components/Layout/Sidebar/index.tsx`)
@@ -51,11 +51,9 @@ pnpm run test:e2e -- e2e/<slug>.spec.ts
 - In `MENU_ICON_MAP`, map the new `icon` key to a `lucide-react` icon and add the matching `import`.
 - Then run `pnpm run i18n:extract && pnpm run i18n:compile` and fill in `zh` (and other locale) translations.
 
-> In this template repo, the `orders` sample is already aligned with the Sidebar next to `appMenu`. When adding a resource from scratch, double-check this section.
-
 ## 7. E2E (`e2e/<slug>.spec.ts`)
 
-- Copy structure from `users.spec.ts` / `orders.spec.ts`: `loginAsAdmin` → `goto /<slug>`, assert headers / search placeholder, etc.
+- Copy structure from `users.spec.ts`: `loginAsAdmin` → `goto /<slug>`, assert headers / search placeholder, etc.
 
 ## 8. Verification
 

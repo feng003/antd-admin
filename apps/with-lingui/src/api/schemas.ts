@@ -134,33 +134,3 @@ export type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>;
 export const UpdateUserRequestSchema = CreateUserRequestSchema.partial();
 
 export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>;
-
-export const CreateTestRequestSchema = z.object({
-  title: z.string().min(1),
-  status: z.enum(["draft", "open", "done"]),
-});
-
-export type CreateTestRequest = z.infer<typeof CreateTestRequestSchema>;
-
-export const UpdateTestRequestSchema = CreateTestRequestSchema.partial();
-
-export type UpdateTestRequest = z.infer<typeof UpdateTestRequestSchema>;
-
-export const OrderSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  status: z.enum(["draft", "open", "done"]),
-});
-
-export type Order = z.infer<typeof OrderSchema>;
-
-export const CreateOrderRequestSchema = z.object({
-  title: z.string().min(1),
-  status: z.enum(["draft", "open", "done"]),
-});
-
-export type CreateOrderRequest = z.infer<typeof CreateOrderRequestSchema>;
-
-export const UpdateOrderRequestSchema = CreateOrderRequestSchema.partial();
-
-export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>;

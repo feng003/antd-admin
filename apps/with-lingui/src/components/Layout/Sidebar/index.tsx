@@ -9,7 +9,6 @@ import {
   CircleDashed,
   Folder,
   Home,
-  Package,
   PanelLeft,
   SlidersHorizontal,
   Star,
@@ -32,7 +31,6 @@ const MENU_LABELS: Record<string, ReturnType<typeof msg>> = {
   Projects: msg`Projects`,
   Dashboard: msg`Dashboard`,
   Users: msg`Users`,
-  Orders: msg`Orders`,
   "Design Engineering": msg`Design Engineering`,
   "Sales & Marketing": msg`Sales & Marketing`,
 };
@@ -55,7 +53,6 @@ const MENU_ICON_MAP: Record<string, LucideIcon> = {
   IconLucideBookOpen: Book,
   IconLucideFolderKanban: Folder,
   IconLucideSparkles: Zap,
-  IconLucidePackage: Package,
 };
 
 function renderMenuIcon(icon: string | null, size = 16) {

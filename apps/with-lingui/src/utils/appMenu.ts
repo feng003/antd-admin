@@ -33,17 +33,6 @@ export const APP_MENU_TREE: MenuItem[] = [
         sort: 1,
         hidden: false,
       },
-      {
-        id: "orders-menu",
-        kind: "item",
-        name: "Orders",
-        path: "/orders",
-        icon: "IconLucidePackage",
-        children: null,
-        permissions: ["orders:view"],
-        sort: 2,
-        hidden: false,
-      },
     ],
   },
   {

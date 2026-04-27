@@ -22,6 +22,12 @@ export const AuthTokensSchema = z.object({
 
 export type AuthTokens = z.infer<typeof AuthTokensSchema>;
 
+export const RefreshTokenRequestSchema = z.object({
+  refreshToken: z.string().min(1),
+});
+
+export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;
+
 export const LoginRequestSchema = z.object({
   username: z.string().min(1),
   password: z.string().min(1),

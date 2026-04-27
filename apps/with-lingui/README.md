@@ -92,8 +92,7 @@ src/
 ├── api/                  # Zod schemas, endpoint constants, type exports
 │   ├── schemas.ts        # Domain models (User, AuthTokens, MenuItem, etc.)
 │   ├── auth.ts           # Auth endpoint constants
-│   ├── user.ts           # User CRUD endpoint constants
-│   └── orders.ts         # Example second resource API (mirror `user.ts`)
+│   └── user.ts           # User CRUD endpoint constants
 ├── components/
 │   ├── Aurora/           # Login background effect
 │   ├── Auth/             # Auth (permission gate): index.tsx
@@ -123,13 +122,12 @@ src/
 │   ├── createHandler.ts  # Shared MSW success/error/delay helpers
 │   ├── data.ts           # Mock seed data (users, menus)
 │   ├── utils.ts          # Mock-only helpers (filters, pagination, demo avatar URLs)
-│   └── handlers/         # Request handlers (auth, users, orders, …)
+│   └── handlers/         # Request handlers (auth, users, …)
 ├── routes/               # TanStack Router file-based routes
 │   ├── __root.tsx        # Root layout (QueryClient, ConfigProvider, I18n)
 │   ├── _auth.tsx         # Auth guard layout (redirects to /login)
 │   ├── _auth/dashboard/index.tsx
 │   ├── _auth/users/index.tsx   # Full CRUD with URL-synced search params
-│   ├── _auth/orders/           # Example second resource (mirror users CRUD)
 │   ├── _auth/403/index.tsx
 │   ├── login/index.tsx
 │   ├── 404/index.tsx
@@ -143,8 +141,7 @@ src/
 e2e/                      # Playwright E2E tests
 ├── helpers.ts
 ├── login.spec.ts
-├── users.spec.ts
-└── orders.spec.ts        # Example resource smoke test
+└── users.spec.ts
 
 ```
 
@@ -163,7 +160,7 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 
 ## Extending the template
 
-- **New CRUD resource:** See `.github/instructions/add-resource.instructions.md` (checklist; copy from `users` / `orders`), then `pnpm run i18n:extract && pnpm run i18n:compile`, wire Sidebar labels/icons if needed (§6b in that doc), and `pnpm exec vp check --no-fmt`.
+- **New CRUD resource:** See `.github/instructions/add-resource.instructions.md` (checklist; copy from `users`), then `pnpm run i18n:extract && pnpm run i18n:compile`, wire Sidebar labels/icons if needed (§6b in that doc), and `pnpm exec vp check --no-fmt`.
 - **Real backend:** Point `VITE_API_BASE_URL` in env and disable or remove MSW in `main.tsx` when you no longer need mocks.
 - **Drop i18n:** Remove Lingui packages, vite/swc plugins, and replace `t` macros with plain strings (larger refactor).
 
@@ -186,7 +183,6 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 | `/login`     | Login form with validation                                  |
 | `/dashboard` | Statistics overview cards                                   |
 | `/users`     | User CRUD table with search, pagination, create/edit/delete |
-| `/orders`    | Example orders list (title/status) — second CRUD sample alongside `users` |
 | `/403`       | Forbidden error page                                        |
 | `/404`       | Not found error page                                        |
 

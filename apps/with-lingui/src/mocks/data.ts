@@ -1,4 +1,4 @@
-import type { User, Order } from "@/api/schemas";
+import type { User } from "@/api/schemas";
 import { vercelAvatarUrl } from "./utils";
 
 const MOCK_IDENTITIES: ReadonlyArray<[string, string]> = [
@@ -29,11 +29,5 @@ export const MOCK_USERS: User[] = MOCK_IDENTITIES.map(([username, email], i) => 
   avatar: vercelAvatarUrl(username),
   email,
   roles: i === 0 ? ["admin"] : ["editor"],
-  permissions: i === 0 ? ["orders:view","orders:create","orders:edit","orders:delete","user:view", "user:create", "user:edit", "user:delete"] : ["user:view"],
+  permissions: i === 0 ? ["user:view", "user:create", "user:edit", "user:delete"] : ["user:view"],
 }));
-
-export const MOCK_ORDERS: Order[] = [
-  { id: "1", title: "Alpha", status: "open" },
-  { id: "2", title: "Beta", status: "draft" },
-  { id: "3", title: "Gamma", status: "done" },
-];

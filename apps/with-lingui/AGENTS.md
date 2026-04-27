@@ -84,6 +84,6 @@ This repository also uses scoped AI instruction files in `.github/instructions/`
 - `testing.instructions.md` for Playwright/MSW/test updates
 - `api.instructions.md` for API/schema/handler changes
 - `refactor.instructions.md` for behavior-preserving cleanup
-- `add-resource.instructions.md` for adding a new CRUD resource (checklist; mirror `users` / `orders`)
+- `add-resource.instructions.md` for adding a new CRUD resource (checklist; mirror `users`)
 
 See `.github/instructions/README.md` for usage and authoring rules.

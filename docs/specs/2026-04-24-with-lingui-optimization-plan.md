@@ -1,8 +1,8 @@
 # apps/with-lingui 模板优化计划
 
-> 状态：待评审
-> 日期：2026-04-24
-> 范围：`apps/with-lingui`（`apps/basic` 与主模板抽象稳定后再考虑同步，**当前不做回填**）
+> 状态：已部分落地（更新于 2026-04-27）
+> 计划日期：2026-04-24
+> 范围：以 `apps/with-lingui` 为主模板（`apps/basic` 为英文、无 Lingui 的对照应用；**CRUD 页面级示例仅以 `users` 为样板**，不设第二示例资源）
 > 面向：人类贡献者 + AI Agent（结合 `.github/instructions/` 指令体系执行）
 
 ## 0. 背景
@@ -18,12 +18,12 @@
 - **安全性**：闭合 JWT 刷新流、移除 store/http 跨层耦合。
 - **可维护性**：将 `routes/_auth/users/index.tsx`（491 行）中的通用能力下沉为 hook，使新增资源页 <200 行、<30 分钟。
 - **可观测性**：RBAC / URL 状态等进入核心 E2E；体积以 `vp build` 日志与 Code review 把关（**不**在 CI 中跑自动化 bundle 上限工具）。
-- **AI 协作**：补齐"加资源食谱"与 Cursor 规则镜像；**不**提供 codegen 脚本，以 **`add-resource.instructions.md`** 为唯一执行清单（对照 `users` / `orders`）。
+- **AI 协作**：补齐"加资源食谱"与 Cursor 规则镜像；**不**提供 codegen 脚本，以 `**add-resource.instructions.md`** 为唯一执行清单（对照 `users`）。
 
 ### 非目标
 
 - 不替换现有技术栈（Vite+ / Lingui / AntD 6 / TanStack 保持不变）。
-- **`apps/basic` 回填**：抽象未稳定前**不做**；不与 `with-lingui` 强行双轨同步。
+- `**apps/basic` 与主模板同步**：以工程模式对齐为主（HTTP、hooks、E2E 等），不要求为演示而维护两套 CRUD 样板页。
 - 不引入新的 UI 或样式库（遵循 `frontend.instructions.md`）。
 
 ## 2. 执行项（按优先级）
@@ -82,12 +82,12 @@
     - 导出 `CrudResult<T>` 类型别名。
     - 可选 `optimistic: { update?: boolean; delete?: boolean }`，内部 `onMutate` 里做乐观 `setQueryData`；失败自动回滚。
   - 验收：用户列表删除 / 编辑在慢网（Playwright `route` 延时）下立即反馈；回滚路径有单测覆盖。
-  - **落地**：`optimistic: { update, delete }` + `cancelQueries` / 失败时 `setQueryData` 恢复快照；`pnpm run test:unit`（`src/hooks/useResourceCRUD.test.ts`）覆盖 merge/delete 与 rollback 契约；`users` / `orders` 已开启乐观更新。
+  - **落地**：`optimistic: { update, delete }` + `cancelQueries` / 失败时 `setQueryData` 恢复快照；`pnpm run test:unit`（`src/hooks/useResourceCRUD.test.ts`）覆盖 merge/delete 与 rollback 契约；`users` 列表已开启乐观更新。
 - **P1-5 MSW handler 端也跑一次 schema 解析**
   - 现状：mock 与契约漂移只能在前端 `Zod.parse` 抛错时发现，堆栈离源头远。
   - 方案：
     - `src/mocks/createHandler.ts`：`successWithSchema`；`paginatedListSchema` + `paginatedWithSchema(itemSchema, payload)`；`successWithNullBody` 用于 `data: null` 响应。
-    - `handlers/auth.ts` / `user.ts` / `orders.ts` 全部经 schema 出包；新增 handler 须沿用同一模式。
+    - `handlers/auth.ts`、`handlers/user.ts` 等全部经 schema 出包；新增 handler 须沿用同一模式。
   - 验收：故意改错 mock 字段名，dev 控制台首条报错来自 mock 层；`vp test` 下 handler 单元测试覆盖。
   - **落地**：`src/mocks/createHandler.test.ts`（`pnpm run test:unit`）覆盖 `successWithSchema` / `paginatedWithSchema` / `successWithNullBody` 的校验与 Zod 抛错路径。
 
@@ -101,7 +101,7 @@
   - 允许通过 `VITE_BRAND_PRIMARY` 环境变量覆盖，便于二次分发。
 - **P2-3 Bundle 体积（已决议：不再采用自动化 CI 预算）**
   - **不再采用** `size-limit` / `@size-limit/file`（及同类在 CI 中卡阈值的方案）；已从 `apps/with-lingui` 与 `with-lingui` workflow 移除。
-  - 仍通过 **`manualChunks` + `vp build` 输出** 观察各 chunk；重大依赖或分片变更在 PR 描述中注明体积影响即可。
+  - 仍通过 `**manualChunks` + `vp build` 输出** 观察各 chunk；重大依赖或分片变更在 PR 描述中注明体积影响即可。
   - `refactor.instructions.md` 仅保留「分包与避免无谓大依赖」的叙述性建议，不写死 CI 阈值命令。
 - **P2-4 i18n 预热**
   - `__root.tsx` 在 `requestIdleCallback` 内预拉另一语言 catalog；切换瞬时完成。
@@ -117,19 +117,19 @@
   - 仓库根 `.cursor/rules/with-lingui-*.mdc` 五份：仅 `description` + `globs` + 指向上述路径；**不**重复粘贴长文；`.gitignore` 放行 `.cursor/rules/` 以便进库。
   - `apps/with-lingui/README.md` 与 `instructions/README.md` 说明用法（必要时 `@` 引用 `.instructions.md`）。
 - **P3-3 加资源（无脚本 codegen）**
-  - **实现形态**：仅 `add-resource.instructions.md` 食谱 + `users` / `orders` 示例；由贡献者或 Agent 按步骤手工落地。
+  - **实现形态**：仅 `add-resource.instructions.md` 食谱 + `users` 示例；由贡献者或 Agent 按步骤手工落地。
   - 产出与原先 codegen 相当：`api/<name>.ts`、`schemas` 片段、mock、路由、`e2e`、菜单等。
   - 验收：按食谱新增一资源后 `pnpm exec vp check --no-fmt && pnpm test:e2e:core` 通过（可将新 spec 纳入 core 或单跑）。
 
 ## 3. 落地节奏
 
 
-| 阶段       | 包含项                                     | 预期工时  |
-| -------- | --------------------------------------- | ----- |
-| Sprint 1 | P0-1 / P0-2 / P0-3 / P1-1               | 2–3 天 |
-| Sprint 2 | P1-2 / P1-3 / P1-4 / P1-5 / P3-1       | 2 天   |
-| Sprint 3 | P2-1 ~ P2-4 + P3-2 + P3-3（食谱）       | 2 天   |
-| Sprint 4 | （预留）抽象稳定后再评估 `apps/basic` 与其它增强项 | 待定   |
+| 阶段       | 包含项                              | 预期工时  |
+| -------- | -------------------------------- | ----- |
+| Sprint 1 | P0-1 / P0-2 / P0-3 / P1-1        | 2–3 天 |
+| Sprint 2 | P1-2 / P1-3 / P1-4 / P1-5 / P3-1 | 2 天   |
+| Sprint 3 | P2-1 ~ P2-4 + P3-2 + P3-3（食谱）    | 2 天   |
+| Sprint 4 | （预留）抽象稳定后再评估 `apps/basic` 与其它增强项 | 待定    |
 
 
 每 Sprint 结束：`vp check --no-fmt && pnpm run test:e2e:core && pnpm run build`（在 `apps/with-lingui` 下），并关注构建日志中的 chunk 体积。
@@ -137,12 +137,12 @@
 ## 4. 风险与对策
 
 
-| 风险                                     | 影响    | 对策                                                      |
-| -------------------------------------- | ----- | ------------------------------------------------------- |
-| refresh token 并发去重实现错误，风暴请求            | 线上故障  | 用 `inflightRefresh`（单 Promise）串行化刷新，避免并发风暴 |
-| 乐观更新回滚遗漏                               | 数据不一致 | `useResourceCRUD` 回滚路径单测覆盖（`optimistic: true` 下 4xx 用例） |
-| 手工加资源时覆盖已有文件                          | 代码丢失  | 改前 grep / diff；食谱「注意」节强调不覆盖手写代码                     |
-| `apps/basic` 与 `apps/with-lingui` 抽象漂移 | 双倍维护  | **回填暂缓**；待 hook/契约稳定后再设固定回填节点；尽量参数化而非分叉             |
+| 风险                                     | 影响    | 对策                                                           |
+| -------------------------------------- | ----- | ------------------------------------------------------------ |
+| refresh token 并发去重实现错误，风暴请求            | 线上故障  | 用 `inflightRefresh`（单 Promise）串行化刷新，避免并发风暴                   |
+| 乐观更新回滚遗漏                               | 数据不一致 | `useResourceCRUD` 回滚路径单测覆盖（`optimistic: true` 下 4xx 用例）      |
+| 手工加资源时覆盖已有文件                           | 代码丢失  | 改前 grep / diff；食谱「注意」节强调不覆盖手写代码                              |
+| `apps/basic` 与 `apps/with-lingui` 抽象漂移 | 双倍维护  | 两应用共享同一套 hook/HTTP/MSW 模式时尽量同构；Lingui 与文案差异保留在 with-lingui 侧 |
 
 
 ## 5. 验收标准总览
@@ -162,7 +162,7 @@
 ```md
 ---
 applyTo: "src/api/**/*.ts,src/mocks/handlers/**/*.ts,src/routes/_auth/**/*.tsx"
-description: "Use when adding a new CRUD resource (orders, roles, tenants, etc.). Keywords: add resource, new resource, scaffold, CRUD page, 新资源."
+description: "Use when adding a new CRUD resource (roles, tenants, etc.). Keywords: add resource, new resource, scaffold, CRUD page, 新资源."
 ---
 
 # Add Resource Recipe
@@ -187,21 +187,22 @@ description: "Use when adding a new CRUD resource (orders, roles, tenants, etc.)
 ## 附录 B：文件改动预估
 
 
-| 文件                                                                   | 类型                 |
-| -------------------------------------------------------------------- | ------------------ |
-| `apps/with-lingui/src/utils/http.ts`                                 | 重构                 |
-| `apps/with-lingui/src/stores/auth.ts`                                | 增加导出               |
-| `apps/with-lingui/src/main.tsx`                                      | 简化                 |
-| `apps/with-lingui/src/routes/_auth.tsx`                              | 新增 `beforeLoad`    |
-| `apps/with-lingui/src/hooks/useTableFitHeight.ts`                    | 新增                 |
-| `apps/with-lingui/src/hooks/useCrudToasts.ts`                        | 新增                 |
-| `apps/with-lingui/src/hooks/useUrlSearchState.ts`                    | 新增                 |
-| `apps/with-lingui/src/hooks/useResourceCRUD.ts`                      | 增强                 |
-| `apps/with-lingui/src/mocks/createHandler.ts`                        | 增强                 |
-| `apps/with-lingui/src/mocks/handlers/auth.ts`                        | 补 refresh          |
-| `apps/with-lingui/src/routes/_auth/users/index.tsx`                  | 大幅精简               |
-| `apps/with-lingui/.github/instructions/add-resource.instructions.md` | 新增                 |
-| `.cursor/rules/*.mdc`                                                | 新增（5 份镜像）          |
-| `e2e/{auth-refresh,rbac,url-state,...}.spec.ts`                      | 新增 / 演进            |
-| `.github/workflows/with-lingui-ci.yml`                                 | 质量 + build（无 size-limit） |
+| 文件                                                                   | 类型                       |
+| -------------------------------------------------------------------- | ------------------------ |
+| `apps/with-lingui/src/utils/http.ts`                                 | 重构                       |
+| `apps/with-lingui/src/stores/auth.ts`                                | 增加导出                     |
+| `apps/with-lingui/src/main.tsx`                                      | 简化                       |
+| `apps/with-lingui/src/routes/_auth.tsx`                              | 新增 `beforeLoad`          |
+| `apps/with-lingui/src/hooks/useTableFitHeight.ts`                    | 新增                       |
+| `apps/with-lingui/src/hooks/useCrudToasts.ts`                        | 新增                       |
+| `apps/with-lingui/src/hooks/useUrlSearchState.ts`                    | 新增                       |
+| `apps/with-lingui/src/hooks/useResourceCRUD.ts`                      | 增强                       |
+| `apps/with-lingui/src/mocks/createHandler.ts`                        | 增强                       |
+| `apps/with-lingui/src/mocks/handlers/auth.ts`                        | 补 refresh                |
+| `apps/with-lingui/src/routes/_auth/users/index.tsx`                  | 大幅精简                     |
+| `apps/with-lingui/.github/instructions/add-resource.instructions.md` | 新增                       |
+| `.cursor/rules/*.mdc`                                                | 新增（5 份镜像）                |
+| `e2e/{auth-refresh,rbac,url-state,...}.spec.ts`                      | 新增 / 演进                  |
+| `.github/workflows/with-lingui-ci.yml`                               | 质量 + build（无 size-limit） |
+
 

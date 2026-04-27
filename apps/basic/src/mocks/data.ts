@@ -1,7 +1,6 @@
 import type { User } from "@/api/schemas";
 import { vercelAvatarUrl } from "./utils";
 
-/** Demo logins look like real org accounts (first.last @ northstar.io). Index 0 stays `admin` for mock login. */
 const MOCK_IDENTITIES: ReadonlyArray<[string, string]> = [
   ["admin", "ops.admin@northstar.io"],
   ["zhao.ming", "zhao.ming@northstar.io"],
@@ -15,6 +14,14 @@ const MOCK_IDENTITIES: ReadonlyArray<[string, string]> = [
   ["noah.berg", "noah.berg@northstar.io"],
   ["mia.silva", "mia.silva@northstar.io"],
 ];
+
+export const GUEST_AUTH_USER_BODY = {
+  id: "99",
+  username: "guest",
+  avatar: null as null,
+  email: "guest@example.com",
+  roles: [] as string[],
+};
 
 export const MOCK_USERS: User[] = MOCK_IDENTITIES.map(([username, email], i) => ({
   id: String(i + 1),

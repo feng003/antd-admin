@@ -18,7 +18,6 @@ test.describe("User Management", () => {
     await searchInput.fill("zhao.ming");
     await searchInput.press("Enter");
     await expect(page).toHaveURL(/keyword=zhao\.ming/);
-    /* Avoid strict-mode match on email cell containing substring "zhao.ming" */
     await expect(page.getByText("zhao.ming", { exact: true })).toBeVisible();
   });
 
@@ -28,7 +27,6 @@ test.describe("User Management", () => {
   });
 });
 
-/** Avoid a second full `page.goto` after `/users`: reload can land on login before auth rehydrates. */
 test.describe("User Management — role in URL", () => {
   test.beforeEach(async ({ page }) => {
     await loginAsAdmin(page);

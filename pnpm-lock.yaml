@@ -72,6 +72,9 @@ importers:
       vite-plus:
         specifier: latest
         version: 0.1.16(@voidzero-dev/vite-plus-core@0.1.16)(typescript@5.9.3)
+      vitest:
+        specifier: 3.0.5
+        version: 3.0.5(msw@2.13.3)
 
   apps/docs:
     dependencies:

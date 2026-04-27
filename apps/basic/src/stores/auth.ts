@@ -55,3 +55,11 @@ export const useAuthStore = createPersistentStore<AuthState>(
     },
   },
 );
+
+export function getAuthTokens(): AuthTokens | null {
+  return useAuthStore.getState().tokens;
+}
+
+export function getAccessToken(): string | null {
+  return useAuthStore.getState().tokens?.accessToken ?? null;
+}

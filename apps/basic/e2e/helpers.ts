@@ -14,3 +14,11 @@ export async function gotoUsers(page: Page) {
   await page.goto("/users");
   await expect(page).toHaveURL(/users/);
 }
+
+export async function loginAsGuest(page: Page) {
+  await page.goto("/login");
+  await page.getByLabel(/Username|用户名/).fill("guest");
+  await page.getByLabel(/Password|密码/).fill("guest");
+  await page.getByRole("button", { name: /Sign In|登录/ }).click();
+  await expect(page).toHaveURL(/dashboard/);
+}

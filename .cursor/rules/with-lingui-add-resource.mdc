@@ -10,6 +10,6 @@ alwaysApply: false
 
 `apps/with-lingui/.github/instructions/add-resource.instructions.md`
 
-When adding a resource, follow that recipe (mirror the `users` / `orders` examples). On conflict, the `.instructions.md` file wins.
+When adding a resource, follow that recipe (mirror the `users` example). On conflict, the `.instructions.md` file wins.
 
 `@apps/with-lingui/.github/instructions/add-resource.instructions.md`
