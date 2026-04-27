@@ -38,6 +38,10 @@ jobs:
         working-directory: apps/with-lingui
         run: pnpm exec vp check --no-fmt
 
+      - name: I18n check
+        working-directory: apps/with-lingui
+        run: pnpm run i18n:check
+
       - name: E2E (core)
         working-directory: apps/with-lingui
         run: pnpm run test:e2e:core
