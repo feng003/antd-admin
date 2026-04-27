@@ -20,10 +20,8 @@ async function fetchDashboardShell() {
 
 type AntToken = ReturnType<typeof theme.useToken>["token"];
 
-/** Matches loaded stat card body height: title row, value, description. */
 function StatCardSkeleton({ token }: { token: AntToken }) {
   const titleLine = Math.round(token.fontSizeSM * token.lineHeight);
-  /** Lucide default icon box 24px to align with the first row of real cards. */
   const iconBox = 24;
   const titleRowHeight = Math.max(titleLine, iconBox);
   const valueLine = Math.round(24 * 1);
@@ -123,7 +121,6 @@ function DashboardPage() {
     staleTime: 60_000,
   });
 
-  /* Hover: emphasize border; keep background matching the card so light theme doesn't gray the whole block */
   const cardHoverStyle = {
     ["--dash-card-hover-bg" as string]: token.colorBgContainer,
     ["--dash-card-hover-border" as string]: token.colorPrimaryBorderHover,

@@ -10,9 +10,10 @@ interface UserMenuProps {
   collapsed: boolean;
   user: User | null;
   userMenuItems: MenuProps["items"];
+  accountMenuTriggerAriaLabel: string;
 }
 
-export function UserMenu({ collapsed, user, userMenuItems }: UserMenuProps) {
+export function UserMenu({ collapsed, user, userMenuItems, accountMenuTriggerAriaLabel }: UserMenuProps) {
   const { token } = theme.useToken();
 
   const avatarSrc = (user?.avatar ?? "").trim() || undefined;
@@ -33,7 +34,12 @@ export function UserMenu({ collapsed, user, userMenuItems }: UserMenuProps) {
   );
 
   const moreButton = (
-    <Button type="text" size="small" icon={<MoreVertical size={token.fontSize} />} />
+    <Button
+      type="text"
+      size="small"
+      icon={<MoreVertical size={token.fontSize} />}
+      aria-label={accountMenuTriggerAriaLabel}
+    />
   );
 
   return (

@@ -10,10 +10,6 @@ export interface PersistConfig<T> {
   merge?: PersistOptions<T, Partial<T>>["merge"];
 }
 
-/**
- * Factory function to create a Zustand store with persistence middleware
- * Reduces boilerplate for stores that need automatic data persistence
- */
 export function createPersistentStore<T extends object>(
   initializer: StateCreator<T, [], []>,
   config: PersistConfig<T>,

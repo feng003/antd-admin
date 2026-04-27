@@ -1,7 +1,7 @@
 ---
-applyTo: "src/api/**/*.ts,src/utils/http.ts,src/mocks/handlers/**/*.ts,src/mocks/createHandler.ts"
+
+## applyTo: "src/api/**/*.ts,src/utils/http.ts,src/mocks/handlers/**/*.ts,src/mocks/createHandler.ts"
 description: "Use when editing API clients, schemas, HTTP behavior, response types, or MSW endpoint handlers. Keywords: api, http, schema, zod, handler, endpoint, auth, users."
----
 
 # API Instructions
 

@@ -1,6 +1,6 @@
 ---
 
-## applyTo: "src/\*_/_.{ts,tsx}"
+## applyTo: "src/*/*.{ts,tsx}"
 
 description: "Use when refactoring existing code for deduplication, modularization, naming cleanup, or maintainability improvements without behavior changes. Keywords: refactor, cleanup, simplify, deduplicate, maintainability."
 

@@ -22,10 +22,6 @@ function normalizePath(pathname: string): string {
 }
 
 export type HeaderProps = {
-  /**
-   * When `false`, breadcrumb is hidden; left `Flex` still uses `flex={1}` so header actions stay right-aligned.
-   * Routes may also set `staticData: { hideBreadcrumb: true }` (deepest matching route wins).
-   */
   showBreadcrumb?: boolean;
 };
 

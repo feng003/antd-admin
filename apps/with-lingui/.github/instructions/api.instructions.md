@@ -14,6 +14,7 @@ Maintain strict API contracts and consistent server/client mock behavior.
 - Keep request/response shapes schema-driven and type-safe.
 - Reuse endpoint constants and shared response helpers.
 - Keep handler response envelope consistent (`code`, `data`, `message`).
+- MSW success payloads: use `successWithSchema` / `paginatedWithSchema` / `successWithNullBody` from `src/mocks/createHandler.ts` so responses match Zod contracts before `HttpResponse.json`.
 - Ensure mock handlers reflect real API behavior and error semantics.
 - Keep naming stable for endpoint keys and mutation/query keys.
 
@@ -26,4 +27,5 @@ Maintain strict API contracts and consistent server/client mock behavior.
 ## Validation
 
 - Verify TypeScript and schema parsing paths compile cleanly.
-- Run: `vp check --no-fmt`
+- Run: `pnpm exec vp check --no-fmt`
+- After changing `createHandler` or handler envelopes: `pnpm run test:unit` (includes `src/mocks/createHandler.test.ts`).

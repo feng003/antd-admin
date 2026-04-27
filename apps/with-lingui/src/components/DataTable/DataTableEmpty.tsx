@@ -3,9 +3,6 @@ import { useLingui } from "@lingui/react/macro";
 import { BarChart3 } from "lucide-react";
 import type { ReactElement } from "react";
 
-/**
- * Table empty state: icon in soft tile + bold title + secondary description (dashboard-style).
- */
 export function DataTableEmpty(): ReactElement {
   const { t } = useLingui();
   const { token } = theme.useToken();

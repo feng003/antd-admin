@@ -4,18 +4,14 @@ import { forwardRef, useCallback, useLayoutEffect, useMemo, useRef, useState } f
 
 export type FilterToolbarSlot = {
   key: string;
-  /** Used to decide how many filters fit in one row before the rest go into the popover */
   minWidth: number;
   children: React.ReactNode;
 };
 
 export type FilterToolbarProps = {
   slots: FilterToolbarSlot[];
-  /** Right side: primary actions (not collapsed) */
   actions: React.ReactNode;
-  /** Reserve width for the “more filters” control when some slots are in the popover */
   collapseTriggerReserve?: number;
-  /** Accessible label + optional popover title */
   moreFiltersLabel: React.ReactNode;
   moreFiltersTitle?: React.ReactNode;
 };

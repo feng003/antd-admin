@@ -3,7 +3,6 @@ import { useLingui } from "@lingui/react/macro";
 import { ArrowLeft, Home, SearchX } from "lucide-react";
 import { Button, Flex, Result, Space, theme } from "antd";
 
-/** Shared 404 UI for `/404` route and root `notFoundComponent`. */
 export function NotFound() {
   const navigate = useNavigate();
   const { t } = useLingui();
@@ -25,7 +24,6 @@ export function NotFound() {
     <Flex
       vertical
       style={{
-        /* Lock to viewport so tall Result + padding cannot grow past 100vh and scroll the page */
         height: "100dvh",
         maxHeight: "100dvh",
         overflow: "hidden",

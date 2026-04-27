@@ -1,4 +1,7 @@
 import { API_BASE_URL } from "./constants";
+import { AUTH_ENDPOINTS } from "@/api/auth";
+import { AuthTokensSchema, RefreshTokenRequestSchema } from "@/api/schemas";
+import { getAccessToken, useAuthStore } from "@/stores/auth";
 
 export class ApiError extends Error {
   code: number;
@@ -22,6 +25,70 @@ type RequestOptions = Omit<RequestInit, "method" | "body"> & {
   params?: Record<string, string | number | null | undefined>;
 };
 
+type HttpRouter = {
+  navigate: (opts: { to: string }) => void | Promise<void>;
+};
+
+let httpRouter: HttpRouter | null = null;
+
+export function installHttpRouter(router: HttpRouter): void {
+  httpRouter = router;
+}
+
+let inflightRefresh: Promise<boolean> | null = null;
+
+async function doRefreshSessionTokens(): Promise<boolean> {
+  const { tokens, setTokens, logout } = useAuthStore.getState();
+  const refreshToken = tokens?.refreshToken;
+  if (!refreshToken) {
+    logout();
+    navigateToLogin();
+    return false;
+  }
+
+  const body = RefreshTokenRequestSchema.parse({ refreshToken });
+  const url = buildUrl(AUTH_ENDPOINTS.refresh);
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      logout();
+      navigateToLogin();
+      return false;
+    }
+
+    const json: unknown = await res.json();
+    const envelope = json as { code?: number; data?: unknown; message?: string };
+    if (envelope.code !== undefined && envelope.code !== 0) {
+      logout();
+      navigateToLogin();
+      return false;
+    }
+
+    const next = AuthTokensSchema.parse(envelope.data ?? envelope);
+    setTokens(next);
+    return true;
+  } catch {
+    logout();
+    navigateToLogin();
+    return false;
+  }
+}
+
+async function refreshSessionTokens(): Promise<boolean> {
+  if (inflightRefresh) return inflightRefresh;
+
+  inflightRefresh = doRefreshSessionTokens().finally(() => {
+    inflightRefresh = null;
+  });
+  return inflightRefresh;
+}
+
 function buildUrl(path: string, params?: RequestOptions["params"]): string {
   const base = path.startsWith("http") ? path : `${API_BASE_URL}${path}`;
   if (!params) return base;
@@ -33,16 +100,17 @@ function buildUrl(path: string, params?: RequestOptions["params"]): string {
 }
 
 function getAuthHeaders(): Record<string, string> {
-  try {
-    const raw = localStorage.getItem("auth-storage");
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    const token = parsed?.state?.tokens?.accessToken;
-    if (token) return { Authorization: `Bearer ${token}` };
-  } catch {
-    // noop
-  }
+  const token = getAccessToken();
+  if (token) return { Authorization: `Bearer ${token}` };
   return {};
+}
+
+function navigateTo403(): void {
+  void httpRouter?.navigate({ to: "/403" });
+}
+
+function navigateToLogin(): void {
+  void httpRouter?.navigate({ to: "/login" });
 }
 
 async function request<T>(
@@ -50,6 +118,7 @@ async function request<T>(
   path: string,
   body?: unknown,
   options?: RequestOptions,
+  isAfterRefresh = false,
 ): Promise<T> {
   const url = buildUrl(path, options?.params);
   const headers: Record<string, string> = {
@@ -61,29 +130,40 @@ async function request<T>(
   const res = await fetch(url, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    body: body !== undefined ? JSON.stringify(body) : undefined,
     ...options,
   });
+
+  if (res.status === 401 && !isAfterRefresh && path !== AUTH_ENDPOINTS.refresh) {
+    const refreshed = await refreshSessionTokens();
+    if (refreshed) {
+      return request<T>(method, path, body, options, true);
+    }
+    throw new HttpError(401, "Unauthorized");
+  }
+
+  if (res.status === 403) {
+    navigateTo403();
+    throw new HttpError(403, "Forbidden");
+  }
 
   if (!res.ok) {
     throw new HttpError(res.status, `HTTP ${res.status}: ${res.statusText}`);
   }
 
-  const json = await res.json();
+  const json: unknown = await res.json();
+  const envelope = json as { code?: number; data?: unknown; message?: string };
 
-  if (json.code !== undefined && json.code !== 0) {
-    throw new ApiError(json.code, json.message ?? "Unknown error");
+  if (envelope.code !== undefined && envelope.code !== 0) {
+    throw new ApiError(envelope.code, envelope.message ?? "Unknown error");
   }
 
-  return json.data !== undefined ? json.data : json;
+  return (envelope.data !== undefined ? envelope.data : json) as T;
 }
 
 export const httpClient = {
   get: <T>(path: string, options?: RequestOptions) => request<T>("GET", path, undefined, options),
-  post: <T>(path: string, body?: unknown, options?: RequestOptions) =>
-    request<T>("POST", path, body, options),
-  put: <T>(path: string, body?: unknown, options?: RequestOptions) =>
-    request<T>("PUT", path, body, options),
-  delete: <T>(path: string, options?: RequestOptions) =>
-    request<T>("DELETE", path, undefined, options),
+  post: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>("POST", path, body, options),
+  put: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>("PUT", path, body, options),
+  delete: <T>(path: string, options?: RequestOptions) => request<T>("DELETE", path, undefined, options),
 };

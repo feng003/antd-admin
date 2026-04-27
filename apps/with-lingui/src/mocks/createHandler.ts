@@ -1,30 +1,17 @@
 import { HttpResponse, delay as mswDelay } from "msw";
+import { z } from "zod/v4";
+import type { ZodTypeAny } from "zod/v4";
 
-/**
- * Standard API response format
- */
 export interface ApiResponse<T> {
   code: number;
   data: T;
   message: string;
 }
 
-/**
- * MSW handler factory functions
- * Provides consistent response wrapping and error handling
- */
-
-/**
- * Wrap a handler function with standard response format
- * Automatically handles delay, error responses, and data wrapping
- */
 export async function withDelay(ms: number = 200): Promise<void> {
   await mswDelay(ms);
 }
 
-/**
- * Create a success response
- */
 export function successResponse<T>(data: T, message: string = "ok") {
   return HttpResponse.json({
     code: 0,
@@ -33,10 +20,42 @@ export function successResponse<T>(data: T, message: string = "ok") {
   });
 }
 
-/**
- * Create an error response
- */
-export function errorResponse(code: number, message: string, data: unknown = null) {
+/** Parse `data` with Zod before wrapping — catches mock ↔ contract drift early. */
+export function successWithSchema<T extends ZodTypeAny>(
+  schema: T,
+  data: unknown,
+  message: string = "ok",
+) {
+  const parsed = schema.parse(data);
+  return successResponse(parsed, message);
+}
+
+export function paginatedListSchema<T extends ZodTypeAny>(itemSchema: T) {
+  return z.object({
+    list: z.array(itemSchema),
+    total: z.number().int().nonnegative(),
+  });
+}
+
+export function paginatedWithSchema<T extends ZodTypeAny>(
+  itemSchema: T,
+  data: unknown,
+  message: string = "ok",
+) {
+  return successWithSchema(paginatedListSchema(itemSchema), data, message);
+}
+
+const NullBodySchema = z.null();
+
+export function successWithNullBody(message: string = "ok") {
+  return successWithSchema(NullBodySchema, null, message);
+}
+
+export function errorResponse(
+  code: number,
+  message: string,
+  data: unknown = null,
+) {
   return HttpResponse.json({
     code,
     data,
@@ -44,9 +63,6 @@ export function errorResponse(code: number, message: string, data: unknown = nul
   });
 }
 
-/**
- * Predefined error codes
- */
 export const ERROR_CODES = {
   INVALID_CREDENTIALS: 1001,
   NOT_FOUND: 1002,

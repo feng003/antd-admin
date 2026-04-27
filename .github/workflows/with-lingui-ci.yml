@@ -1,0 +1,47 @@
+name: with-lingui
+
+on:
+  push:
+    paths:
+      - "apps/with-lingui/**"
+      - ".github/workflows/with-lingui-ci.yml"
+      - "pnpm-lock.yaml"
+  pull_request:
+    paths:
+      - "apps/with-lingui/**"
+      - ".github/workflows/with-lingui-ci.yml"
+      - "pnpm-lock.yaml"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        working-directory: apps/with-lingui
+        run: pnpm exec playwright install chromium
+
+      - name: Typecheck and lint
+        working-directory: apps/with-lingui
+        run: pnpm exec vp check --no-fmt
+
+      - name: E2E (core)
+        working-directory: apps/with-lingui
+        run: pnpm run test:e2e:core
+
+      - name: Build
+        working-directory: apps/with-lingui
+        run: pnpm run build

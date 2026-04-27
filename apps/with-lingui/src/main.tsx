@@ -6,9 +6,10 @@ import { i18n } from "@lingui/core";
 import { loadLocaleCatalog } from "./locales/loadLocaleCatalog";
 import { useSettingsStore } from "./stores/settings";
 import { useAuthStore } from "./stores/auth";
-import { fetchSessionAndApplyToStore } from "./utils/session";
+import { installHttpRouter } from "./utils/http";
 
 const router = createRouter({ routeTree });
+installHttpRouter(router);
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -25,22 +26,17 @@ async function enableMocking() {
 
 enableMocking()
   .then(async () => {
-    await useSettingsStore.persist.rehydrate();
+    await Promise.all([
+      useSettingsStore.persist.rehydrate(),
+      useAuthStore.persist.rehydrate(),
+    ]);
+
     const initialLocale = useSettingsStore.getState().locale;
     const messages = await loadLocaleCatalog(initialLocale);
     i18n.load(initialLocale, messages);
     i18n.activate(initialLocale);
     document.documentElement.lang = initialLocale === "zh" ? "zh" : "en";
-
-    await useAuthStore.persist.rehydrate();
-    const { isAuthenticated, tokens } = useAuthStore.getState();
-    if (isAuthenticated && tokens) {
-      try {
-        await fetchSessionAndApplyToStore();
-      } catch {
-        useAuthStore.getState().logout();
-      }
-    }
+    document.documentElement.dir = "ltr";
 
     ReactDOM.createRoot(document.getElementById("root")!).render(
       <React.StrictMode>

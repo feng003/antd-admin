@@ -3,6 +3,34 @@ import react from "@vitejs/plugin-react-swc";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { lingui } from "@lingui/vite-plugin";
 
+const VENDOR_CHUNKS: Array<{ chunk: string; test: (id: string) => boolean }> = [
+  {
+    chunk: "vendor-antd",
+    test: (id) =>
+      id.includes("node_modules/antd") || id.includes("node_modules/rc-"),
+  },
+  {
+    chunk: "vendor-tanstack",
+    test: (id) => id.includes("node_modules/@tanstack/"),
+  },
+  {
+    chunk: "vendor-ui",
+    test: (id) => id.includes("node_modules/lucide-react"),
+  },
+  {
+    chunk: "vendor-i18n",
+    test: (id) =>
+      id.includes("node_modules/@lingui/") || id.includes("/@lingui/"),
+  },
+];
+
+function manualChunkForId(id: string): string | undefined {
+  for (const { chunk, test } of VENDOR_CHUNKS) {
+    if (test(id)) return chunk;
+  }
+  return undefined;
+}
+
 export default defineConfig({
   plugins: [
     tanstackRouter({
@@ -22,17 +50,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: (id: string) => {
-          if (id.includes("node_modules/antd")) {
-            return "vendor-antd";
-          }
-          if (id.includes("@tanstack/react-router") || id.includes("@tanstack/react-query")) {
-            return "vendor-tanstack";
-          }
-          if (id.includes("lucide-react")) {
-            return "vendor-ui";
-          }
-        },
+        manualChunks: (id: string) => manualChunkForId(id),
       },
     },
     chunkSizeWarningLimit: 1024,

@@ -1,9 +1,5 @@
 import type { MenuItem } from "@/api/schemas";
 
-/**
- * Built-in menu tree. Visibility is computed with {@link filterMenuTreeByPermissions}
- * from `GET /api/auth/permissions` (must stay consistent with route permission map below).
- */
 export const APP_MENU_TREE: MenuItem[] = [
   {
     id: "g-platform",
@@ -35,6 +31,17 @@ export const APP_MENU_TREE: MenuItem[] = [
         children: null,
         permissions: ["user:view"],
         sort: 1,
+        hidden: false,
+      },
+      {
+        id: "orders-menu",
+        kind: "item",
+        name: "Orders",
+        path: "/orders",
+        icon: "IconLucidePackage",
+        children: null,
+        permissions: ["orders:view"],
+        sort: 2,
         hidden: false,
       },
     ],
@@ -113,16 +120,11 @@ export function filterMenuTreeByPermissions(
   return walk(nodes);
 }
 
-/** Normalized pathname (no trailing slash except `/`) */
 export function normalizeAppPath(pathname: string): string {
   if (pathname === "/") return pathname;
   return pathname.replace(/\/+$/, "") || "/";
 }
 
-/**
- * Route → permission required to open the page. `null` = no permission gate.
- * Keep in sync with {@link APP_MENU_TREE} paths.
- */
 export function requiredPermissionForPath(pathname: string): string | null {
   const p = normalizeAppPath(pathname);
   const map: Record<string, string | null> = {

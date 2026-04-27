@@ -17,62 +17,65 @@ msgstr ""
 #~ msgid "{n} rows"
 #~ msgstr "{n} rows"
 
-#: src/routes/_auth/users/index.tsx:386
+#: src/routes/_auth/orders/index.tsx:186
+#: src/routes/_auth/users/index.tsx:262
 msgid "{total} rows"
 msgstr "{total} rows"
 
-#: src/routes/_auth/dashboard/index.tsx:35
+#: src/routes/_auth/dashboard/index.tsx:144
 msgid "+180.1% from last month"
 msgstr "+180.1% from last month"
 
-#: src/routes/_auth/dashboard/index.tsx:41
+#: src/routes/_auth/dashboard/index.tsx:150
 msgid "+19% from last month"
 msgstr "+19% from last month"
 
-#: src/routes/_auth/dashboard/index.tsx:29
+#: src/routes/_auth/dashboard/index.tsx:138
 msgid "+20.1% from last month"
 msgstr "+20.1% from last month"
 
-#: src/routes/_auth/dashboard/index.tsx:47
+#: src/routes/_auth/dashboard/index.tsx:156
 msgid "+201 since last hour"
 msgstr "+201 since last hour"
 
-#: src/components/Layout/Header/index.tsx:78
+#: src/components/Layout/Header/index.tsx:83
 msgid "403"
 msgstr "403"
 
-#: src/routes/_auth/dashboard/index.tsx:45
+#: src/routes/_auth/dashboard/index.tsx:154
 msgid "Active Now"
 msgstr "Active Now"
 
-#: src/routes/_auth/users/-FormModal.tsx:58
+#: src/routes/_auth/users/-FormModal.tsx:52
 #: src/routes/_auth/users/-Toolbar.tsx:64
 msgid "Admin"
 msgstr "Admin"
 
-#: src/routes/_auth/users/index.tsx:164
+#: src/routes/_auth/orders/index.tsx:112
+#: src/routes/_auth/users/index.tsx:124
 msgid "Are you absolutely sure?"
 msgstr "Are you absolutely sure?"
 
-#: src/routes/login/index.tsx:185
+#: src/routes/login/index.tsx:181
 msgid "Auto login"
 msgstr "Auto login"
 
-#: src/components/NotFound/index.tsx:54
-#: src/routes/_auth/403/index.tsx:40
+#: src/components/NotFound/index.tsx:59
+#: src/routes/_auth/403/index.tsx:35
 msgid "Back to Home"
 msgstr "Back to Home"
 
-#: src/routes/_auth/users/-FormModal.tsx:32
-#: src/routes/_auth/users/index.tsx:168
+#: src/routes/_auth/orders/index.tsx:116
+#: src/routes/_auth/users/-FormModal.tsx:31
+#: src/routes/_auth/users/index.tsx:128
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/routes/_auth/dashboard/index.tsx:134
+#: src/routes/_auth/dashboard/index.tsx:250
 msgid "Chart Placeholder"
 msgstr "Chart Placeholder"
 
-#: src/routes/_auth/users/index.tsx:106
+#: src/hooks/useCrudToasts.ts:43
 msgid "Create failed"
 msgstr "Create failed"
 
@@ -80,53 +83,68 @@ msgstr "Create failed"
 msgid "Create User"
 msgstr "Create User"
 
-#: src/routes/_auth/users/index.tsx:100
+#: src/hooks/useCrudToasts.ts:40
 msgid "Created successfully"
 msgstr "Created successfully"
 
-#: src/components/Layout/Header/index.tsx:74
-#: src/components/Layout/Header/index.tsx:87
-#: src/components/Layout/Header/index.tsx:91
-#: src/components/Layout/Sidebar/index.tsx:32
+#: src/components/Layout/Header/index.tsx:79
+#: src/components/Layout/Header/index.tsx:92
+#: src/components/Layout/Header/index.tsx:96
+#: src/components/Layout/Sidebar/index.tsx:34
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/routes/_auth/users/index.tsx:166
-#: src/routes/_auth/users/index.tsx:257
+#: src/routes/_auth/orders/index.tsx:114
+#: src/routes/_auth/orders/index.tsx:152
+#: src/routes/_auth/users/index.tsx:126
+#: src/routes/_auth/users/index.tsx:223
 msgid "Delete"
 msgstr "Delete"
 
-#: src/routes/_auth/users/index.tsx:156
+#: src/hooks/useCrudToasts.ts:65
 msgid "Delete failed"
 msgstr "Delete failed"
 
-#: src/routes/_auth/users/index.tsx:149
+#: src/hooks/useCrudToasts.ts:62
 msgid "Deleted successfully"
 msgstr "Deleted successfully"
 
-#: src/routes/_auth/users/index.tsx:142
+#: src/hooks/useCrudToasts.ts:59
 msgid "Deleting…"
 msgstr "Deleting…"
 
-#: src/components/Layout/Sidebar/index.tsx:35
+#: src/components/Layout/Sidebar/index.tsx:37
 msgid "Design Engineering"
 msgstr "Design Engineering"
 
-#: src/routes/_auth/users/index.tsx:247
+#: src/routes/_auth/orders/-FormModal.tsx:36
+msgid "Done"
+msgstr "Done"
+
+#: src/routes/_auth/orders/-FormModal.tsx:34
+msgid "Draft"
+msgstr "Draft"
+
+#: src/routes/_auth/orders/index.tsx:142
+#: src/routes/_auth/users/index.tsx:213
 msgid "Edit"
 msgstr "Edit"
+
+#: src/routes/_auth/orders/-FormModal.tsx:19
+msgid "Edit Order"
+msgstr "Edit Order"
 
 #: src/routes/_auth/users/-FormModal.tsx:29
 msgid "Edit User"
 msgstr "Edit User"
 
-#: src/routes/_auth/users/-FormModal.tsx:59
+#: src/routes/_auth/users/-FormModal.tsx:53
 #: src/routes/_auth/users/-Toolbar.tsx:65
 msgid "Editor"
 msgstr "Editor"
 
-#: src/routes/_auth/users/-FormModal.tsx:63
-#: src/routes/_auth/users/index.tsx:202
+#: src/routes/_auth/users/-FormModal.tsx:57
+#: src/routes/_auth/users/index.tsx:168
 msgid "Email"
 msgstr "Email"
 
@@ -134,26 +152,33 @@ msgstr "Email"
 #~ msgid "Filter by role"
 #~ msgstr "Filter by role"
 
-#: src/routes/login/index.tsx:192
+#: src/routes/login/index.tsx:188
 msgid "Forgot password?"
 msgstr "Forgot password?"
 
-#: src/components/NotFound/index.tsx:57
+#: src/components/NotFound/index.tsx:62
 msgid "Go back"
 msgstr "Go back"
 
-#: src/routes/login/index.tsx:68
+#: src/routes/login/index.tsx:54
 msgid "Login failed"
 msgstr "Login failed"
 
-#: src/routes/login/index.tsx:64
+#: src/routes/login/index.tsx:50
 msgid "Login successful"
 msgstr "Login successful"
 
+#: src/routes/_auth/orders/-Toolbar.tsx:54
+#: src/routes/_auth/orders/-Toolbar.tsx:55
 #: src/routes/_auth/users/-Toolbar.tsx:92
 #: src/routes/_auth/users/-Toolbar.tsx:93
 msgid "More filters"
 msgstr "More filters"
+
+#: src/routes/_auth/orders/-FormModal.tsx:19
+#: src/routes/_auth/orders/-Toolbar.tsx:51
+msgid "New Order"
+msgstr "New Order"
 
 #: src/routes/_auth/users/-FormModal.tsx:29
 msgid "New User"
@@ -167,11 +192,23 @@ msgstr "No data"
 msgid "Nothing to show in this list yet"
 msgstr "Nothing to show in this list yet"
 
-#: src/routes/_auth/users/-FormModal.tsx:31
+#: src/routes/_auth/users/-FormModal.tsx:30
 msgid "OK"
 msgstr "OK"
 
-#: src/routes/_auth/dashboard/index.tsx:115
+#: src/routes/_auth/orders/-FormModal.tsx:35
+msgid "Open"
+msgstr "Open"
+
+#: src/components/Layout/Sidebar/index.tsx:358
+msgid "Open account menu"
+msgstr "Open account menu"
+
+#: src/components/Layout/Sidebar/index.tsx:36
+msgid "Orders"
+msgstr "Orders"
+
+#: src/routes/_auth/dashboard/index.tsx:233
 msgid "Overview"
 msgstr "Overview"
 
@@ -179,55 +216,73 @@ msgstr "Overview"
 #~ msgid "Page not found"
 #~ msgstr "Page not found"
 
-#: src/routes/login/index.tsx:171
+#: src/routes/login/index.tsx:162
+#: src/routes/login/index.tsx:168
 msgid "Password"
 msgstr "Password"
 
-#: src/components/Layout/Sidebar/index.tsx:30
+#: src/components/Layout/Sidebar/index.tsx:32
 msgid "Platform"
 msgstr "Platform"
 
-#: src/routes/login/index.tsx:172
+#: src/routes/login/index.tsx:163
 msgid "Please enter password"
 msgstr "Please enter password"
 
-#: src/routes/_auth/users/-FormModal.tsx:46
-#: src/routes/login/index.tsx:164
+#: src/routes/_auth/users/-FormModal.tsx:40
+#: src/routes/login/index.tsx:150
 msgid "Please enter username"
 msgstr "Please enter username"
 
-#: src/routes/_auth/users/-FormModal.tsx:53
+#: src/routes/_auth/users/-FormModal.tsx:47
 msgid "Please select roles"
 msgstr "Please select roles"
 
-#: src/components/Layout/AppFooter/index.tsx:36
+#: src/components/RouteError.tsx:17
+msgid "Please try again or return to the dashboard."
+msgstr "Please try again or return to the dashboard."
+
+#: src/components/Layout/AppFooter/index.tsx:23
 msgid "Powered by"
 msgstr "Powered by"
 
-#: src/components/Layout/Sidebar/index.tsx:31
+#: src/components/Layout/Sidebar/index.tsx:33
 msgid "Projects"
 msgstr "Projects"
 
-#: src/routes/_auth/dashboard/index.tsx:142
+#: src/routes/_auth/dashboard/index.tsx:259
 msgid "Recent Sales"
 msgstr "Recent Sales"
+
+#: src/components/RouteError.tsx:20
+msgid "Retry"
+msgstr "Retry"
 
 #: src/routes/_auth/users/-Toolbar.tsx:58
 msgid "Role"
 msgstr "Role"
 
-#: src/routes/_auth/users/-FormModal.tsx:52
-#: src/routes/_auth/users/index.tsx:209
+#: src/routes/_auth/users/-FormModal.tsx:46
+#: src/routes/_auth/users/index.tsx:175
 msgid "Roles"
 msgstr "Roles"
 
-#: src/routes/_auth/dashboard/index.tsx:39
+#: src/routes/_auth/orders/index.tsx:160
+#: src/routes/_auth/users/index.tsx:234
+msgid "Row actions"
+msgstr "Row actions"
+
+#: src/routes/_auth/dashboard/index.tsx:148
 msgid "Sales"
 msgstr "Sales"
 
-#: src/components/Layout/Sidebar/index.tsx:36
+#: src/components/Layout/Sidebar/index.tsx:38
 msgid "Sales & Marketing"
 msgstr "Sales & Marketing"
+
+#: src/routes/_auth/orders/-Toolbar.tsx:32
+msgid "Search Order"
+msgstr "Search Order"
 
 #: src/routes/_auth/users/-Toolbar.tsx:43
 msgid "Search User"
@@ -237,7 +292,7 @@ msgstr "Search User"
 #~ msgid "Search username or email"
 #~ msgstr "Search username or email"
 
-#: src/routes/login/index.tsx:204
+#: src/routes/login/index.tsx:200
 msgid "Sign In"
 msgstr "Sign In"
 
@@ -245,70 +300,89 @@ msgstr "Sign In"
 #~ msgid "Sign in with your credentials."
 #~ msgstr "Sign in with your credentials."
 
-#: src/components/Layout/Sidebar/index.tsx:194
+#: src/components/Layout/Sidebar/index.tsx:197
 msgid "Sign Out"
 msgstr "Sign Out"
 
-#: src/components/NotFound/index.tsx:50
+#: src/components/RouteError.tsx:16
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: src/components/NotFound/index.tsx:55
 msgid "Sorry, the page you visited does not exist."
 msgstr "Sorry, the page you visited does not exist."
 
-#: src/routes/_auth/403/index.tsx:37
+#: src/routes/_auth/403/index.tsx:32
 msgid "Sorry, you don't have permission to access this page."
 msgstr "Sorry, you don't have permission to access this page."
 
-#: src/routes/_auth/dashboard/index.tsx:33
+#: src/routes/_auth/orders/-FormModal.tsx:31
+#: src/routes/_auth/orders/index.tsx:125
+msgid "Status"
+msgstr "Status"
+
+#: src/routes/_auth/dashboard/index.tsx:142
 msgid "Subscriptions"
 msgstr "Subscriptions"
 
-#: src/components/Layout/Header/index.tsx:145
-#: src/routes/login/index.tsx:225
+#: src/components/Layout/Header/index.tsx:153
+#: src/routes/login/index.tsx:221
 msgid "Switch language"
 msgstr "Switch language"
 
-#: src/routes/_auth/users/index.tsx:165
+#: src/routes/_auth/orders/index.tsx:113
+msgid "This action cannot be undone."
+msgstr "This action cannot be undone."
+
+#: src/routes/_auth/users/index.tsx:125
 msgid "This action cannot be undone. This will permanently delete the user."
 msgstr "This action cannot be undone. This will permanently delete the user."
 
-#: src/components/Layout/Header/index.tsx:133
-#: src/components/Layout/Sidebar/index.tsx:263
-#: src/components/Layout/Sidebar/index.tsx:311
+#: src/routes/_auth/orders/-FormModal.tsx:28
+#: src/routes/_auth/orders/index.tsx:123
+msgid "Title"
+msgstr "Title"
+
+#: src/components/Layout/Header/index.tsx:138
+#: src/components/Layout/Sidebar/index.tsx:271
+#: src/components/Layout/Sidebar/index.tsx:319
 msgid "Toggle sidebar"
 msgstr "Toggle sidebar"
 
-#: src/components/Layout/Header/index.tsx:151
-#: src/routes/login/index.tsx:232
+#: src/components/Layout/Header/index.tsx:159
+#: src/routes/login/index.tsx:228
 msgid "Toggle Theme"
 msgstr "Toggle Theme"
 
-#: src/routes/_auth/dashboard/index.tsx:27
+#: src/routes/_auth/dashboard/index.tsx:136
 msgid "Total Revenue"
 msgstr "Total Revenue"
 
-#: src/routes/_auth/users/index.tsx:132
+#: src/hooks/useCrudToasts.ts:54
 msgid "Update failed"
 msgstr "Update failed"
 
-#: src/routes/_auth/users/index.tsx:122
+#: src/hooks/useCrudToasts.ts:51
 msgid "Updated successfully"
 msgstr "Updated successfully"
 
-#: src/routes/_auth/users/index.tsx:115
+#: src/hooks/useCrudToasts.ts:48
 msgid "Updating…"
 msgstr "Updating…"
 
 #: src/components/Layout/Sidebar/index.tsx:34
-msgid "User List"
-msgstr "User List"
+#~ msgid "User List"
+#~ msgstr "User List"
 
-#: src/routes/_auth/users/-FormModal.tsx:45
-#: src/routes/_auth/users/index.tsx:182
-#: src/routes/login/index.tsx:163
+#: src/routes/_auth/users/-FormModal.tsx:39
+#: src/routes/_auth/users/index.tsx:142
+#: src/routes/login/index.tsx:149
+#: src/routes/login/index.tsx:154
 msgid "Username"
 msgstr "Username"
 
-#: src/components/Layout/Header/index.tsx:76
-#: src/components/Layout/Sidebar/index.tsx:33
+#: src/components/Layout/Header/index.tsx:81
+#: src/components/Layout/Sidebar/index.tsx:35
 msgid "Users"
 msgstr "Users"
 

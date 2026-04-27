@@ -1,10 +1,15 @@
 import { theme } from "antd";
 import type { ConfigProviderProps, ThemeConfig } from "antd";
 
-/**
- * Common theme token builders
- * Reduces duplication between light and dark theme definitions
- */
+export function readBrandPrimary(): string {
+  const raw = import.meta.env.VITE_BRAND_PRIMARY as string | undefined;
+  if (raw && /^#[0-9a-fA-F]{6}$/.test(raw.trim())) {
+    return raw.trim();
+  }
+  return "#1677ff";
+}
+
+const BRAND_PRIMARY = readBrandPrimary();
 
 export const SHARED_DESIGN_TOKENS = {
   fontFamily:
@@ -26,9 +31,6 @@ export const CONTROL_COMPONENTS = {
   },
 } as const;
 
-/**
- * Calculate table row selected color based on theme algorithm
- */
 export function buildTableTokens(cfg: ThemeConfig) {
   const rowSelectedBg = theme.getDesignToken(cfg).colorFillAlter;
   return {
@@ -37,9 +39,6 @@ export function buildTableTokens(cfg: ThemeConfig) {
   };
 }
 
-/**
- * Build menu tokens for light theme
- */
 export const MENU_LIGHT = {
   itemSelectedBg: "rgba(0, 0, 0, 0.06)",
   itemSelectedColor: "rgba(0, 0, 0, 0.88)",
@@ -53,9 +52,6 @@ export const MENU_LIGHT = {
   horizontalItemHoverColor: "rgba(0, 0, 0, 0.88)",
 } as const;
 
-/**
- * Build menu tokens for dark theme
- */
 export const MENU_DARK = {
   itemSelectedBg: "rgba(255, 255, 255, 0.08)",
   itemSelectedColor: "rgba(255, 255, 255, 0.85)",
@@ -69,12 +65,12 @@ export const MENU_DARK = {
   horizontalItemHoverColor: "rgba(255, 255, 255, 0.85)",
 } as const;
 
-/**
- * Build light theme config
- */
 export function buildLightThemeConfig(): ConfigProviderProps {
   const lightSeed: ThemeConfig["token"] = {
     colorBgLayout: "#ffffff",
+    colorPrimary: BRAND_PRIMARY,
+    colorLink: BRAND_PRIMARY,
+    colorInfo: BRAND_PRIMARY,
     ...SHARED_DESIGN_TOKENS,
   };
 
@@ -94,11 +90,11 @@ export function buildLightThemeConfig(): ConfigProviderProps {
   };
 }
 
-/**
- * Build dark theme config
- */
 export function buildDarkThemeConfig(): ConfigProviderProps {
   const darkSeed: ThemeConfig["token"] = {
+    colorPrimary: BRAND_PRIMARY,
+    colorLink: BRAND_PRIMARY,
+    colorInfo: BRAND_PRIMARY,
     ...SHARED_DESIGN_TOKENS,
   };
 

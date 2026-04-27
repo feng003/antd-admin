@@ -11,7 +11,6 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>;
 
-/** GET `/api/auth/user` body (no `permissions`; load via `/api/auth/permissions`). */
 export const AuthUserResponseSchema = UserSchema.omit({ permissions: true });
 export type AuthUserResponse = z.infer<typeof AuthUserResponseSchema>;
 
@@ -21,6 +20,12 @@ export const AuthTokensSchema = z.object({
 });
 
 export type AuthTokens = z.infer<typeof AuthTokensSchema>;
+
+export const RefreshTokenRequestSchema = z.object({
+  refreshToken: z.string().min(1),
+});
+
+export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;
 
 export const LoginRequestSchema = z.object({
   username: z.string().min(1),
@@ -129,3 +134,33 @@ export type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>;
 export const UpdateUserRequestSchema = CreateUserRequestSchema.partial();
 
 export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>;
+
+export const CreateTestRequestSchema = z.object({
+  title: z.string().min(1),
+  status: z.enum(["draft", "open", "done"]),
+});
+
+export type CreateTestRequest = z.infer<typeof CreateTestRequestSchema>;
+
+export const UpdateTestRequestSchema = CreateTestRequestSchema.partial();
+
+export type UpdateTestRequest = z.infer<typeof UpdateTestRequestSchema>;
+
+export const OrderSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  status: z.enum(["draft", "open", "done"]),
+});
+
+export type Order = z.infer<typeof OrderSchema>;
+
+export const CreateOrderRequestSchema = z.object({
+  title: z.string().min(1),
+  status: z.enum(["draft", "open", "done"]),
+});
+
+export type CreateOrderRequest = z.infer<typeof CreateOrderRequestSchema>;
+
+export const UpdateOrderRequestSchema = CreateOrderRequestSchema.partial();
+
+export type UpdateOrderRequest = z.infer<typeof UpdateOrderRequestSchema>;

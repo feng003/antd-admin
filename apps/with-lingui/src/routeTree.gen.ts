@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as R404IndexRouteImport } from './routes/404/index'
 import { Route as AuthUsersIndexRouteImport } from './routes/_auth/users/index'
+import { Route as AuthOrdersIndexRouteImport } from './routes/_auth/orders/index'
 import { Route as AuthDashboardIndexRouteImport } from './routes/_auth/dashboard/index'
 import { Route as Auth403IndexRouteImport } from './routes/_auth/403/index'
 
@@ -41,6 +42,11 @@ const AuthUsersIndexRoute = AuthUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthOrdersIndexRoute = AuthOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthDashboardIndexRoute = AuthDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/login/': typeof LoginIndexRoute
   '/403/': typeof Auth403IndexRoute
   '/dashboard/': typeof AuthDashboardIndexRoute
+  '/orders/': typeof AuthOrdersIndexRoute
   '/users/': typeof AuthUsersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginIndexRoute
   '/403': typeof Auth403IndexRoute
   '/dashboard': typeof AuthDashboardIndexRoute
+  '/orders': typeof AuthOrdersIndexRoute
   '/users': typeof AuthUsersIndexRoute
 }
 export interface FileRoutesById {
@@ -76,13 +84,21 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/_auth/403/': typeof Auth403IndexRoute
   '/_auth/dashboard/': typeof AuthDashboardIndexRoute
+  '/_auth/orders/': typeof AuthOrdersIndexRoute
   '/_auth/users/': typeof AuthUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/404/' | '/login/' | '/403/' | '/dashboard/' | '/users/'
+  fullPaths:
+    | '/'
+    | '/404/'
+    | '/login/'
+    | '/403/'
+    | '/dashboard/'
+    | '/orders/'
+    | '/users/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404' | '/login' | '/403' | '/dashboard' | '/users'
+  to: '/' | '/404' | '/login' | '/403' | '/dashboard' | '/orders' | '/users'
   id:
     | '__root__'
     | '/'
@@ -91,6 +107,7 @@ export interface FileRouteTypes {
     | '/login/'
     | '/_auth/403/'
     | '/_auth/dashboard/'
+    | '/_auth/orders/'
     | '/_auth/users/'
   fileRoutesById: FileRoutesById
 }
@@ -138,6 +155,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthUsersIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/orders/': {
+      id: '/_auth/orders/'
+      path: '/orders'
+      fullPath: '/orders/'
+      preLoaderRoute: typeof AuthOrdersIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/dashboard/': {
       id: '/_auth/dashboard/'
       path: '/dashboard'
@@ -158,12 +182,14 @@ declare module '@tanstack/react-router' {
 interface AuthRouteChildren {
   Auth403IndexRoute: typeof Auth403IndexRoute
   AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute
+  AuthOrdersIndexRoute: typeof AuthOrdersIndexRoute
   AuthUsersIndexRoute: typeof AuthUsersIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   Auth403IndexRoute: Auth403IndexRoute,
   AuthDashboardIndexRoute: AuthDashboardIndexRoute,
+  AuthOrdersIndexRoute: AuthOrdersIndexRoute,
   AuthUsersIndexRoute: AuthUsersIndexRoute,
 }
 

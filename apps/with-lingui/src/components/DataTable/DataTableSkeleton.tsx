@@ -29,10 +29,6 @@ export type DataTableSkeletonProps<RecordType extends object> = Pick<
   TableProps<RecordType>,
   "columns" | "rowSelection" | "pagination" | "size" | "scroll" | "rootClassName" | "style"
 > & {
-  /**
-   * Fixed skeleton row count. When omitted, rows are derived from `scroll.y` (if numeric)
-   * or from the table frame height so the body roughly fills the visible area.
-   */
   rowCount?: number;
 };
 
@@ -54,7 +50,6 @@ function isColumnGroup<RecordType extends object>(
   return "children" in col && Array.isArray(col.children) && col.children.length > 0;
 }
 
-/** ~ text icon button, capped small */
 function actionSkeletonDiameter<RecordType extends object>(col: ColumnType<RecordType>): number {
   if (typeof col.width === "number") {
     return Math.min(24, Math.max(20, col.width - 36));

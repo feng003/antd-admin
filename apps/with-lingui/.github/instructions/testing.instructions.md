@@ -1,8 +1,7 @@
 ---
-
-## applyTo: "tests/**/\*.ts,tests/**/_.tsx,src/mocks/\*\*/_.ts,playwright.config.ts"
-
+applyTo: "e2e/**/*.ts,e2e/**/*.tsx,src/mocks/**/*.ts,playwright.config.ts"
 description: "Use when adding or editing tests, Playwright cases, MSW handlers, mock data, or test configuration. Keywords: test, e2e, playwright, mock, msw, coverage."
+---
 
 # Testing Instructions
 
@@ -27,4 +26,5 @@ Keep tests fast, deterministic, and aligned with core business flows.
 ## Validation
 
 - Run focused tests first, then broader checks if needed.
-- Run: `vp check --no-fmt`
+- Run: `pnpm exec vp check --no-fmt`
+- Unit / hook logic (Vitest): `pnpm run test:unit` — tests live under `src/**/*.test.ts`.

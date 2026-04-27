@@ -8,6 +8,7 @@ This directory contains scoped instruction files used by AI coding agents.
 - `testing.instructions.md`: Playwright/MSW/test changes
 - `api.instructions.md`: API client/schema/handler changes
 - `refactor.instructions.md`: behavior-preserving cleanup and deduplication
+- `add-resource.instructions.md`: add a new CRUD resource (manual / Agent checklist; mirror `users` + `orders`)
 
 ## Authoring Rules
 

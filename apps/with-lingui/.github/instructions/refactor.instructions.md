@@ -1,8 +1,7 @@
 ---
-
-## applyTo: "src/\*_/_.{ts,tsx}"
-
+applyTo: "src/**/*.{ts,tsx}"
 description: "Use when refactoring existing code for deduplication, modularization, naming cleanup, or maintainability improvements without behavior changes. Keywords: refactor, cleanup, simplify, deduplicate, maintainability."
+---
 
 # Refactor Instructions
 
@@ -33,5 +32,5 @@ Reduce duplication while preserving behavior and public contracts.
 ## Validation
 
 - Confirm no new diagnostics in touched files.
-- Run: `vp check --no-fmt`
-- For significant changes, verify bundle size impact: `vp build 2>&1 | grep "kB"`
+- Run: `pnpm exec vp check --no-fmt`
+- For significant changes, verify bundle size impact: `pnpm run build 2>&1 | grep "kB"`

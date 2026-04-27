@@ -9,6 +9,7 @@ import {
   CircleDashed,
   Folder,
   Home,
+  Package,
   PanelLeft,
   SlidersHorizontal,
   Star,
@@ -26,12 +27,12 @@ import { UserMenu } from "../UserMenu";
 import "./index.css";
 
 const { Sider } = Layout;
-/** API menu `name` → Lingui descriptors (extracted into catalogs). */
 const MENU_LABELS: Record<string, ReturnType<typeof msg>> = {
   Platform: msg`Platform`,
   Projects: msg`Projects`,
   Dashboard: msg`Dashboard`,
   Users: msg`Users`,
+  Orders: msg`Orders`,
   "Design Engineering": msg`Design Engineering`,
   "Sales & Marketing": msg`Sales & Marketing`,
 };
@@ -47,7 +48,6 @@ const MENU_ICON_MAP: Record<string, LucideIcon> = {
   IconLucideLayoutDashboard: Home,
   IconLucideUsers: User,
   IconLucideUserList: Users,
-  /** Back-compat for older menu payloads still using IconLucideHistory */
   IconLucideHistory: Users,
   IconLucideStar: Star,
   IconLucideSettings: SlidersHorizontal,
@@ -55,6 +55,7 @@ const MENU_ICON_MAP: Record<string, LucideIcon> = {
   IconLucideBookOpen: Book,
   IconLucideFolderKanban: Folder,
   IconLucideSparkles: Zap,
+  IconLucidePackage: Package,
 };
 
 function renderMenuIcon(icon: string | null, size = 16) {
@@ -179,7 +180,6 @@ export function Sidebar() {
     }
   }, [isMobile, setSidebarCollapsed]);
 
-  /** Merge open keys required by the route with any submenu the user already expanded. */
   useEffect(() => {
     setOpenKeys((prev) => {
       const next = new Set(prev);
@@ -219,7 +219,6 @@ export function Sidebar() {
         align={isCollapsed ? "center" : "stretch"}
         style={{
           paddingBlock: token.paddingSM,
-          /* Collapsed rail is 64px: keep horizontal padding minimal so 40px brand / icons are not clipped by Sider overflow. */
           paddingInline: isCollapsed ? token.paddingXXS : token.paddingSM,
           minHeight: 64,
           flexShrink: 0,
@@ -237,7 +236,6 @@ export function Sidebar() {
             minWidth: 0,
             maxWidth: "100%",
             boxSizing: "border-box",
-            /* Collapsed: outer row already has paddingSM; extra inline padding would clip the 40px brand box. */
             paddingInline: isCollapsed ? 0 : token.paddingXS,
             minHeight: 40,
             justifyContent: isCollapsed ? "center" : "flex-start",
@@ -348,7 +346,12 @@ export function Sidebar() {
           background: "transparent",
         }}
       />
-      <UserMenu collapsed={isCollapsed} user={user} userMenuItems={userMenuItems} />
+      <UserMenu
+        collapsed={isCollapsed}
+        user={user}
+        userMenuItems={userMenuItems}
+        accountMenuTriggerAriaLabel={t`Open account menu`}
+      />
     </Flex>
   );
 

@@ -10,6 +10,8 @@
 
 Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. AI-friendly with clear patterns, shared abstractions, scoped AI instructions, and type-safe contracts at every boundary.
 
+**AI rules (Cursor):** `.cursor/rules/with-lingui-*.mdc` at the repo root mirrors `apps/with-lingui/.github/instructions/*.instructions.md` (same intent; `globs` align with each file’s `applyTo`). Prefer updating **both** when you change guidance.
+
 [![antd](https://img.shields.io/badge/AntD-^6.0.0-1890ff?style=flat-square&logo=ant-design)](https://github.com/ant-design/ant-design)
 [![react](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)](https://react.dev)
 [![vite](https://img.shields.io/badge/Vite+-Latest-646cff?style=flat-square&logo=vite)](https://viteplus.dev)
@@ -80,16 +82,18 @@ vp run test:e2e:core
 vp run test:e2e:ui   # interactive UI mode
 ```
 
-`test:e2e:core` runs the scaffold's highest-value flows only: login and users CRUD.
+`test:e2e:core` runs the scaffold's highest-value flows: login, users CRUD, auth refresh, RBAC, URL state (see `package.json` script list).
 
 ## Project Structure
 
 ```
+.github/instructions/   # Scoped AI recipes (mirrored in ../../.cursor/rules/with-lingui-*.mdc)
 src/
 ├── api/                  # Zod schemas, endpoint constants, type exports
 │   ├── schemas.ts        # Domain models (User, AuthTokens, MenuItem, etc.)
 │   ├── auth.ts           # Auth endpoint constants
-│   └── user.ts           # User CRUD endpoint constants
+│   ├── user.ts           # User CRUD endpoint constants
+│   └── orders.ts         # Example second resource API (mirror `user.ts`)
 ├── components/
 │   ├── Aurora/           # Login background effect
 │   ├── Auth/             # Auth (permission gate): index.tsx
@@ -119,12 +123,13 @@ src/
 │   ├── createHandler.ts  # Shared MSW success/error/delay helpers
 │   ├── data.ts           # Mock seed data (users, menus)
 │   ├── utils.ts          # Mock-only helpers (filters, pagination, demo avatar URLs)
-│   └── handlers/         # Request handlers (auth, user CRUD)
+│   └── handlers/         # Request handlers (auth, users, orders, …)
 ├── routes/               # TanStack Router file-based routes
 │   ├── __root.tsx        # Root layout (QueryClient, ConfigProvider, I18n)
 │   ├── _auth.tsx         # Auth guard layout (redirects to /login)
 │   ├── _auth/dashboard/index.tsx
 │   ├── _auth/users/index.tsx   # Full CRUD with URL-synced search params
+│   ├── _auth/orders/           # Example second resource (mirror users CRUD)
 │   ├── _auth/403/index.tsx
 │   ├── login/index.tsx
 │   ├── 404/index.tsx
@@ -135,11 +140,12 @@ src/
 │   └── settings.ts       # Settings store (darkMode, locale, sidebar)
 └── main.tsx              # Entry point (MSW init → React render)
 
-tests/
-└── e2e/                  # Playwright E2E tests
-    ├── helpers.ts
-    ├── login.spec.ts
-    └── users.spec.ts
+e2e/                      # Playwright E2E tests
+├── helpers.ts
+├── login.spec.ts
+├── users.spec.ts
+└── orders.spec.ts        # Example resource smoke test
+
 ```
 
 ## Internationalization (i18n)
@@ -157,8 +163,15 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 
 ## Extending the template
 
+- **New CRUD resource:** See `.github/instructions/add-resource.instructions.md` (checklist; copy from `users` / `orders`), then `pnpm run i18n:extract && pnpm run i18n:compile`, wire Sidebar labels/icons if needed (§6b in that doc), and `pnpm exec vp check --no-fmt`.
 - **Real backend:** Point `VITE_API_BASE_URL` in env and disable or remove MSW in `main.tsx` when you no longer need mocks.
 - **Drop i18n:** Remove Lingui packages, vite/swc plugins, and replace `t` macros with plain strings (larger refactor).
+
+### AI instruction files
+
+**细则单源**：`apps/with-lingui/.github/instructions/`（`*.instructions.md`），人类与 Agent 以该目录为准维护、评审。
+
+**Cursor**：仓库根 `.cursor/rules/with-lingui-*.mdc` 为**薄规则**（方案 A）：只写范围与指向路径，`globs` 与上述文件的 `applyTo` 对齐；全文请在对话中 `@` 对应 `.instructions.md` 或自行打开该文件。
 
 ## Developer Notes
 
@@ -173,6 +186,7 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 | `/login`     | Login form with validation                                  |
 | `/dashboard` | Statistics overview cards                                   |
 | `/users`     | User CRUD table with search, pagination, create/edit/delete |
+| `/orders`    | Example orders list (title/status) — second CRUD sample alongside `users` |
 | `/403`       | Forbidden error page                                        |
 | `/404`       | Not found error page                                        |
 

@@ -6,24 +6,14 @@ import { DataTableEmpty } from "./DataTableEmpty";
 import { DataTableSkeleton } from "./DataTableSkeleton";
 import "./index.css";
 
-/** Merged onto `Table` `rootClassName` with the flex layout class. */
 export const DATA_TABLE_ROOT_CLASS = "data-table__table";
 
 export type DataTableProps<RecordType extends object = object> = {
-  /**
-   * When the table uses `scroll.y`, set true so the frame does not shrink in the flex column
-   * and optional `frameHeight` can pin the outer height.
-   */
   lockScrollHeight?: boolean;
-  /** Outer `max-height` (px) */
   maxHeight?: number;
-  /** When `lockScrollHeight`, optional fixed outer `height` (usually same as max height) */
   frameHeight?: number;
-  /** Flex column wrapping frame + optional `bottomExtra` */
   layoutRef?: Ref<HTMLDivElement | null>;
-  /** Bordered box around the table (e.g. for `scrollHeight` vs `clientHeight` checks) */
   frameRef?: Ref<HTMLDivElement | null>;
-  /** Optional content below the bordered table frame */
   bottomExtra?: ReactNode;
 } & TableProps<RecordType>;
 

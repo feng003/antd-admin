@@ -4,7 +4,6 @@ import { Plus, UserRound } from "lucide-react";
 import { forwardRef, useMemo } from "react";
 import { FilterToolbar } from "@/components/FilterToolbar";
 
-/** Search + role slot `minWidth` for FilterToolbar collapse math */
 const FILTER_CONTROL_WIDTH = 220;
 
 export type ToolbarProps = {

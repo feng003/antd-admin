@@ -28,7 +28,6 @@ src/locales/*/messages.js
 
 .agent
 .pnpm-store
-.cursor
 .tanstack
 
 # Playwright

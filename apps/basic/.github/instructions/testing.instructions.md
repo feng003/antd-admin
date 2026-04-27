@@ -1,6 +1,6 @@
 ---
 
-## applyTo: "tests/**/\*.ts,tests/**/_.tsx,src/mocks/\*\*/_.ts,playwright.config.ts"
+## applyTo: "tests/**/.ts,tests/**/*.tsx,src/mocks//*.ts,playwright.config.ts"
 
 description: "Use when adding or editing tests, Playwright cases, MSW handlers, mock data, or test configuration. Keywords: test, e2e, playwright, mock, msw, coverage."
 

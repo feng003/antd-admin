@@ -27,5 +27,5 @@ Keep frontend changes predictable, minimal, and reusable for AI-assisted edits.
 
 ## Validation
 
-- Run: `vp check --no-fmt`
+- Run: `pnpm exec vp check --no-fmt`
 - For UI flow changes, run focused e2e where possible.
