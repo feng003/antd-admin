@@ -1,1 +1,26 @@
-vp staged
+#!/usr/bin/env sh
+# Run vp staged from each Vite+ app root so vite.config.ts (and its staged block) resolves.
+# Git's cwd is the repo root while core.hooksPath points here; vp staged otherwise looks for
+# vite.config.ts in the wrong directory.
+
+root=$(git rev-parse --show-toplevel) || exit 1
+cd "$root" || exit 1
+
+files=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)
+[ -z "$files" ] && exit 0
+
+failed=0
+
+if echo "$files" | grep -q '^apps/with-lingui/'; then
+  (cd apps/with-lingui && PATH="$PWD/node_modules/.bin:$PATH" vp staged) || failed=1
+fi
+
+if echo "$files" | grep -q '^apps/basic/'; then
+  (cd apps/basic && PATH="$PWD/node_modules/.bin:$PATH" vp staged) || failed=1
+fi
+
+if echo "$files" | grep -E -q '^packages/create/.*\.(ts|tsx|mts)$'; then
+  pnpm --dir "$root/packages/create" run check-types || failed=1
+fi
+
+exit "$failed"

@@ -72,6 +72,10 @@ These commands map to their corresponding tools. For example, `vp dev --port 300
 - Run `vp install` after pulling remote changes and before getting started.
 - Run `vp check` and `vp test` to validate changes.
 
+## Monorepo git hooks
+
+When this app lives under a monorepo, `git config core.hooksPath` may point at `.vite-hooks/_` here while commits run with the **repository root** as cwd. The checked-in `.vite-hooks/pre-commit` script dispatches `vp staged` into `apps/with-lingui` and `apps/basic` based on staged paths (and runs `pnpm --dir packages/create run check-types` for matching `packages/create` sources) so each app’s `vite.config.ts` is found.
+
 ## AI Instruction Files
 
 This repository also uses scoped AI instruction files in `.github/instructions/`.
