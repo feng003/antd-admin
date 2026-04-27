@@ -1,3 +1,5 @@
+import { formatter } from "@lingui/format-po";
+
 const config = {
   locales: ["en", "zh"],
   sourceLocale: "en",
@@ -7,7 +9,7 @@ const config = {
       include: ["src"],
     },
   ],
-  format: "po",
+  format: formatter({ lineNumbers: false }),
 };
 
 export default config;

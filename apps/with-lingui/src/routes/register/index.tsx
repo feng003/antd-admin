@@ -1,52 +1,50 @@
-import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-import { Form, Input, Button, Card, App, theme, Typography, Flex, Checkbox } from "antd";
+import { Link, createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { Form, Input, Button, Card, App, theme, Typography, Flex } from "antd";
 import type { CSSProperties } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useLingui } from "@lingui/react/macro";
 import { httpClient } from "@/utils/http";
 import { useAuthStore } from "@/stores/auth";
-import { useSettingsStore } from "@/stores/settings";
 import { AUTH_ENDPOINTS } from "@/api/auth";
-import { LoginRequestSchema, AuthTokensSchema } from "@/api/schemas";
+import { AuthTokensSchema, RegisterRequestSchema } from "@/api/schemas";
 import { fetchSessionAndApplyToStore } from "@/utils/session";
-import type { LoginRequest } from "@/api/schemas";
+import type { RegisterRequest } from "@/api/auth";
 import { APP_BRAND_NAME, APP_FAVICON_SRC } from "@/utils/constants";
-import { AppFooter } from "@/components/Layout/AppFooter";
 import { Aurora } from "@/components/Aurora";
-import "./index.css";
+import { AppFooter } from "@/components/Layout/AppFooter";
+import "../login/index.css";
 
-export const Route = createFileRoute("/login/")({
+export const Route = createFileRoute("/register/")({
   beforeLoad: () => {
     const { isAuthenticated } = useAuthStore.getState();
     if (isAuthenticated) {
       throw redirect({ to: "/dashboard" });
     }
   },
-  component: LoginPage,
+  component: RegisterPage,
 });
 
-function LoginPage() {
+function RegisterPage() {
   const navigate = useNavigate();
   const { message } = App.useApp();
   const { t } = useLingui();
   const setTokens = useAuthStore((s) => s.setTokens);
-  const darkMode = useSettingsStore((s) => s.darkMode);
   const { token } = theme.useToken();
 
-  const loginMutation = useMutation({
-    mutationFn: async (values: LoginRequest) => {
-      const parsed = LoginRequestSchema.parse(values);
-      const tokens = await httpClient.post(AUTH_ENDPOINTS.login, parsed);
+  const registerMutation = useMutation({
+    mutationFn: async (values: RegisterRequest) => {
+      const parsed = RegisterRequestSchema.parse(values);
+      const tokens = await httpClient.post(AUTH_ENDPOINTS.register, parsed);
       const validTokens = AuthTokensSchema.parse(tokens);
       setTokens(validTokens);
       await fetchSessionAndApplyToStore();
     },
     onSuccess: () => {
-      message.success(t`Login successful`);
+      message.success(t`Account created successfully`);
       void navigate({ to: "/dashboard" });
     },
     onError: (err) => {
-      message.error(err instanceof Error ? err.message : t`Login failed`);
+      message.error(err instanceof Error ? err.message : t`Registration failed`);
     },
   });
 
@@ -67,15 +65,12 @@ function LoginPage() {
     overflow: "hidden",
   };
 
-  const glassMix = darkMode ? "52%" : "42%";
-  const backdrop = darkMode ? "blur(22px) saturate(1.2)" : "blur(18px) saturate(1.35)";
-
   const cardStyle: CSSProperties = {
     width: "100%",
     maxWidth: 384,
-    background: `color-mix(in srgb, ${token.colorBgContainer} ${glassMix}, transparent)`,
-    backdropFilter: backdrop,
-    WebkitBackdropFilter: backdrop,
+    background: `color-mix(in srgb, ${token.colorBgContainer} 44%, transparent)`,
+    backdropFilter: "blur(18px) saturate(1.35)",
+    WebkitBackdropFilter: "blur(18px) saturate(1.35)",
     borderColor: token.colorBorderSecondary,
     boxShadow: token.boxShadow,
     ["--login-card-fallback-bg" as string]: token.colorBgElevated,
@@ -130,76 +125,80 @@ function LoginPage() {
             <Form
               layout="vertical"
               onFinish={(values) => {
-                loginMutation.mutate(LoginRequestSchema.parse(values));
+                const payload = RegisterRequestSchema.parse(values);
+                registerMutation.mutate(payload);
               }}
-              initialValues={{ username: "admin", password: "admin", remember: true }}
+              initialValues={{ username: "", password: "", confirmPassword: "", email: "" }}
+              validateTrigger={"onBlur"}
               requiredMark={false}
             >
               <Form.Item
                 name="username"
                 label={<span>{t`Username`}</span>}
-                rules={[{ required: true, message: t`Please enter username` }]}
+                rules={[{ required: true, message: t`Please enter your username` }]}
               >
-                <Input
-                  id="login-username"
-                  aria-label={t`Username`}
-                  placeholder="admin"
-                  size="large"
-                />
+                <Input placeholder="new-user" size="large" />
+              </Form.Item>
+
+              <Form.Item
+                name="email"
+                label={<span>{t`Email address`}</span>}
+                rules={[{ type: "email", message: t`Please enter a valid email address` }]}
+              >
+                <Input placeholder="you@example.com" size="large" />
               </Form.Item>
 
               <Form.Item
                 name="password"
                 label={<span>{t`Password`}</span>}
-                rules={[{ required: true, message: t`Please enter password` }]}
-                style={{ marginBottom: token.marginLG }}
+                rules={[
+                  { required: true, message: t`Please enter your password` },
+                  { min: 6, message: t`Password must be at least 6 characters long` },
+                ]}
               >
-                <Input.Password
-                  id="login-password"
-                  aria-label={t`Password`}
-                  placeholder="admin"
-                  size="large"
-                />
+                <Input.Password placeholder={t`Enter at least 6 characters`} size="large" />
               </Form.Item>
 
-              <Flex
-                justify="space-between"
-                align="center"
-                style={{ marginBottom: token.marginLG }}
-                wrap="wrap"
+              <Form.Item
+                name="confirmPassword"
+                label={<span>{t`Confirm password`}</span>}
+                dependencies={["password"]}
+                rules={[
+                  { required: true, message: t`Please confirm your password` },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error(t`Passwords do not match`));
+                    },
+                  }),
+                ]}
               >
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>{t`Auto login`}</Checkbox>
-                </Form.Item>
-                <Typography.Link
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  style={{ fontSize: token.fontSizeSM }}
-                >
-                  {t`Forgot password?`}
-                </Typography.Link>
-              </Flex>
+                <Input.Password placeholder={t`Re-enter your password`} size="large" />
+              </Form.Item>
 
               <Form.Item style={{ marginBottom: 0, marginTop: token.marginLG }}>
                 <Button
                   type="primary"
                   htmlType="submit"
-                  loading={loginMutation.isPending}
+                  loading={registerMutation.isPending}
                   block
                   size="large"
                 >
-                  {t`Sign In`}
+                  {t`Create account`}
                 </Button>
               </Form.Item>
+
+              <Flex justify="center" style={{ marginTop: token.margin }}>
+                <Typography.Text type="secondary">
+                  {t`Already have an account?`}{" "}
+                  <Link to="/login" style={{ color: token.colorPrimary }}>
+                    {t`Sign in`}
+                  </Link>
+                </Typography.Text>
+              </Flex>
             </Form>
-            <Flex justify="center" style={{ marginTop: token.margin }}>
-              <Typography.Text type="secondary">
-                {t`Don't have an account?`}{" "}
-                <Link to="/register" style={{ color: token.colorPrimary }}>
-                  {t`Sign up`}
-                </Link>
-              </Typography.Text>
-            </Flex>
           </Card>
         </Flex>
         <Flex

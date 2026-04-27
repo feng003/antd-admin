@@ -13,6 +13,15 @@ const MOCK_IDENTITIES: ReadonlyArray<[string, string]> = [
   ["ava.nguyen", "ava.nguyen@northstar.io"],
   ["noah.berg", "noah.berg@northstar.io"],
   ["mia.silva", "mia.silva@northstar.io"],
+  ["lucas.rossi", "lucas.rossi@northstar.io"],
+  ["isabella.ali", "isabella.ali@northstar.io"],
+  ["ethan.kovacs", "ethan.kovacs@northstar.io"],
+  ["sophia.dubois", "sophia.dubois@northstar.io"],
+  ["mateo.santos", "mateo.santos@northstar.io"],
+  ["harper.ivanov", "harper.ivanov@northstar.io"],
+  ["elijah.mohamed", "elijah.mohamed@northstar.io"],
+  ["amelia.schmidt", "amelia.schmidt@northstar.io"],
+  ["henry.okafor", "henry.okafor@northstar.io"],
 ];
 
 export const GUEST_AUTH_USER_BODY = {

@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Card, Col, Row, Typography, Avatar, theme, Flex, Skeleton } from "antd";
+import { Card, Col, Row, Typography, Avatar, theme, Flex, Skeleton, Timeline, Tag } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { useLingui } from "@lingui/react/macro";
 import { DollarSign, Users, CreditCard, Activity } from "lucide-react";
@@ -193,6 +193,52 @@ function DashboardPage() {
     [],
   );
 
+  const timelineItems = useMemo(
+    () => [
+      {
+        color: "green",
+        content: (
+          <Flex vertical gap={4}>
+            <Text strong>{t`08:30 · Deploy V3.2.0`}</Text>
+            <Text type="secondary">
+              {t`Release branch merged and production rollout completed.`}
+            </Text>
+          </Flex>
+        ),
+      },
+      {
+        color: "blue",
+        content: (
+          <Flex vertical gap={4}>
+            <Text strong>{t`10:10 · Menu policy updated`}</Text>
+            <Text type="secondary">
+              {t`Admin changed sidebar visibility and permission mapping.`}
+            </Text>
+          </Flex>
+        ),
+      },
+      {
+        color: "gold",
+        content: (
+          <Flex vertical gap={4}>
+            <Text strong>{t`13:20 · Security review`}</Text>
+            <Text type="secondary">{t`Token refresh behavior and 403 routes validated.`}</Text>
+          </Flex>
+        ),
+      },
+      {
+        color: "red",
+        content: (
+          <Flex vertical gap={4}>
+            <Text strong>{t`15:50 · Incident recovery`}</Text>
+            <Text type="secondary">{t`User creation spike handled and queue restored.`}</Text>
+          </Flex>
+        ),
+      },
+    ],
+    [t],
+  );
+
   if (isPending) {
     return <DashboardSkeleton />;
   }
@@ -227,26 +273,18 @@ function DashboardPage() {
           <Card
             className="dash-card-interactive"
             style={{ ...cardHoverStyle, height: "100%" }}
-            title={<Title level={5} style={{ margin: 0 }}>{t`Overview`}</Title>}
+            title={
+              <Flex align="center" gap={token.marginSM}>
+                <Title level={5} style={{ margin: 0 }}>
+                  {t`Timeline`}
+                </Title>
+                <Tag variant="filled" color="processing">
+                  {t`Today`}
+                </Tag>
+              </Flex>
+            }
           >
-            <Flex
-              className="dash-chart-placeholder"
-              style={{
-                height: 300,
-                width: "100%",
-                backgroundColor: token.colorBgLayout,
-                borderRadius: token.borderRadius,
-                alignItems: "center",
-                justifyContent: "center",
-                border: `1px dashed ${token.colorBorder}`,
-                ["--dash-chart-hover-bg" as string]: token.colorBgLayout,
-                ["--dash-chart-hover-border" as string]: token.colorTextTertiary,
-              }}
-            >
-              <Text type="secondary" style={{ fontSize: token.fontSizeSM }}>
-                {t`Chart Placeholder`}
-              </Text>
-            </Flex>
+            <Timeline className="dash-timeline" items={timelineItems} />
           </Card>
         </Col>
         <Col xs={24} lg={10}>
