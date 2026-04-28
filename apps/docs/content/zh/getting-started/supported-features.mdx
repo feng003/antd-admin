@@ -1,0 +1,20 @@
+---
+title: 模板自带能力
+description: 两模板共同具备的产品与技术能力
+---
+
+# 模板自带能力
+
+**`apps/basic`** 与 **`apps/with-lingui`** 在业务能力上对齐，差异主要在 **国际化与包名、持久化键**等（见 [模板列表](/templates)）。
+
+两模板均包含：
+
+- **JWT 登录**：access / refresh，Zustand 持久化
+- **动态菜单与 RBAC**：服务端菜单、路由权限、403
+- **表格 URL 状态**：分页、关键字、排序等与查询参数同步
+- **MSW**：开发环境 Mock，无需真实后端即可跑通流程
+- **Playwright E2E**：覆盖登录、CRUD、鉴权刷新、RBAC、URL 状态等（`test:e2e:core` 为核心子集）
+
+**With Lingui** 额外包含：LinguiJS 中英文、Ant Design locale 随语言切换、`.po` 抽取/编译工作流。
+
+权威细节与代码入口仍以各应用 **README** 与 `src/` 为准；本页用于快速对齐「能做什么」。

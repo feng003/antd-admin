@@ -1,0 +1,66 @@
+{
+  "name": "antd-admin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "tsc && vp build",
+    "preview": "vp preview",
+    "prepare": "vp config",
+    "fmt": "vp fmt",
+    "lint": "vp lint",
+    "check": "vp check --no-fmt",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:core": "playwright test e2e/login.spec.ts e2e/users.spec.ts e2e/auth-refresh.spec.ts e2e/rbac.spec.ts e2e/url-state.spec.ts",
+    "test:e2e:ui": "playwright test --ui",
+    "i18n:extract": "vp exec lingui extract -- --clean",
+    "i18n:compile": "vp exec lingui compile",
+    "i18n:check": "pnpm run i18n:extract && git diff --exit-code -- src/locales"
+  },
+  "dependencies": {
+    "@lingui/core": "^6.0.0",
+    "@lingui/react": "^6.0.0",
+    "@tanstack/react-query": "^5.100.5",
+    "@tanstack/react-router": "^1.168.25",
+    "antd": "^6.3.7",
+    "lucide-react": "^1.11.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@lingui/cli": "^6.0.0",
+    "@lingui/format-po": "^6.0.0",
+    "@lingui/swc-plugin": "^6.0.0",
+    "@lingui/vite-plugin": "^6.0.0",
+    "@playwright/test": "^1.59.1",
+    "@tanstack/router-plugin": "^1.167.28",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.3.0",
+    "msw": "^2.13.6",
+    "typescript": "~6.0.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite-plus": "latest",
+    "vitest": "4.1.5"
+  },
+  "packageManager": "pnpm@10.32.1",
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+      "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msw"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

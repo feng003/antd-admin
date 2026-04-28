@@ -1,0 +1,13 @@
+---
+title: 添加样式
+description: 全局样式与 Ant Design 主题入口
+---
+
+# 添加样式
+
+模板通常包含：
+
+- **全局样式**：如 `src/index.css`，用于 reset、滚动条或少量全局覆盖。
+- **Ant Design 主题**：通过 `ConfigProvider` 与项目内 **`tokenBuilders` / `useAppTheme`** 等组合（见 `src/hooks`、`src/routes/__root.tsx`）。
+
+新增页面级样式时，优先使用 **Ant Design 组件与 token**，减少全局 `!important`；必要时再使用 CSS 文件或 CSS Modules（见下一节）。

@@ -1,0 +1,42 @@
+---
+title: 快速开始
+sidebarTitle: 快速开始
+description: 环境要求、安装与本地运行（文档站与模板端口）
+asIndexPage: true
+---
+
+# 快速开始
+
+## 环境要求
+
+- [Node.js](https://nodejs.org) **≥ 20**
+- [Vite+](https://viteplus.dev/guide/) 全局 CLI：`vp`
+
+## 运行模板应用（Vite+）
+
+在仓库中任选其一：
+
+```bash
+cd apps/basic && vp install && vp dev
+# 或
+cd apps/with-lingui && vp install && vp dev
+```
+
+开发服务器默认地址为 **[http://localhost:5173](http://localhost:5173)**（与下方文档站 **3000** 端口不同，请勿混淆）。
+
+**默认登录账号：** `admin` / `admin`
+
+## 运行文档站（Nextra / Next.js）
+
+文档站位于 `apps/docs`，使用 **Next.js**，端口 **3000**：
+
+```bash
+cd apps/docs && pnpm install && pnpm dev
+```
+
+浏览器打开 [http://localhost:3000](http://localhost:3000)。
+
+| 项目 | 目录 | 开发命令 | 默认端口 |
+|------|------|----------|----------|
+| 模板应用 | `apps/basic` 或 `apps/with-lingui` | `vp dev` | **5173** |
+| 中文文档 | `apps/docs` | `pnpm dev` | **3000** |

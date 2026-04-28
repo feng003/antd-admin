@@ -1,0 +1,25 @@
+---
+title: 目录结构
+description: 模板应用 src 目录职责说明
+---
+
+# 目录结构
+
+两个模板的目录高度一致，差异主要在 **i18n（`locales/`）** 与 **部分脚本**。以下以 `apps/with-lingui` 为例（`apps/basic` 无 `locales/`，且无 Lingui 相关脚本）。
+
+```
+src/
+├── api/           # Zod schema、接口常量与类型
+├── components/    # 通用 UI（表格壳、表单弹窗、布局等）
+├── hooks/         # 主题、权限、CRUD 等组合逻辑
+├── locales/       # Lingui：仅 with-lingui（en/zh .po）
+├── mocks/         # MSW handlers 与浏览器 worker
+├── routes/        # TanStack Router 文件路由
+├── stores/        # Zustand（auth、settings 等持久化）
+└── utils/         # HTTP 客户端、常量等
+```
+
+更完整的树状说明见：
+
+- [apps/basic/README.md](https://github.com/zuiidea/antd-admin/blob/master/apps/basic/README.md)
+- [apps/with-lingui/README.md](https://github.com/zuiidea/antd-admin/blob/master/apps/with-lingui/README.md)

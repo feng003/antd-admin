@@ -1,0 +1,11 @@
+---
+title: 图片、字体与静态文件
+description: 资源放置与引用方式
+---
+
+# 图片、字体与静态文件
+
+- **`src/` 内 import**：图片等可作为模块 import，适合需要哈希与打包优化的资源。
+- **`public/`**：适合固定 URL、不经打包处理的静态文件（见 [public 目录](/styles-and-assets/public-folder)）。
+
+字体文件若体积较大，注意浏览器加载策略与子集化，避免阻塞首屏。

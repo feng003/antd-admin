@@ -1,0 +1,17 @@
+---
+title: 生产构建
+description: vp build 与预览
+---
+
+# 生产构建
+
+在各模板目录：
+
+```bash
+vp build
+vp preview
+```
+
+模板 `package.json` 中 **`build`** 脚本通常包含 **`tsc`** 与 **`vp build`**，请先通过类型检查再部署产物。
+
+静态资源托管时，注意 **SPA 回退路由**（所有前端路径回退到 `index.html`）。若部署在子路径，需配置 Vite **`base`** 与路由一致。

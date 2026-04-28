@@ -1,114 +1,74 @@
-<p align="center">
-  <a href="http://github.com/zuiidea/antd-admin" target="_blank">
-    <img alt="antd-admin-logo" height="80" src="./public/logo.svg">
-  </a>
-</p>
+# Antd Admin
 
-<h1 align="center">AntD Admin</h1>
+## Introduction
 
-<div align="center">
+Antd Admin provides production-style admin templates with modern frontend tooling, mock-first development, and practical testing coverage.
 
-An excellent enterprise-grade front-end solution built with Ant Design 6, Umi 4, and TypeScript.
+Available templates:
+- `basic`: English-only setup
+- `with-lingui`: Bilingual setup (`en` + `zh`) with Lingui
 
-[![antd](https://img.shields.io/badge/AntD-^6.0.0-1890ff?style=flat-square&logo=ant-design)](https://github.com/ant-design/ant-design)
-[![umi](https://img.shields.io/badge/Umi-^4.0.0-ff9900?style=flat-square&logo=umijs)](https://github.com/umijs/umi)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![GitHub issues](https://img.shields.io/github/issues/zuiidea/antd-admin?style=flat-square)](https://github.com/zuiidea/antd-admin/issues)
-[![GitHub stars](https://img.shields.io/github/stars/zuiidea/antd-admin?style=flat-square)](https://github.com/zuiidea/antd-admin/stargazers)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](http://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/zuiidea/antd-admin/pulls)
+Scaffolding CLI:
+- `init-antd-admin` (from `packages/create`)
 
-</div>
+## Key Features
 
----
+- JWT login with access/refresh flow
+- Backend-driven menu and permission guards
+- URL-synced table state (pagination, sorting, search)
+- Dark mode theme switching
+- Mock-first local development (no backend required)
+- Typed API boundaries and reusable CRUD patterns
+- React 19 + Ant Design 6 + TanStack Router/Query + Zustand + Zod
+- Optional Lingui-based i18n workflow (`with-lingui`)
+- E2E coverage with Playwright
 
-## 📖 Introduction
+## Quick Start
 
-**AntD Admin** is a lightweight, high-performance admin template designed to provide a clean and extensible starting point for building enterprise applications. It leverages the latest features of **Ant Design 6**, **Umi 4**, and **TypeScript**, offering a modern development experience with minimal boilerplate.
+Use `init-antd-admin` to scaffold a standalone app from official templates.
 
-Whether you are building a dashboard, a management system, or an AI-powered tool, this project provides the essential foundation you need.
-
-## ✨ Key Features
-
-- 🚀 **Modern Stack**: Built on **Ant Design 6** + **Umi 4** + **TypeScript**.
-- 🎨 **Clean Architecture**: Lightweight state management using `zustand`.
-- 🛠 **Dev Experience**: Integrated local mock server (`mock/index.js`) for seamless frontend development without backend dependency.
-- 📦 **Rich Examples**: Includes ready-to-use pages:
-  - 📊 **Dashboard**: Data visualization overview.
-  - 👥 **User Management**: CRUD operations example.
-  - 🧩 **Menu Management**: Dynamic routing configuration.
-  - 🤖 **AI Chat Demo**: Integration example for LLM interfaces.
-- ✅ **CI/CD Ready**: Pre-configured GitHub Actions for linting and building.
-
-## 🚀 Quick Start
-
-We recommend using **pnpm** for package management.
+### Interactive
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/zuiidea/antd-admin.git -b master --depth=1
-cd antd-admin
-
-# 2. Install dependencies
-pnpm install
-
-# 3. Start local development server (with mock data)
-npm run dev
-
-# 4. Build for production
-npm run build
-
-# 5. Code quality checks
-npm run lint
-npm run format
+npx init-antd-admin@latest
+pnpm dlx init-antd-admin@latest
+yarn dlx init-antd-admin@latest
+bunx init-antd-admin@latest
 ```
 
-🔌 **Development Notes**
+### Non-interactive examples
 
-#### Mock Server
+```bash
+pnpm dlx init-antd-admin@latest my-app --example basic -m pnpm
+pnpm dlx init-antd-admin@latest my-app --example with-lingui --skip-install
+```
 
-The project includes a built-in mock server defined in `mock/index.js`. This allows you to develop frontend features independently of the backend.
+### Common options
 
-To disable mocks or switch to a real API, modify the proxy settings in your configuration file (for example, `config/proxy.ts` or `.umirc.ts`).
-
-#### Common Routes
-
-| Route | Description |
+| Option | Description |
 | --- | --- |
-| `/` or `/dashboard` | Main Dashboard |
-| `/users` | User List & Management |
-| `/sys/menu` | System Menu Configuration |
-| `/ai/chat` | AI Chat Interface Demo |
+| `[project-directory]` | Target folder |
+| `-e, --example <name|url>` | Template source |
+| `--example-path <path>` | Subpath inside remote repository |
+| `-m, --package-manager <pm>` | `npm` / `pnpm` / `yarn` / `bun` |
+| `--skip-install` | Skip dependency install |
+| `--skip-transforms` | Skip rewrite transforms |
+| `--no-git` | Skip git initialization |
 
-#### Customization
+For detailed CLI behavior, see [`packages/create/README.md`](./packages/create/README.md).
 
-- **API Integration:** Update API endpoints in `src/services` to connect to your real backend.
-- **Component Extension:** Reuse or extend existing components in `src/components` (for example, `DropOption`, `StandardTable`).
-- **Theme:** Customize Ant Design tokens in the theme configuration to match your brand identity.
+Production docs: [https://antd-admin-doc.zuiidea.top](https://antd-admin-doc.zuiidea.top)
 
-#### GitHub Actions CI
+## Links
 
-This repository includes a pre-configured GitHub Actions workflow to ensure code quality:
+- [Ant Design](https://github.com/ant-design/ant-design)
+- [React](https://react.dev)
+- [Vite+](https://viteplus.dev)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Issues](https://github.com/zuiidea/antd-admin/issues)
+- [Stars](https://github.com/zuiidea/antd-admin/stargazers)
+- [PRs Welcome](https://github.com/zuiidea/antd-admin/pulls)
 
-- Installs dependencies using `pnpm`.
-- Runs linting checks.
-- Builds the project for production.
+## License
 
-- **Workflow location:** `.github/workflows/ci.yml`
-- **Tip:** To add automated tests to the CI pipeline, add a test script to `package.json` and update the workflow YAML accordingly.
-🤝 Contributing
-Contributions are always welcome! Whether it's fixing a bug, adding a new feature, or improving documentation, please feel free to submit an Issue or a Pull Request.
-Typical contributions include:
-🐛 Bug fixes
-🧩 New example pages or components
-📝 Type definitions and linting improvements
-🌍 Internationalization (i18n) updates
-How to contribute:
-Fork the repository.
-Create your feature branch (git checkout -b feature/AmazingFeature).
-Commit your changes (git commit -m 'Add some AmazingFeature').
-Push to the branch (git push origin feature/AmazingFeature).
-Open a Pull Request.
-📄 License
-This project is licensed under the MIT License.
-Made with ❤️ by zuiidea and contributors.
+MIT

@@ -1,0 +1,18 @@
+---
+title: Running Tests
+description: Run unit and e2e tests in this repository
+---
+
+# Running Tests
+
+Run tests from repository root or per app.
+
+Common commands:
+
+```bash
+pnpm -r test
+pnpm --filter ./apps/basic test
+pnpm --filter ./apps/with-lingui test
+```
+
+Set up CI to run tests on pull requests before merge.

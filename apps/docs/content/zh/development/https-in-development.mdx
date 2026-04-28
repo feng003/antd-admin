@@ -1,0 +1,10 @@
+---
+title: 开发环境 HTTPS
+description: 本地启用 HTTPS 时的提示
+---
+
+# 开发环境 HTTPS
+
+若需在开发环境启用 **HTTPS**（例如调试安全 Cookie、第三方 OAuth 回调），请参考 [Vite 服务器 HTTPS 配置](https://vite.dev/config/server-options.html#server-https)：在模板 `vite.config.ts` 的 `server.https` 中配置证书，或通过 `vp dev` 支持的参数透传（以 Vite+ 当前版本文档为准）。
+
+团队应统一证书来源（如 mkcert），并在文档中注明 **勿将私钥提交到仓库**。

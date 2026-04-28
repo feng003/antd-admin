@@ -1,0 +1,17 @@
+---
+title: 浏览器与运行环境
+description: Node 版本与现代浏览器支持
+---
+
+# 浏览器与运行环境
+
+## Node.js
+
+- **要求 ≥ 20**（与仓库及 Vite+ 工具链一致）。
+- 推荐使用与 `package.json` 中 **`packageManager`** 一致的 pnpm 版本，团队协作可减少锁文件漂移。
+
+## 浏览器
+
+模板面向 **现代 evergreen 浏览器**（Chromium / Firefox / Safari 近年版本）。后台场景通常不要求 IE。
+
+本地开发时使用 **HTTPS**、旧版浏览器或嵌入式 WebView 等约束，参见 [开发环境 HTTPS](/development/https-in-development)。

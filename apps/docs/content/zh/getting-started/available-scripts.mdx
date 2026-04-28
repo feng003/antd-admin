@@ -1,0 +1,43 @@
+---
+title: 可用脚本
+description: package.json 中与开发相关的 npm 脚本
+---
+
+# 可用脚本
+
+在模板目录执行（需先 `vp install`）。两模板大部分脚本相同；**仅 with-lingui** 含 `i18n:*` 脚本。
+
+## 开发与构建
+
+| 脚本 | 说明 |
+|------|------|
+| `vp dev` | 启动开发服务器（默认端口 5173） |
+| `vp build` | 生产构建（模板中常与 `tsc` 组合，见各 `package.json`） |
+| `vp preview` | 预览构建产物 |
+
+## 质量
+
+| 脚本 | 说明 |
+|------|------|
+| `vp fmt` | 格式化 |
+| `vp lint` |  Lint |
+| `vp check --no-fmt` | 类型检查等（模板内常用 `check`） |
+
+## 测试
+
+| 脚本 | 说明 |
+|------|------|
+| `pnpm run test:unit` | Vitest 单元测试 |
+| `pnpm run test:e2e` | Playwright 全部 E2E |
+| `pnpm run test:e2e:core` | 核心场景子集（登录、users CRUD、refresh、RBAC、URL 状态） |
+| `pnpm run test:e2e:ui` | Playwright UI 模式 |
+
+## With Lingui 专有
+
+| 脚本 | 说明 |
+|------|------|
+| `pnpm run i18n:extract` | 抽取文案 |
+| `pnpm run i18n:compile` | 编译 catalog |
+| `pnpm run i18n:check` | 抽取后校验 git diff（CI 友好） |
+
+具体以各应用 **`package.json` 的 `scripts`** 为准。

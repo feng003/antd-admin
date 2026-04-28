@@ -1,0 +1,10 @@
+---
+title: CSS Modules
+description: 组件旁 *.module.css 的用法提示
+---
+
+# CSS Modules
+
+可在组件旁增加 **`*.module.css`**，由 Vite 按模块作用域编译，避免类名污染全局。
+
+布局与侧边栏等目录下已有 **少量 `.css` 与组件同目录** 的写法，可按相同模式扩展。与 Ant Design 共存时，注意层级与 `:global` 的使用范围，避免破坏组件库默认样式。

@@ -1,0 +1,40 @@
+{
+  "name": "init-antd-admin",
+  "version": "1.0.3",
+  "description": "Create an Antd Admin app from official examples",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "init-antd-admin": "dist/cli.js"
+  },
+  "files": [
+    "dist/cli.js",
+    "dist/examples.json"
+  ],
+  "scripts": {
+    "prepublishOnly": "pnpm run build",
+    "build": "tsup && node ./scripts/write-examples-json.mjs",
+    "dev": "tsup --watch",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.10.1",
+    "commander": "^14.0.0",
+    "giget": "^3.2.0",
+    "picocolors": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsup": "^8.3.5",
+    "typescript": "~5.9.3",
+    "vitest": "^3.0.5"
+  }
+}

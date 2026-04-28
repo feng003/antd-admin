@@ -1,0 +1,23 @@
+---
+title: 运行测试
+description: Vitest 单元测试与 Playwright E2E
+---
+
+# 运行测试
+
+## 单元测试（Vitest）
+
+```bash
+pnpm run test:unit
+```
+
+由 **Vite+** 封装 Vitest，请勿脱离 `vp`/`pnpm scripts` 随意单独安装冲突版本的 Vitest（参见各应用 **`AGENTS.md`**）。
+
+## E2E（Playwright）
+
+```bash
+pnpm run test:e2e          # 全部
+pnpm run test:e2e:core     # 核心子集（登录、users、refresh、RBAC、URL 状态）
+```
+
+首次在机器上跑 E2E 前，按 Playwright 文档安装浏览器依赖（`pnpm exec playwright install` 等，以官方说明为准）。

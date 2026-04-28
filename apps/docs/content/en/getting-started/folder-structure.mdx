@@ -1,0 +1,28 @@
+---
+title: Folder Structure
+description: Key directories and responsibilities in the repository
+---
+
+# Folder Structure
+
+```text
+.
+├─ apps/
+│  ├─ basic/
+│  ├─ with-lingui/
+│  └─ docs/
+├─ packages/
+├─ pnpm-workspace.yaml
+└─ turbo.json
+```
+
+## Directory Guide
+
+- `apps/basic`: Main admin template (English)
+- `apps/with-lingui`: Admin template with Lingui i18n
+- `apps/docs`: Documentation site (Nextra + Next.js)
+- `packages`: Shared packages and utilities
+
+## Recommendation
+
+When creating reusable logic, prioritize placing it in `packages` rather than duplicating in app folders.

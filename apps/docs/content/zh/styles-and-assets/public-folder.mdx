@@ -1,0 +1,10 @@
+---
+title: public 目录
+description: public 与 MSW Service Worker
+---
+
+# public 目录
+
+模板将 **`public/`** 用于不会被 bundler 改名的静态资源（如 `favicon`）。
+
+同时，**MSW** 浏览器端 worker 的路径由 **`package.json` → `msw.workerDirectory`** 指向 `public`（两模板一致）。调整 `public` 结构时注意 **不要破坏 Mock Service Worker** 所需的生成文件与服务注册路径。
