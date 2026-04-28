@@ -1,27 +1,17 @@
-<p align="center">
-  <a href="http://github.com/zuiidea/antd-admin" target="_blank">
-    <img alt="antd-admin-logo" height="80" src="./public/favicon.svg">
-  </a>
-</p>
-
-<h1 align="center">Antd Admin</h1>
-
-<div align="center">
+# Antd Admin
 
 Balanced admin scaffold: i18n (Lingui), MSW mocks, minimal RBAC, full CRUD, and Playwright E2E — built with React 19, Ant Design 6, and Vite+. AI-friendly with clear patterns, shared abstractions, scoped AI instructions, and type-safe contracts at every boundary.
 
 **AI rules (Cursor):** `.cursor/rules/with-lingui-*.mdc` at the repo root mirrors `apps/with-lingui/.github/instructions/*.instructions.md` (same intent; `globs` align with each file’s `applyTo`). Prefer updating **both** when you change guidance.
 
-[![antd](https://img.shields.io/badge/AntD-^6.0.0-1890ff?style=flat-square&logo=ant-design)](https://github.com/ant-design/ant-design)
-[![react](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)](https://react.dev)
-[![vite](https://img.shields.io/badge/Vite+-Latest-646cff?style=flat-square&logo=vite)](https://viteplus.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![GitHub issues](https://img.shields.io/github/issues/zuiidea/antd-admin?style=flat-square)](https://github.com/zuiidea/antd-admin/issues)
-[![GitHub stars](https://img.shields.io/github/stars/zuiidea/antd-admin?style=flat-square)](https://github.com/zuiidea/antd-admin/stargazers)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](http://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/zuiidea/antd-admin/pulls)
-
-</div>
+[antd](https://github.com/ant-design/ant-design)
+[react](https://react.dev)
+[vite](https://viteplus.dev)
+[TypeScript](https://www.typescriptlang.org/)
+[GitHub issues](https://github.com/zuiidea/antd-admin/issues)
+[GitHub stars](https://github.com/zuiidea/antd-admin/stargazers)
+[License](http://opensource.org/licenses/MIT)
+[PRs Welcome](https://github.com/zuiidea/antd-admin/pulls)
 
 ## Tech Stack
 
@@ -166,9 +156,9 @@ Ant Design strings follow the active locale via `ConfigProvider` in `__root.tsx`
 
 ### AI instruction files
 
-**细则单源**：`apps/with-lingui/.github/instructions/`（`*.instructions.md`），人类与 Agent 以该目录为准维护、评审。
+**Single source of truth**: `apps/with-lingui/.github/instructions/` (`*.instructions.md`). Both humans and agents should maintain and review guidance from this directory.
 
-**Cursor**：仓库根 `.cursor/rules/with-lingui-*.mdc` 为**薄规则**（方案 A）：只写范围与指向路径，`globs` 与上述文件的 `applyTo` 对齐；全文请在对话中 `@` 对应 `.instructions.md` 或自行打开该文件。
+**Cursor**: The root `.cursor/rules/with-lingui-*.mdc` files are intentionally thin rules (Approach A), containing only scope and pointer paths. Keep `globs` aligned with each instruction file's `applyTo`; for full details, reference the target `.instructions.md` file in chat with `@` or open it directly.
 
 ## Developer Notes
 

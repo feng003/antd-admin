@@ -1,39 +1,17 @@
 # Antd Admin
 
-A practical admin monorepo with two production-style templates, mock-first development, and test coverage.
+## Introduction
 
-- **`apps/basic`**: English-only setup
-- **`apps/with-lingui`**: Bilingual setup (`en` + `zh`) with Lingui
-- **`apps/docs`**: Nextra documentation site
-- **`packages/create`**: `init-antd-admin` scaffolding CLI
+Antd Admin provides production-style admin templates with modern frontend tooling, mock-first development, and practical testing coverage.
 
-## Links
+Available templates:
+- `basic`: English-only setup
+- `with-lingui`: Bilingual setup (`en` + `zh`) with Lingui
 
-- [Ant Design](https://github.com/ant-design/ant-design)
-- [React](https://react.dev)
-- [Vite+](https://viteplus.dev)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Issues](https://github.com/zuiidea/antd-admin/issues)
-- [Stars](https://github.com/zuiidea/antd-admin/stargazers)
-- [PRs Welcome](https://github.com/zuiidea/antd-admin/pulls)
-- [License (MIT)](http://opensource.org/licenses/MIT)
+Scaffolding CLI:
+- `init-antd-admin` (from `packages/create`)
 
-## Tech Stack
-
-| Category | Technology |
-| --- | --- |
-| Build tool | [Vite+](https://viteplus.dev) |
-| UI | [Ant Design 6.x](https://ant.design) |
-| Routing | [TanStack Router](https://tanstack.com/router) |
-| Async state | [TanStack Query v5](https://tanstack.com/query) |
-| Local state | [Zustand](https://zustand.docs.pmnd.rs) |
-| Validation | [Zod v4](https://zod.dev) |
-| i18n | [LinguiJS](https://lingui.dev) in `apps/with-lingui` |
-| Mocking | [MSW 2.x](https://mswjs.io) |
-| E2E tests | [Playwright](https://playwright.dev) |
-| Language | TypeScript 5.9 (strict) |
-
-## Highlights
+## Key Features
 
 - JWT login with access/refresh flow
 - Backend-driven menu and permission guards
@@ -41,17 +19,13 @@ A practical admin monorepo with two production-style templates, mock-first devel
 - Dark mode theme switching
 - Mock-first local development (no backend required)
 - Typed API boundaries and reusable CRUD patterns
+- React 19 + Ant Design 6 + TanStack Router/Query + Zustand + Zod
+- Optional Lingui-based i18n workflow (`with-lingui`)
+- E2E coverage with Playwright
 
-## Templates
+## Quick Start
 
-| Template | Use when |
-| --- | --- |
-| `with-lingui` | You need multilingual UI (`en` + `zh`) and Lingui workflow |
-| `basic` | You need a simpler English-only setup |
-
-## `init-antd-admin` Usage
-
-Use the scaffolding CLI to create a standalone app from official templates.
+Use `init-antd-admin` to scaffold a standalone app from official templates.
 
 ### Interactive
 
@@ -81,9 +55,19 @@ pnpm dlx init-antd-admin@latest my-app --example with-lingui --skip-install
 | `--skip-transforms` | Skip rewrite transforms |
 | `--no-git` | Skip git initialization |
 
-For package-specific details, see [`packages/create/README.md`](./packages/create/README.md).
+For detailed CLI behavior, see [`packages/create/README.md`](./packages/create/README.md).
 
 Production docs: [https://antd-admin-doc.zuiidea.top](https://antd-admin-doc.zuiidea.top)
+
+## Links
+
+- [Ant Design](https://github.com/ant-design/ant-design)
+- [React](https://react.dev)
+- [Vite+](https://viteplus.dev)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Issues](https://github.com/zuiidea/antd-admin/issues)
+- [Stars](https://github.com/zuiidea/antd-admin/stargazers)
+- [PRs Welcome](https://github.com/zuiidea/antd-admin/pulls)
 
 ## License
 
