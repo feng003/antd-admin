@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+# Monorepo pre-commit: run Vite+ / checks in the app that owns staged files.
+# Template copies under apps/*/ keep their own .vite-hooks for standalone use; this repo uses root hooksPath instead.
+set -e
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+FAILED=0
+
+run_in_dir() {
+  dir="$1"
+  shift
+  (cd "$ROOT/$dir" && "$@") || FAILED=1
+}
+
+if echo "$STAGED" | grep -q '^apps/with-lingui/'; then
+  run_in_dir apps/with-lingui vp staged
+fi
+
+if echo "$STAGED" | grep -q '^apps/basic/'; then
+  run_in_dir apps/basic vp staged
+fi
+
+if echo "$STAGED" | grep -q '^packages/create/'; then
+  run_in_dir . pnpm --dir packages/create run check-types
+fi
+
+if echo "$STAGED" | grep -q '^apps/docs/'; then
+  run_in_dir apps/docs pnpm run lint
+fi
+
+exit "$FAILED"

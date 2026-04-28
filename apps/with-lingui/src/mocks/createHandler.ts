@@ -51,11 +51,7 @@ export function successWithNullBody(message: string = "ok") {
   return successWithSchema(NullBodySchema, null, message);
 }
 
-export function errorResponse(
-  code: number,
-  message: string,
-  data: unknown = null,
-) {
+export function errorResponse(code: number, message: string, data: unknown = null) {
   return HttpResponse.json({
     code,
     data,

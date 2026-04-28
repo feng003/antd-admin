@@ -55,7 +55,7 @@ describe("paginatedListSchema / paginatedWithSchema", () => {
       permissions: [] as string[],
     };
     const res = paginatedWithSchema(UserSchema, { list: [row], total: 1 });
-    const body = (await res.json()) as { data: { list: typeof row[]; total: number } };
+    const body = (await res.json()) as { data: { list: (typeof row)[]; total: number } };
     expect(body.data.total).toBe(1);
     expect(body.data.list).toHaveLength(1);
   });

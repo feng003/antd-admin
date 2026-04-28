@@ -52,10 +52,10 @@ export type CrudResult<TListData, TCreateValues, TUpdateValues> = ResourceCRUDRe
 
 type RollbackCtx<TListData> = { snapshot: TListData | undefined };
 
-export function applyOptimisticListUpdate<TItem extends { id: string }, TUpdate extends { id: string }>(
-  data: ResourceListData<TItem>,
-  values: TUpdate,
-): { list: TItem[]; total: number } {
+export function applyOptimisticListUpdate<
+  TItem extends { id: string },
+  TUpdate extends { id: string },
+>(data: ResourceListData<TItem>, values: TUpdate): { list: TItem[]; total: number } {
   const { id, ...patch } = values as TUpdate & Record<string, unknown>;
   return {
     list: data.list.map((row) =>
@@ -147,7 +147,10 @@ export function useResourceCRUD<
       if (applied) {
         queryClient.setQueryData<TListData>(
           queryKey,
-          applyOptimisticListDelete(previous as ResourceListData<{ id: string }>, id) as unknown as TListData,
+          applyOptimisticListDelete(
+            previous as ResourceListData<{ id: string }>,
+            id,
+          ) as unknown as TListData,
         );
       }
       options.deleteLifecycle?.onMutate?.(id);

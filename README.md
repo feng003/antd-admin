@@ -74,6 +74,16 @@ Core Playwright flows (from the app you are working in):
 cd apps/basic && pnpm run test:e2e:core
 ```
 
+### Git hooks
+
+提交前检查由仓库根目录 **`.githooks/pre-commit`** 按暂存路径分发到各子项目（在对应目录执行 `vp staged`，避免在仓库根找不到 `vite.config.ts`）。一次性启用：
+
+```bash
+pnpm run setup:git-hooks
+```
+
+说明见 [.githooks/README.md](./.githooks/README.md)。模板目录内的 `.vite-hooks` 仍保留给模板单独拷贝使用；在本仓库开发请使用上述根级钩子。
+
 ## Getting Started
 
 ### Prerequisites

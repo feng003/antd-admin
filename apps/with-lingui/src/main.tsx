@@ -26,10 +26,7 @@ async function enableMocking() {
 
 enableMocking()
   .then(async () => {
-    await Promise.all([
-      useSettingsStore.persist.rehydrate(),
-      useAuthStore.persist.rehydrate(),
-    ]);
+    await Promise.all([useSettingsStore.persist.rehydrate(), useAuthStore.persist.rehydrate()]);
 
     const initialLocale = useSettingsStore.getState().locale;
     const messages = await loadLocaleCatalog(initialLocale);

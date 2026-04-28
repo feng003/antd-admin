@@ -6,8 +6,7 @@ import { lingui } from "@lingui/vite-plugin";
 const VENDOR_CHUNKS: Array<{ chunk: string; test: (id: string) => boolean }> = [
   {
     chunk: "vendor-antd",
-    test: (id) =>
-      id.includes("node_modules/antd") || id.includes("node_modules/rc-"),
+    test: (id) => id.includes("node_modules/antd") || id.includes("node_modules/rc-"),
   },
   {
     chunk: "vendor-tanstack",
@@ -19,8 +18,7 @@ const VENDOR_CHUNKS: Array<{ chunk: string; test: (id: string) => boolean }> = [
   },
   {
     chunk: "vendor-i18n",
-    test: (id) =>
-      id.includes("node_modules/@lingui/") || id.includes("/@lingui/"),
+    test: (id) => id.includes("node_modules/@lingui/") || id.includes("/@lingui/"),
   },
 ];
 

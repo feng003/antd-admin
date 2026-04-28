@@ -7,7 +7,8 @@
         "build": "turbo run build",
         "dev": "turbo run dev",
         "lint": "turbo run lint",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "setup:git-hooks": "git config core.hooksPath .githooks && git config core.hooksPath"
     },
     "devDependencies": {
         "eslint": "^8.57.0",

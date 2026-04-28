@@ -256,21 +256,21 @@ function UsersPage() {
     () =>
       showPagination
         ? {
-          total: data?.total ?? 0,
-          current: currentPage,
-          pageSize: search.limit,
-          showSizeChanger: true,
-          showTotal: (total) => t`${total} rows`,
-          onChange: (page, pageSize) => {
-            void navigate({
-              search: {
-                ...search,
-                limit: pageSize ?? search.limit,
-                offset: (page - 1) * (pageSize ?? search.limit),
-              },
-            });
-          },
-        }
+            total: data?.total ?? 0,
+            current: currentPage,
+            pageSize: search.limit,
+            showSizeChanger: true,
+            showTotal: (total) => t`${total} rows`,
+            onChange: (page, pageSize) => {
+              void navigate({
+                search: {
+                  ...search,
+                  limit: pageSize ?? search.limit,
+                  offset: (page - 1) * (pageSize ?? search.limit),
+                },
+              });
+            },
+          }
         : false,
     [showPagination, data?.total, currentPage, search, navigate, t],
   );

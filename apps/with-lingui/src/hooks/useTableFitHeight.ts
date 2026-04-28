@@ -12,8 +12,16 @@ export type UseTableFitHeightArgs = {
 };
 
 export function useTableFitHeight(args: UseTableFitHeightArgs) {
-  const { pageShellRef, toolbarRef, middleRef, tableFrameRef, marginLG, rowCount, isLoading, showPagination } =
-    args;
+  const {
+    pageShellRef,
+    toolbarRef,
+    middleRef,
+    tableFrameRef,
+    marginLG,
+    rowCount,
+    isLoading,
+    showPagination,
+  } = args;
 
   const tableAvailableRef = useRef(0);
   const [tableAreaMaxHeight, setTableAreaMaxHeight] = useState<number | undefined>(() =>
@@ -48,7 +56,10 @@ export function useTableFitHeight(args: UseTableFitHeightArgs) {
         ? mainRect.bottom
         : Math.min(shell.getBoundingClientRect().bottom, viewportBottom);
 
-      const maxMiddleFromShell = Math.max(0, Math.floor(clipBottom - toolbarRect.bottom - marginLG));
+      const maxMiddleFromShell = Math.max(
+        0,
+        Math.floor(clipBottom - toolbarRect.bottom - marginLG),
+      );
 
       const midHRaw = mid.clientHeight;
       const midH = midHRaw > 0 ? Math.min(midHRaw, maxMiddleFromShell) : maxMiddleFromShell;
@@ -103,7 +114,16 @@ export function useTableFitHeight(args: UseTableFitHeightArgs) {
     ro.observe(shell);
     ro.observe(mid);
     return () => ro.disconnect();
-  }, [showPagination, rowCount, isLoading, marginLG, pageShellRef, toolbarRef, middleRef, tableFrameRef]);
+  }, [
+    showPagination,
+    rowCount,
+    isLoading,
+    marginLG,
+    pageShellRef,
+    toolbarRef,
+    middleRef,
+    tableFrameRef,
+  ]);
 
   return {
     tableAreaMaxHeight,

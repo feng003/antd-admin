@@ -13,7 +13,12 @@ interface UserMenuProps {
   accountMenuTriggerAriaLabel: string;
 }
 
-export function UserMenu({ collapsed, user, userMenuItems, accountMenuTriggerAriaLabel }: UserMenuProps) {
+export function UserMenu({
+  collapsed,
+  user,
+  userMenuItems,
+  accountMenuTriggerAriaLabel,
+}: UserMenuProps) {
   const { token } = theme.useToken();
 
   const avatarSrc = (user?.avatar ?? "").trim() || undefined;
