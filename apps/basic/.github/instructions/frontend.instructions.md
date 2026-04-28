@@ -1,6 +1,7 @@
 ---
 
-## applyTo: "src/**/*.{ts,tsx,css}"
+## applyTo: "src/\*_/_.{ts,tsx,css}"
+
 description: "Use when editing React UI, route pages, components, styles, layout, i18n text, or Ant Design behavior. Keywords: frontend, component, page, ui, layout, style, antd, i18n."
 
 # Frontend Instructions

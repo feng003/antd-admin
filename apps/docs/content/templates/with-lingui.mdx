@@ -1,0 +1,36 @@
+---
+title: With Lingui 模板
+description: apps/with-lingui — 中英双语与 Lingui 工作流
+---
+
+# With Lingui 模板
+
+路径：**[`apps/with-lingui`](https://github.com/zuiidea/antd-admin/tree/master/apps/with-lingui)**。
+
+## 定位
+
+在 Basic 能力集之上提供 **LinguiJS** 中英双语文案、**Ant Design locale** 与语言设置联动，以及 **`.po` 抽取/编译** 流程。为仓库中更完整的一号模板（`package.json` 的 `name` 为 `antd-admin`）。
+
+## 技术栈补充
+
+在 Basic 技术栈基础上增加 Lingui 6；`src/locales/{en,zh}/messages.po` 为翻译源；`lingui.config.ts` 与 Vite 插件见应用内配置。
+
+## 国际化命令
+
+| 命令 | 作用 |
+|------|------|
+| `pnpm run i18n:extract` | 从源码抽取可翻译字符串 |
+| `pnpm run i18n:compile` | 编译为运行时可加载的 message |
+| `pnpm run i18n:check` | 抽取后检查工作区无未提交变更（适合 CI） |
+
+## 常用命令
+
+```bash
+cd apps/with-lingui
+vp install
+vp dev
+```
+
+## 权威文档
+
+完整技术栈表、功能列表、目录树、E2E 子集说明、以及 **Cursor 与 `.github/instructions` 的 AI 指引** 以 **[apps/with-lingui/README.md](https://github.com/zuiidea/antd-admin/blob/master/apps/with-lingui/README.md)** 为准。

@@ -66,7 +66,15 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(function Toolbar
         ),
       },
     ],
-    [keywordInput, onClearSearch, onKeywordChange, onRoleChange, onSearch, roleValue, token.fontSize],
+    [
+      keywordInput,
+      onClearSearch,
+      onKeywordChange,
+      onRoleChange,
+      onSearch,
+      roleValue,
+      token.fontSize,
+    ],
   );
 
   return (

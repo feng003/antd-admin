@@ -1,0 +1,16 @@
+---
+title: 路由
+description: TanStack Router 文件路由与布局
+---
+
+# 路由
+
+模板使用 **[TanStack Router](https://tanstack.com/router)** **文件路由**（插件根据 `src/routes` 生成 **`routeTree.gen.ts`**）。
+
+常见模式：
+
+- **根布局**：`__root.tsx` 中包裹 `ConfigProvider`、Outlet 等。
+- **认证布局**：如 `_auth.tsx`，与登录页路由分离。
+- **鉴权**：在路由 `beforeLoad` 或组件内结合 **权限与 `/login` 跳转**（实现以模板代码为准）。
+
+新增业务页时，在同目录追加路由文件并遵循现有目录约定；类型安全依赖生成的 route tree。

@@ -1,0 +1,16 @@
+---
+title: 调试测试
+description: Playwright 调试与 UI 模式
+---
+
+# 调试测试
+
+- **UI 模式**（模板已提供脚本）：
+
+```bash
+pnpm run test:e2e:ui
+```
+
+- ** headed / debug**：可使用 Playwright CLI 标志对单测文件调试，例如 `pnpm exec playwright test --debug`。
+
+MSW 与真实网络环境差异可能导致用例不稳定；调试时可先确认 **Mock 是否按预期拦截**（见 [开发代理与 Mock](/backend/proxying-api-requests)）。

@@ -1,9 +1,11 @@
 ---
-title: 模板对比
-description: basic 与 with-lingui 的包名、国际化与持久化键对比
+title: 模板列表
+sidebarTitle: 模板列表
+description: Basic 与 With Lingui 的选型与差异总览
+asIndexPage: true
 ---
 
-# 模板对比
+# 模板列表
 
 以下字段以仓库内 **`package.json`** 与 **`src/stores/settings.ts`** 为准。
 
@@ -14,7 +16,12 @@ description: basic 与 with-lingui 的包名、国际化与持久化键对比
 | **Ant Design `ConfigProvider` locale** | 固定 `antd/locale/en_US` | 随设置切换：`en` → `en_US`，`zh` → `zh_CN`（见 `src/routes/__root.tsx`） |
 | **Zustand persist（settings）`name`** | `settings-storage-basic` | `settings-storage` |
 
-选型建议：
+## 选型建议
 
-- 只要英文、希望依赖最少：选 **`apps/basic`**。
-- 需要中英文切换、Lingui 工作流与 Ant Design 随语言联动：选 **`apps/with-lingui`**。
+- 只要英文、希望依赖最少：选 **[Basic](/templates/basic)**。
+- 需要中英文切换、Lingui 工作流与 Ant Design 随语言联动：选 **[With Lingui](/templates/with-lingui)**。
+
+## 子页面
+
+- [Basic 模板](/templates/basic)
+- [With Lingui 模板](/templates/with-lingui)

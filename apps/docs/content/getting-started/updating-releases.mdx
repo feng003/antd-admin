@@ -1,0 +1,19 @@
+---
+title: 升级与更新
+description: 依赖与模板演进时的建议
+---
+
+# 升级与更新
+
+## 依赖升级
+
+- 使用 **Vite+**（`vp`）管理依赖，避免绕过 `vp` 直接大面积 `pnpm up` 导致与模板锁定的工具链不一致。
+- 升级 **Ant Design / TanStack / React** 大版本前，建议先阅读官方迁移说明，并在单分支上跑通 `vp check`、`test:unit`、`test:e2e:core` 与 `vp build`。
+
+## 跟随本仓库模板
+
+若从本 monorepo 拷贝或对比模板代码，可用 `git` 按需 cherry-pick 改动，并注意 **`apps/basic` 与 `apps/with-lingui` 在 i18n 与文案上的差异**，避免把 Lingui 专用改动误合并到 basic。
+
+## With Lingui 文案
+
+升级 `@lingui/*` 后建议执行 `pnpm run i18n:extract` 与 `pnpm run i18n:compile`，并检查 `src/locales` 是否有冲突或弃用 API。

@@ -1,0 +1,20 @@
+---
+title: 部署
+sidebarTitle: 部署
+description: 静态资源托管与 SPA 路由
+asIndexPage: true
+---
+
+# 部署
+
+## 构建产物
+
+执行 **`vp build`** 后，产物默认位于各应用约定的 **`dist/`**（以 Vite 输出为准）。将 **`dist`** 部署到静态文件托管（OSS、CDN、Netlify、Vercel 等）。
+
+## SPA 路由
+
+前端路由由 **TanStack Router** 管理，服务器需将所有 **文档路径回退到 `index.html`**，否则刷新子路径会 **404**。
+
+## 应用若部署在子路径
+
+设置 Vite **`base`** 为子路径前缀，并确保静态资源与路由跳转使用该前缀。仓库内若包含 **`vercel.json`** 等，可作为部署规则参考。
