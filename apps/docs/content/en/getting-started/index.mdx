@@ -1,0 +1,43 @@
+---
+title: Getting Started
+description: Install dependencies, start development, and build applications
+---
+
+# Getting Started
+
+## Requirements
+
+- Node.js 20+
+- pnpm 9+
+
+## Install Dependencies
+
+```bash
+pnpm install
+```
+
+## Run Projects
+
+```bash
+# Run docs
+pnpm --filter ./apps/docs dev
+
+# Run basic template
+pnpm --filter ./apps/basic dev
+
+# Run Lingui template
+pnpm --filter ./apps/with-lingui dev
+```
+
+## Build
+
+```bash
+pnpm --filter ./apps/basic build
+pnpm --filter ./apps/with-lingui build
+```
+
+## Next Steps
+
+- Scripts: [Available Scripts](/en/getting-started/available-scripts)
+- Structure: [Folder Structure](/en/getting-started/folder-structure)
+- Browser support: [Supported Browsers](/en/getting-started/supported-browsers)

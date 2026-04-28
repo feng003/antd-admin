@@ -1,0 +1,15 @@
+---
+title: Updating Releases
+description: Recommendations for keeping your project up to date
+---
+
+# Updating Releases
+
+To keep your project updated:
+
+1. Pull the latest code from upstream.
+2. Run `pnpm install` to refresh lockfile-resolved dependencies.
+3. Verify with `build`, `lint`, and `test`.
+4. Resolve breaking changes before releasing.
+
+For production apps, perform updates on a branch and validate in CI before merging.

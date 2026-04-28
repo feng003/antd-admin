@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { proxy as localeProxy } from "nextra/locales";
 
 /**
  * Browsers or other localhost apps (e.g. MSW) may request `/mockServiceWorker.js`.
@@ -18,9 +19,12 @@ export function proxy(request: NextRequest) {
       },
     );
   }
-  return NextResponse.next();
+  return localeProxy(request);
 }
 
 export const config = {
-  matcher: "/mockServiceWorker.js",
+  matcher: [
+    "/mockServiceWorker.js",
+    "/((?!api|_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png|manifest|_pagefind).*)",
+  ],
 };

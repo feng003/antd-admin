@@ -1,0 +1,44 @@
+---
+title: Available Scripts
+description: Common pnpm scripts and usage in this monorepo
+---
+
+# Available Scripts
+
+## Workspace-Level
+
+```bash
+pnpm install
+pnpm -r build
+pnpm -r lint
+pnpm -r test
+```
+
+## docs (`apps/docs`)
+
+```bash
+pnpm --filter ./apps/docs dev
+pnpm --filter ./apps/docs build
+pnpm --filter ./apps/docs start
+```
+
+## basic (`apps/basic`)
+
+```bash
+pnpm --filter ./apps/basic dev
+pnpm --filter ./apps/basic build
+pnpm --filter ./apps/basic preview
+```
+
+## with-lingui (`apps/with-lingui`)
+
+```bash
+pnpm --filter ./apps/with-lingui dev
+pnpm --filter ./apps/with-lingui build
+pnpm --filter ./apps/with-lingui preview
+```
+
+## Notes
+
+- Use `--filter` to scope commands to a single app.
+- Run commands at the repository root for consistent workspace behavior.

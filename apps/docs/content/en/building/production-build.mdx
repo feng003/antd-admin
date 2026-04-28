@@ -1,0 +1,19 @@
+---
+title: Production Build
+description: Build and validate for production deployment
+---
+
+# Production Build
+
+Before deployment:
+
+1. Run production build.
+2. Verify lint and tests.
+3. Validate key user flows in preview/staging.
+
+Example:
+
+```bash
+pnpm --filter ./apps/basic build
+pnpm --filter ./apps/with-lingui build
+```

@@ -14,7 +14,6 @@ export default [
   {
     files: ["mdx-components.tsx"],
     rules: {
-      // Nextra 主题在模块顶层合并默认 MDX 组件；与 `use*` 命名冲突于 hooks 规则，见 https://nextra.site/docs/file-conventions/mdx-components-file
       "react-hooks/rules-of-hooks": "off",
     },
   },
