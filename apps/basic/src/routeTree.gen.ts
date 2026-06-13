@@ -15,8 +15,22 @@ import { Route as RegisterIndexRouteImport } from './routes/register/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as R404IndexRouteImport } from './routes/404/index'
 import { Route as AuthUsersIndexRouteImport } from './routes/_auth/users/index'
+import { Route as AuthTagsIndexRouteImport } from './routes/_auth/tags/index'
+import { Route as AuthSysUsersIndexRouteImport } from './routes/_auth/sys-users/index'
+import { Route as AuthSpecTemplatesIndexRouteImport } from './routes/_auth/spec-templates/index'
+import { Route as AuthRolesIndexRouteImport } from './routes/_auth/roles/index'
+import { Route as AuthProductsIndexRouteImport } from './routes/_auth/products/index'
+import { Route as AuthPermissionsIndexRouteImport } from './routes/_auth/permissions/index'
+import { Route as AuthOrdersIndexRouteImport } from './routes/_auth/orders/index'
 import { Route as AuthDashboardIndexRouteImport } from './routes/_auth/dashboard/index'
+import { Route as AuthCategoriesIndexRouteImport } from './routes/_auth/categories/index'
+import { Route as AuthBrandsIndexRouteImport } from './routes/_auth/brands/index'
+import { Route as AuthAuditLogsIndexRouteImport } from './routes/_auth/audit-logs/index'
 import { Route as Auth403IndexRouteImport } from './routes/_auth/403/index'
+import { Route as AuthProductsCreateRouteImport } from './routes/_auth/products/create'
+import { Route as AuthCmsMediaIndexRouteImport } from './routes/_auth/cms/media/index'
+import { Route as AuthCmsArticlesIndexRouteImport } from './routes/_auth/cms/articles/index'
+import { Route as AuthProductsIdEditRouteImport } from './routes/_auth/products/$id.edit'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -47,14 +61,84 @@ const AuthUsersIndexRoute = AuthUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthTagsIndexRoute = AuthTagsIndexRouteImport.update({
+  id: '/tags/',
+  path: '/tags/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSysUsersIndexRoute = AuthSysUsersIndexRouteImport.update({
+  id: '/sys-users/',
+  path: '/sys-users/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSpecTemplatesIndexRoute = AuthSpecTemplatesIndexRouteImport.update({
+  id: '/spec-templates/',
+  path: '/spec-templates/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthRolesIndexRoute = AuthRolesIndexRouteImport.update({
+  id: '/roles/',
+  path: '/roles/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthProductsIndexRoute = AuthProductsIndexRouteImport.update({
+  id: '/products/',
+  path: '/products/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthPermissionsIndexRoute = AuthPermissionsIndexRouteImport.update({
+  id: '/permissions/',
+  path: '/permissions/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthOrdersIndexRoute = AuthOrdersIndexRouteImport.update({
+  id: '/orders/',
+  path: '/orders/',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthDashboardIndexRoute = AuthDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthCategoriesIndexRoute = AuthCategoriesIndexRouteImport.update({
+  id: '/categories/',
+  path: '/categories/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthBrandsIndexRoute = AuthBrandsIndexRouteImport.update({
+  id: '/brands/',
+  path: '/brands/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAuditLogsIndexRoute = AuthAuditLogsIndexRouteImport.update({
+  id: '/audit-logs/',
+  path: '/audit-logs/',
+  getParentRoute: () => AuthRoute,
+} as any)
 const Auth403IndexRoute = Auth403IndexRouteImport.update({
   id: '/403/',
   path: '/403/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthProductsCreateRoute = AuthProductsCreateRouteImport.update({
+  id: '/products/create',
+  path: '/products/create',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthCmsMediaIndexRoute = AuthCmsMediaIndexRouteImport.update({
+  id: '/cms/media/',
+  path: '/cms/media/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthCmsArticlesIndexRoute = AuthCmsArticlesIndexRouteImport.update({
+  id: '/cms/articles/',
+  path: '/cms/articles/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthProductsIdEditRoute = AuthProductsIdEditRouteImport.update({
+  id: '/products/$id/edit',
+  path: '/products/$id/edit',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -63,18 +147,46 @@ export interface FileRoutesByFullPath {
   '/404/': typeof R404IndexRoute
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/products/create': typeof AuthProductsCreateRoute
   '/403/': typeof Auth403IndexRoute
+  '/audit-logs/': typeof AuthAuditLogsIndexRoute
+  '/brands/': typeof AuthBrandsIndexRoute
+  '/categories/': typeof AuthCategoriesIndexRoute
   '/dashboard/': typeof AuthDashboardIndexRoute
+  '/orders/': typeof AuthOrdersIndexRoute
+  '/permissions/': typeof AuthPermissionsIndexRoute
+  '/products/': typeof AuthProductsIndexRoute
+  '/roles/': typeof AuthRolesIndexRoute
+  '/spec-templates/': typeof AuthSpecTemplatesIndexRoute
+  '/sys-users/': typeof AuthSysUsersIndexRoute
+  '/tags/': typeof AuthTagsIndexRoute
   '/users/': typeof AuthUsersIndexRoute
+  '/products/$id/edit': typeof AuthProductsIdEditRoute
+  '/cms/articles/': typeof AuthCmsArticlesIndexRoute
+  '/cms/media/': typeof AuthCmsMediaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404IndexRoute
   '/login': typeof LoginIndexRoute
   '/register': typeof RegisterIndexRoute
+  '/products/create': typeof AuthProductsCreateRoute
   '/403': typeof Auth403IndexRoute
+  '/audit-logs': typeof AuthAuditLogsIndexRoute
+  '/brands': typeof AuthBrandsIndexRoute
+  '/categories': typeof AuthCategoriesIndexRoute
   '/dashboard': typeof AuthDashboardIndexRoute
+  '/orders': typeof AuthOrdersIndexRoute
+  '/permissions': typeof AuthPermissionsIndexRoute
+  '/products': typeof AuthProductsIndexRoute
+  '/roles': typeof AuthRolesIndexRoute
+  '/spec-templates': typeof AuthSpecTemplatesIndexRoute
+  '/sys-users': typeof AuthSysUsersIndexRoute
+  '/tags': typeof AuthTagsIndexRoute
   '/users': typeof AuthUsersIndexRoute
+  '/products/$id/edit': typeof AuthProductsIdEditRoute
+  '/cms/articles': typeof AuthCmsArticlesIndexRoute
+  '/cms/media': typeof AuthCmsMediaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -83,9 +195,23 @@ export interface FileRoutesById {
   '/404/': typeof R404IndexRoute
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/_auth/products/create': typeof AuthProductsCreateRoute
   '/_auth/403/': typeof Auth403IndexRoute
+  '/_auth/audit-logs/': typeof AuthAuditLogsIndexRoute
+  '/_auth/brands/': typeof AuthBrandsIndexRoute
+  '/_auth/categories/': typeof AuthCategoriesIndexRoute
   '/_auth/dashboard/': typeof AuthDashboardIndexRoute
+  '/_auth/orders/': typeof AuthOrdersIndexRoute
+  '/_auth/permissions/': typeof AuthPermissionsIndexRoute
+  '/_auth/products/': typeof AuthProductsIndexRoute
+  '/_auth/roles/': typeof AuthRolesIndexRoute
+  '/_auth/spec-templates/': typeof AuthSpecTemplatesIndexRoute
+  '/_auth/sys-users/': typeof AuthSysUsersIndexRoute
+  '/_auth/tags/': typeof AuthTagsIndexRoute
   '/_auth/users/': typeof AuthUsersIndexRoute
+  '/_auth/products/$id/edit': typeof AuthProductsIdEditRoute
+  '/_auth/cms/articles/': typeof AuthCmsArticlesIndexRoute
+  '/_auth/cms/media/': typeof AuthCmsMediaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -94,11 +220,46 @@ export interface FileRouteTypes {
     | '/404/'
     | '/login/'
     | '/register/'
+    | '/products/create'
     | '/403/'
+    | '/audit-logs/'
+    | '/brands/'
+    | '/categories/'
     | '/dashboard/'
+    | '/orders/'
+    | '/permissions/'
+    | '/products/'
+    | '/roles/'
+    | '/spec-templates/'
+    | '/sys-users/'
+    | '/tags/'
     | '/users/'
+    | '/products/$id/edit'
+    | '/cms/articles/'
+    | '/cms/media/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/404' | '/login' | '/register' | '/403' | '/dashboard' | '/users'
+  to:
+    | '/'
+    | '/404'
+    | '/login'
+    | '/register'
+    | '/products/create'
+    | '/403'
+    | '/audit-logs'
+    | '/brands'
+    | '/categories'
+    | '/dashboard'
+    | '/orders'
+    | '/permissions'
+    | '/products'
+    | '/roles'
+    | '/spec-templates'
+    | '/sys-users'
+    | '/tags'
+    | '/users'
+    | '/products/$id/edit'
+    | '/cms/articles'
+    | '/cms/media'
   id:
     | '__root__'
     | '/'
@@ -106,9 +267,23 @@ export interface FileRouteTypes {
     | '/404/'
     | '/login/'
     | '/register/'
+    | '/_auth/products/create'
     | '/_auth/403/'
+    | '/_auth/audit-logs/'
+    | '/_auth/brands/'
+    | '/_auth/categories/'
     | '/_auth/dashboard/'
+    | '/_auth/orders/'
+    | '/_auth/permissions/'
+    | '/_auth/products/'
+    | '/_auth/roles/'
+    | '/_auth/spec-templates/'
+    | '/_auth/sys-users/'
+    | '/_auth/tags/'
     | '/_auth/users/'
+    | '/_auth/products/$id/edit'
+    | '/_auth/cms/articles/'
+    | '/_auth/cms/media/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -163,11 +338,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthUsersIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/tags/': {
+      id: '/_auth/tags/'
+      path: '/tags'
+      fullPath: '/tags/'
+      preLoaderRoute: typeof AuthTagsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/sys-users/': {
+      id: '/_auth/sys-users/'
+      path: '/sys-users'
+      fullPath: '/sys-users/'
+      preLoaderRoute: typeof AuthSysUsersIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/spec-templates/': {
+      id: '/_auth/spec-templates/'
+      path: '/spec-templates'
+      fullPath: '/spec-templates/'
+      preLoaderRoute: typeof AuthSpecTemplatesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/roles/': {
+      id: '/_auth/roles/'
+      path: '/roles'
+      fullPath: '/roles/'
+      preLoaderRoute: typeof AuthRolesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/products/': {
+      id: '/_auth/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof AuthProductsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/permissions/': {
+      id: '/_auth/permissions/'
+      path: '/permissions'
+      fullPath: '/permissions/'
+      preLoaderRoute: typeof AuthPermissionsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/orders/': {
+      id: '/_auth/orders/'
+      path: '/orders'
+      fullPath: '/orders/'
+      preLoaderRoute: typeof AuthOrdersIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/dashboard/': {
       id: '/_auth/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthDashboardIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/categories/': {
+      id: '/_auth/categories/'
+      path: '/categories'
+      fullPath: '/categories/'
+      preLoaderRoute: typeof AuthCategoriesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/brands/': {
+      id: '/_auth/brands/'
+      path: '/brands'
+      fullPath: '/brands/'
+      preLoaderRoute: typeof AuthBrandsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/audit-logs/': {
+      id: '/_auth/audit-logs/'
+      path: '/audit-logs'
+      fullPath: '/audit-logs/'
+      preLoaderRoute: typeof AuthAuditLogsIndexRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/403/': {
@@ -177,19 +422,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Auth403IndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/products/create': {
+      id: '/_auth/products/create'
+      path: '/products/create'
+      fullPath: '/products/create'
+      preLoaderRoute: typeof AuthProductsCreateRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/cms/media/': {
+      id: '/_auth/cms/media/'
+      path: '/cms/media'
+      fullPath: '/cms/media/'
+      preLoaderRoute: typeof AuthCmsMediaIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/cms/articles/': {
+      id: '/_auth/cms/articles/'
+      path: '/cms/articles'
+      fullPath: '/cms/articles/'
+      preLoaderRoute: typeof AuthCmsArticlesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/products/$id/edit': {
+      id: '/_auth/products/$id/edit'
+      path: '/products/$id/edit'
+      fullPath: '/products/$id/edit'
+      preLoaderRoute: typeof AuthProductsIdEditRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
+  AuthProductsCreateRoute: typeof AuthProductsCreateRoute
   Auth403IndexRoute: typeof Auth403IndexRoute
+  AuthAuditLogsIndexRoute: typeof AuthAuditLogsIndexRoute
+  AuthBrandsIndexRoute: typeof AuthBrandsIndexRoute
+  AuthCategoriesIndexRoute: typeof AuthCategoriesIndexRoute
   AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute
+  AuthOrdersIndexRoute: typeof AuthOrdersIndexRoute
+  AuthPermissionsIndexRoute: typeof AuthPermissionsIndexRoute
+  AuthProductsIndexRoute: typeof AuthProductsIndexRoute
+  AuthRolesIndexRoute: typeof AuthRolesIndexRoute
+  AuthSpecTemplatesIndexRoute: typeof AuthSpecTemplatesIndexRoute
+  AuthSysUsersIndexRoute: typeof AuthSysUsersIndexRoute
+  AuthTagsIndexRoute: typeof AuthTagsIndexRoute
   AuthUsersIndexRoute: typeof AuthUsersIndexRoute
+  AuthProductsIdEditRoute: typeof AuthProductsIdEditRoute
+  AuthCmsArticlesIndexRoute: typeof AuthCmsArticlesIndexRoute
+  AuthCmsMediaIndexRoute: typeof AuthCmsMediaIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthProductsCreateRoute: AuthProductsCreateRoute,
   Auth403IndexRoute: Auth403IndexRoute,
+  AuthAuditLogsIndexRoute: AuthAuditLogsIndexRoute,
+  AuthBrandsIndexRoute: AuthBrandsIndexRoute,
+  AuthCategoriesIndexRoute: AuthCategoriesIndexRoute,
   AuthDashboardIndexRoute: AuthDashboardIndexRoute,
+  AuthOrdersIndexRoute: AuthOrdersIndexRoute,
+  AuthPermissionsIndexRoute: AuthPermissionsIndexRoute,
+  AuthProductsIndexRoute: AuthProductsIndexRoute,
+  AuthRolesIndexRoute: AuthRolesIndexRoute,
+  AuthSpecTemplatesIndexRoute: AuthSpecTemplatesIndexRoute,
+  AuthSysUsersIndexRoute: AuthSysUsersIndexRoute,
+  AuthTagsIndexRoute: AuthTagsIndexRoute,
   AuthUsersIndexRoute: AuthUsersIndexRoute,
+  AuthProductsIdEditRoute: AuthProductsIdEditRoute,
+  AuthCmsArticlesIndexRoute: AuthCmsArticlesIndexRoute,
+  AuthCmsMediaIndexRoute: AuthCmsMediaIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

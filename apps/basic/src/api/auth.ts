@@ -7,13 +7,19 @@ import type {
   RegisterRequest,
 } from "./schemas";
 
+/** B 端管理后台 Auth 相关端点（前缀 /api/admin/） */
 export const AUTH_ENDPOINTS = {
-  login: "/api/auth/login",
+  login: "/api/admin/auth/login",
+  /** B 端无注册，此端点保留但不使用 */
   register: "/api/auth/register",
-  refresh: "/api/auth/refresh",
-  logout: "/api/auth/logout",
-  user: "/api/auth/user",
-  permissions: "/api/auth/permissions",
+  /** B 端无 refresh token，此端点保留但 http.ts 中 401 直接跳登录 */
+  refresh: "/api/admin/auth/refresh",
+  logout: "/api/admin/auth/logout",
+  /** 获取当前管理员信息（含 permissions 字段） */
+  profile: "/api/admin/profile",
+  /** 兼容旧调用，实际 B 端 profile 接口已包含 permissions */
+  user: "/api/admin/profile",
+  permissions: "/api/admin/permissions",
 } as const;
 
 export type { AuthTokens, LoginRequest, User, MenuItem, PermissionsList, RegisterRequest };

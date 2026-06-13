@@ -135,6 +135,13 @@ async function request<T>(
   });
 
   if (res.status === 401 && !isAfterRefresh && path !== AUTH_ENDPOINTS.refresh) {
+    const { tokens } = useAuthStore.getState();
+    // B 端无 Refresh Token（空串），401 直接登出跳登录页
+    if (!tokens?.refreshToken) {
+      useAuthStore.getState().logout();
+      navigateToLogin();
+      throw new HttpError(401, "Unauthorized");
+    }
     const refreshed = await refreshSessionTokens();
     if (refreshed) {
       return request<T>(method, path, body, options, true);
@@ -167,6 +174,8 @@ export const httpClient = {
     request<T>("POST", path, body, options),
   put: <T>(path: string, body?: unknown, options?: RequestOptions) =>
     request<T>("PUT", path, body, options),
+  patch: <T>(path: string, body?: unknown, options?: RequestOptions) =>
+    request<T>("PATCH", path, body, options),
   delete: <T>(path: string, options?: RequestOptions) =>
     request<T>("DELETE", path, undefined, options),
 };

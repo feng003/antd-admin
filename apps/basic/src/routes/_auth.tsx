@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_auth")({
     const path = normalizeAppPath(location.pathname);
     if (path === "/403") return;
 
-    if (!canAccessPath(location.pathname, nextUser?.permissions)) {
+    if (!canAccessPath(location.pathname, nextUser?.permissions, nextUser?.roles)) {
       throw redirect({ to: "/403" });
     }
   },

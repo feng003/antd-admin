@@ -17,7 +17,8 @@ export type AuthUserResponse = z.infer<typeof AuthUserResponseSchema>;
 
 export const AuthTokensSchema = z.object({
   accessToken: z.string().min(1),
-  refreshToken: z.string().min(1),
+  // B 端无 Refresh Token，后端固定返回空串，此处宽松接受
+  refreshToken: z.string().default(""),
 });
 
 export type AuthTokens = z.infer<typeof AuthTokensSchema>;

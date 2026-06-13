@@ -1,0 +1,55 @@
+import { httpClient } from "@/utils/http";
+import { z } from "zod/v4";
+
+const BASE = "/api/admin";
+
+export const CategorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  type: z.string().nullable(),
+  parent_id: z.number().nullable(),
+  sort: z.number(),
+  children: z
+    .array(z.lazy((): z.ZodTypeAny => CategorySchema))
+    .nullable()
+    .default(null),
+});
+
+export type Category = z.infer<typeof CategorySchema>;
+
+export interface CreateCategoryReq {
+  name: string;
+  type: string;
+  parent_id?: number;
+  sort?: number;
+}
+
+export interface UpdateCategoryReq {
+  name?: string;
+  sort?: number;
+}
+
+/**
+ * GET /api/admin/categories
+ * 返回分类树
+ */
+export async function getCategoryTree(type?: string): Promise<Category[]> {
+  const url = type ? `${BASE}/categories?type=${type}` : `${BASE}/categories`;
+  const res = await httpClient.get<any>(url);
+  return res.tree || [];
+}
+
+/** POST /api/admin/categories */
+export async function createCategory(req: CreateCategoryReq): Promise<void> {
+  return httpClient.post(`${BASE}/categories`, req);
+}
+
+/** PUT /api/admin/categories/:id */
+export async function updateCategory(id: number, req: UpdateCategoryReq): Promise<void> {
+  return httpClient.put(`${BASE}/categories/${id}`, req);
+}
+
+/** DELETE /api/admin/categories/:id */
+export async function deleteCategory(id: number): Promise<void> {
+  return httpClient.delete(`${BASE}/categories/${id}`);
+}
