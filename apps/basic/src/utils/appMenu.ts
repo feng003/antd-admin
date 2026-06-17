@@ -197,6 +197,40 @@ export const APP_MENU_TREE: MenuItem[] = [
       },
     ],
   },
+  {
+    id: "g-competition",
+    kind: "group",
+    name: "赛事与动态",
+    path: null,
+    icon: "IconLucideZap",
+    permissions: null,
+    sort: 4,
+    hidden: false,
+    children: [
+      {
+        id: "competitions",
+        kind: "item",
+        name: "赛事管理",
+        path: "/competitions",
+        icon: "IconLucideSparkles",
+        children: null,
+        permissions: ["competition:list"],
+        sort: 0,
+        hidden: false,
+      },
+      {
+        id: "moments",
+        kind: "item",
+        name: "动态管理",
+        path: "/moments",
+        icon: "IconLucideFolderKanban",
+        children: null,
+        permissions: ["moment:list"],
+        sort: 1,
+        hidden: false,
+      },
+    ],
+  },
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -276,6 +310,8 @@ const PATH_PERMISSION_MAP: Record<string, string | null> = {
   "/permissions": "system:permission",
   "/cms/articles": "cms:article",
   "/cms/media": "cms:media",
+  "/competitions": "competition:list",
+  "/moments": "moment:list",
   "/403": null,
   "/users": null, // 保留旧路径（新框架示例页面）
 };

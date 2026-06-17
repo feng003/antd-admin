@@ -32,7 +32,7 @@ function isRegisteredAuth(authorization: string | null): boolean {
 }
 
 export const authHandlers = [
-  http.post("/api/auth/login", async ({ request }) => {
+  http.post("/api/admin/auth/login", async ({ request }) => {
     await withDelay(300);
     let json: unknown;
     try {
@@ -51,7 +51,7 @@ export const authHandlers = [
         refreshToken: GUEST_REFRESH,
       });
     }
-    if (username === "admin" && password === "admin") {
+    if (username === "admin" && password === "Admin@2024") {
       return successWithSchema(AuthTokensSchema, {
         accessToken: "mock-access-token",
         refreshToken: "mock-refresh-token",
@@ -90,7 +90,7 @@ export const authHandlers = [
     });
   }),
 
-  http.post("/api/auth/refresh", async ({ request }) => {
+  http.post("/api/admin/auth/refresh", async ({ request }) => {
     await withDelay(100);
     let json: unknown;
     try {
@@ -123,9 +123,9 @@ export const authHandlers = [
     });
   }),
 
-  http.post("/api/auth/logout", () => successWithNullBody()),
+  http.post("/api/admin/auth/logout", () => successWithNullBody()),
 
-  http.get("/api/auth/user", ({ request }) => {
+  http.get("/api/admin/profile", ({ request }) => {
     const auth = request.headers.get("authorization");
     if (isRegisteredAuth(auth)) {
       const session = mockRegisteredSession;
@@ -146,7 +146,7 @@ export const authHandlers = [
     return successWithSchema(AuthUserResponseSchema, userWithoutPermissions);
   }),
 
-  http.get("/api/auth/permissions", ({ request }) => {
+  http.get("/api/admin/permissions", ({ request }) => {
     const auth = request.headers.get("authorization");
     if (isRegisteredAuth(auth) && mockRegisteredSession) {
       return successWithSchema(PermissionsListSchema, ["user:view"] as string[]);
