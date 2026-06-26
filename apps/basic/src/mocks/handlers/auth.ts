@@ -12,10 +12,10 @@ import {
   AuthUserResponseSchema,
   LoginRequestSchema,
   PermissionsListSchema,
-  RefreshTokenRequestSchema,
   RegisterRequestSchema,
 } from "@/api/schemas";
 
+// MSW mock 中用 Cookie header 模拟 RT（仅供本地开发测试，生产由服务端 HttpOnly Cookie 处理）
 const GUEST_REFRESH = "mock-guest-refresh";
 const REGISTERED_ACCESS = "mock-registered-access";
 const REGISTERED_REFRESH = "mock-registered-refresh";
@@ -48,13 +48,12 @@ export const authHandlers = [
     if (username === "guest" && password === "guest") {
       return successWithSchema(AuthTokensSchema, {
         accessToken: "mock-guest-access",
-        refreshToken: GUEST_REFRESH,
+        // RT 通过 Cookie 下发，此处仅返回 AT
       });
     }
     if (username === "admin" && password === "Admin@2024") {
       return successWithSchema(AuthTokensSchema, {
         accessToken: "mock-access-token",
-        refreshToken: "mock-refresh-token",
       });
     }
     return errorResponse(ERROR_CODES.INVALID_CREDENTIALS, "Invalid username or password");
@@ -86,40 +85,30 @@ export const authHandlers = [
     };
     return successWithSchema(AuthTokensSchema, {
       accessToken: REGISTERED_ACCESS,
-      refreshToken: REGISTERED_REFRESH,
     });
   }),
 
-  http.post("/api/admin/auth/refresh", async ({ request }) => {
-    await withDelay(100);
-    let json: unknown;
-    try {
-      json = await request.json();
-    } catch {
-      return errorResponse(ERROR_CODES.BAD_REQUEST, "Invalid JSON body");
+  // MSW 模拟刷新接口：从 Cookie 读取 RT（msw 环境中 Cookie 由 request.headers 获取）
+  http.post("/api/admin/auth/refresh", ({ request }) => {
+    const cookieHeader = request.headers.get("cookie") ?? "";
+    const rtMatch = cookieHeader.match(/admin_rt=([^;]+)/);
+    const rt = rtMatch?.[1];
+
+    if (!rt) {
+      return errorResponse(ERROR_CODES.UNAUTHORIZED, "Refresh Token not found");
     }
-    const parsed = RefreshTokenRequestSchema.safeParse(json);
-    if (!parsed.success) {
-      return errorResponse(ERROR_CODES.BAD_REQUEST, "refreshToken is required");
-    }
-    if (parsed.data.refreshToken === GUEST_REFRESH) {
+    if (rt === GUEST_REFRESH) {
       return successWithSchema(AuthTokensSchema, {
         accessToken: "mock-guest-access-refreshed",
-        refreshToken: "mock-guest-refresh-refreshed",
       });
     }
-    if (
-      parsed.data.refreshToken === REGISTERED_REFRESH ||
-      parsed.data.refreshToken.startsWith(`${REGISTERED_REFRESH}-`)
-    ) {
+    if (rt === REGISTERED_REFRESH || rt.startsWith(`${REGISTERED_REFRESH}-`)) {
       return successWithSchema(AuthTokensSchema, {
         accessToken: `${REGISTERED_ACCESS}-refreshed`,
-        refreshToken: `${REGISTERED_REFRESH}-refreshed`,
       });
     }
     return successWithSchema(AuthTokensSchema, {
       accessToken: "mock-new-access-token",
-      refreshToken: "mock-new-refresh-token",
     });
   }),
 

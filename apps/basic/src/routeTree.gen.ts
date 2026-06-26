@@ -25,9 +25,11 @@ import { Route as AuthOrdersIndexRouteImport } from "./routes/_auth/orders/index
 import { Route as AuthMomentsIndexRouteImport } from "./routes/_auth/moments/index";
 import { Route as AuthDashboardIndexRouteImport } from "./routes/_auth/dashboard/index";
 import { Route as AuthCompetitionsIndexRouteImport } from "./routes/_auth/competitions/index";
+import { Route as AuthChatIndexRouteImport } from "./routes/_auth/chat/index";
 import { Route as AuthCategoriesIndexRouteImport } from "./routes/_auth/categories/index";
 import { Route as AuthBrandsIndexRouteImport } from "./routes/_auth/brands/index";
 import { Route as AuthAuditLogsIndexRouteImport } from "./routes/_auth/audit-logs/index";
+import { Route as AuthActivitiesIndexRouteImport } from "./routes/_auth/activities/index";
 import { Route as Auth403IndexRouteImport } from "./routes/_auth/403/index";
 import { Route as AuthProductsCreateRouteImport } from "./routes/_auth/products/create";
 import { Route as AuthCmsMediaIndexRouteImport } from "./routes/_auth/cms/media/index";
@@ -113,6 +115,11 @@ const AuthCompetitionsIndexRoute = AuthCompetitionsIndexRouteImport.update({
   path: "/competitions/",
   getParentRoute: () => AuthRoute,
 } as any);
+const AuthChatIndexRoute = AuthChatIndexRouteImport.update({
+  id: "/chat/",
+  path: "/chat/",
+  getParentRoute: () => AuthRoute,
+} as any);
 const AuthCategoriesIndexRoute = AuthCategoriesIndexRouteImport.update({
   id: "/categories/",
   path: "/categories/",
@@ -126,6 +133,11 @@ const AuthBrandsIndexRoute = AuthBrandsIndexRouteImport.update({
 const AuthAuditLogsIndexRoute = AuthAuditLogsIndexRouteImport.update({
   id: "/audit-logs/",
   path: "/audit-logs/",
+  getParentRoute: () => AuthRoute,
+} as any);
+const AuthActivitiesIndexRoute = AuthActivitiesIndexRouteImport.update({
+  id: "/activities/",
+  path: "/activities/",
   getParentRoute: () => AuthRoute,
 } as any);
 const Auth403IndexRoute = Auth403IndexRouteImport.update({
@@ -161,9 +173,11 @@ export interface FileRoutesByFullPath {
   "/register/": typeof RegisterIndexRoute;
   "/products/create": typeof AuthProductsCreateRoute;
   "/403/": typeof Auth403IndexRoute;
+  "/activities/": typeof AuthActivitiesIndexRoute;
   "/audit-logs/": typeof AuthAuditLogsIndexRoute;
   "/brands/": typeof AuthBrandsIndexRoute;
   "/categories/": typeof AuthCategoriesIndexRoute;
+  "/chat/": typeof AuthChatIndexRoute;
   "/competitions/": typeof AuthCompetitionsIndexRoute;
   "/dashboard/": typeof AuthDashboardIndexRoute;
   "/moments/": typeof AuthMomentsIndexRoute;
@@ -186,9 +200,11 @@ export interface FileRoutesByTo {
   "/register": typeof RegisterIndexRoute;
   "/products/create": typeof AuthProductsCreateRoute;
   "/403": typeof Auth403IndexRoute;
+  "/activities": typeof AuthActivitiesIndexRoute;
   "/audit-logs": typeof AuthAuditLogsIndexRoute;
   "/brands": typeof AuthBrandsIndexRoute;
   "/categories": typeof AuthCategoriesIndexRoute;
+  "/chat": typeof AuthChatIndexRoute;
   "/competitions": typeof AuthCompetitionsIndexRoute;
   "/dashboard": typeof AuthDashboardIndexRoute;
   "/moments": typeof AuthMomentsIndexRoute;
@@ -213,9 +229,11 @@ export interface FileRoutesById {
   "/register/": typeof RegisterIndexRoute;
   "/_auth/products/create": typeof AuthProductsCreateRoute;
   "/_auth/403/": typeof Auth403IndexRoute;
+  "/_auth/activities/": typeof AuthActivitiesIndexRoute;
   "/_auth/audit-logs/": typeof AuthAuditLogsIndexRoute;
   "/_auth/brands/": typeof AuthBrandsIndexRoute;
   "/_auth/categories/": typeof AuthCategoriesIndexRoute;
+  "/_auth/chat/": typeof AuthChatIndexRoute;
   "/_auth/competitions/": typeof AuthCompetitionsIndexRoute;
   "/_auth/dashboard/": typeof AuthDashboardIndexRoute;
   "/_auth/moments/": typeof AuthMomentsIndexRoute;
@@ -240,9 +258,11 @@ export interface FileRouteTypes {
     | "/register/"
     | "/products/create"
     | "/403/"
+    | "/activities/"
     | "/audit-logs/"
     | "/brands/"
     | "/categories/"
+    | "/chat/"
     | "/competitions/"
     | "/dashboard/"
     | "/moments/"
@@ -265,9 +285,11 @@ export interface FileRouteTypes {
     | "/register"
     | "/products/create"
     | "/403"
+    | "/activities"
     | "/audit-logs"
     | "/brands"
     | "/categories"
+    | "/chat"
     | "/competitions"
     | "/dashboard"
     | "/moments"
@@ -291,9 +313,11 @@ export interface FileRouteTypes {
     | "/register/"
     | "/_auth/products/create"
     | "/_auth/403/"
+    | "/_auth/activities/"
     | "/_auth/audit-logs/"
     | "/_auth/brands/"
     | "/_auth/categories/"
+    | "/_auth/chat/"
     | "/_auth/competitions/"
     | "/_auth/dashboard/"
     | "/_auth/moments/"
@@ -432,6 +456,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthCompetitionsIndexRouteImport;
       parentRoute: typeof AuthRoute;
     };
+    "/_auth/chat/": {
+      id: "/_auth/chat/";
+      path: "/chat";
+      fullPath: "/chat/";
+      preLoaderRoute: typeof AuthChatIndexRouteImport;
+      parentRoute: typeof AuthRoute;
+    };
     "/_auth/categories/": {
       id: "/_auth/categories/";
       path: "/categories";
@@ -451,6 +482,13 @@ declare module "@tanstack/react-router" {
       path: "/audit-logs";
       fullPath: "/audit-logs/";
       preLoaderRoute: typeof AuthAuditLogsIndexRouteImport;
+      parentRoute: typeof AuthRoute;
+    };
+    "/_auth/activities/": {
+      id: "/_auth/activities/";
+      path: "/activities";
+      fullPath: "/activities/";
+      preLoaderRoute: typeof AuthActivitiesIndexRouteImport;
       parentRoute: typeof AuthRoute;
     };
     "/_auth/403/": {
@@ -494,9 +532,11 @@ declare module "@tanstack/react-router" {
 interface AuthRouteChildren {
   AuthProductsCreateRoute: typeof AuthProductsCreateRoute;
   Auth403IndexRoute: typeof Auth403IndexRoute;
+  AuthActivitiesIndexRoute: typeof AuthActivitiesIndexRoute;
   AuthAuditLogsIndexRoute: typeof AuthAuditLogsIndexRoute;
   AuthBrandsIndexRoute: typeof AuthBrandsIndexRoute;
   AuthCategoriesIndexRoute: typeof AuthCategoriesIndexRoute;
+  AuthChatIndexRoute: typeof AuthChatIndexRoute;
   AuthCompetitionsIndexRoute: typeof AuthCompetitionsIndexRoute;
   AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute;
   AuthMomentsIndexRoute: typeof AuthMomentsIndexRoute;
@@ -516,9 +556,11 @@ interface AuthRouteChildren {
 const AuthRouteChildren: AuthRouteChildren = {
   AuthProductsCreateRoute: AuthProductsCreateRoute,
   Auth403IndexRoute: Auth403IndexRoute,
+  AuthActivitiesIndexRoute: AuthActivitiesIndexRoute,
   AuthAuditLogsIndexRoute: AuthAuditLogsIndexRoute,
   AuthBrandsIndexRoute: AuthBrandsIndexRoute,
   AuthCategoriesIndexRoute: AuthCategoriesIndexRoute,
+  AuthChatIndexRoute: AuthChatIndexRoute,
   AuthCompetitionsIndexRoute: AuthCompetitionsIndexRoute,
   AuthDashboardIndexRoute: AuthDashboardIndexRoute,
   AuthMomentsIndexRoute: AuthMomentsIndexRoute,

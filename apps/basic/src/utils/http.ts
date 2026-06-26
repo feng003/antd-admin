@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "./constants";
 import { AUTH_ENDPOINTS } from "@/api/auth";
-import { AuthTokensSchema, RefreshTokenRequestSchema } from "@/api/schemas";
+import { AuthTokensSchema } from "@/api/schemas";
 import { getAccessToken, useAuthStore } from "@/stores/auth";
 
 export class ApiError extends Error {
@@ -37,23 +37,21 @@ export function installHttpRouter(router: HttpRouter): void {
 
 let inflightRefresh: Promise<boolean> | null = null;
 
+/**
+ * 使用 HttpOnly Cookie 中的 Refresh Token 换取新的 Access Token。
+ * 浏览器通过 credentials: 'include' 自动携带 Cookie，前端无需读取/传递 RT。
+ */
 async function doRefreshSessionTokens(): Promise<boolean> {
-  const { tokens, setTokens, logout } = useAuthStore.getState();
-  const refreshToken = tokens?.refreshToken;
-  if (!refreshToken) {
-    logout();
-    navigateToLogin();
-    return false;
-  }
-
-  const body = RefreshTokenRequestSchema.parse({ refreshToken });
+  const { setTokens, logout } = useAuthStore.getState();
   const url = buildUrl(AUTH_ENDPOINTS.refresh);
 
   try {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+      // credentials: 'include' 确保浏览器发送 HttpOnly Cookie
+      credentials: "include",
+      // 无需 body：RT 在 Cookie 中自动携带
     });
 
     if (!res.ok) {
@@ -131,17 +129,15 @@ async function request<T>(
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
+    // credentials: 'include' 使浏览器在所有请求中携带 HttpOnly Cookie
+    // （刷新端点依赖此行为；普通接口携带无妨，后端仅在刷新接口读取 Cookie）
+    credentials: "include",
     ...options,
   });
 
   if (res.status === 401 && !isAfterRefresh && path !== AUTH_ENDPOINTS.refresh) {
-    const { tokens } = useAuthStore.getState();
-    // B 端无 Refresh Token（空串），401 直接登出跳登录页
-    if (!tokens?.refreshToken) {
-      useAuthStore.getState().logout();
-      navigateToLogin();
-      throw new HttpError(401, "Unauthorized");
-    }
+    // AT 过期 → 尝试用 Cookie 中的 RT 静默刷新
+    // 若刷新失败（RT 不存在/过期），doRefreshSessionTokens 内部会 logout + 跳登录页
     const refreshed = await refreshSessionTokens();
     if (refreshed) {
       return request<T>(method, path, body, options, true);

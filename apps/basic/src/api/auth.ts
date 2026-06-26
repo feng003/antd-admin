@@ -12,7 +12,7 @@ export const AUTH_ENDPOINTS = {
   login: "/api/admin/auth/login",
   /** B 端无注册，此端点保留但不使用 */
   register: "/api/auth/register",
-  /** B 端无 refresh token，此端点保留但 http.ts 中 401 直接跳登录 */
+  /** B 端 Refresh Token 换新 Access Token 端点（AT 过期时自动调用） */
   refresh: "/api/admin/auth/refresh",
   logout: "/api/admin/auth/logout",
   /** 获取当前管理员信息（含 permissions 字段） */

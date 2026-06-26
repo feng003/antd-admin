@@ -15,19 +15,14 @@ export type User = z.infer<typeof UserSchema>;
 export const AuthUserResponseSchema = UserSchema.omit({ permissions: true });
 export type AuthUserResponse = z.infer<typeof AuthUserResponseSchema>;
 
+// AuthTokensSchema: Refresh Token 已改为 HttpOnly Cookie，此处仅含 Access Token
 export const AuthTokensSchema = z.object({
   accessToken: z.string().min(1),
-  // B 端无 Refresh Token，后端固定返回空串，此处宽松接受
-  refreshToken: z.string().default(""),
+  // Access Token 过期 Unix 时间戳（秒），可用于前端计划提前刷新
+  accessTokenExpiresAt: z.number().optional(),
 });
 
 export type AuthTokens = z.infer<typeof AuthTokensSchema>;
-
-export const RefreshTokenRequestSchema = z.object({
-  refreshToken: z.string().min(1),
-});
-
-export type RefreshTokenRequest = z.infer<typeof RefreshTokenRequestSchema>;
 
 export const LoginRequestSchema = z.object({
   username: z.string().min(1),
@@ -154,3 +149,122 @@ export type CreateUserRequest = z.infer<typeof CreateUserRequestSchema>;
 export const UpdateUserRequestSchema = CreateUserRequestSchema.partial();
 
 export type UpdateUserRequest = z.infer<typeof UpdateUserRequestSchema>;
+
+// ─────────────────────────────────────────────
+// Activity (Sports) Schemas
+// ─────────────────────────────────────────────
+
+export const ActivitySessionSchema = z.object({
+  id: z.number().int(),
+  file_name: z.string(),
+  activity_at: z.string(),
+  sport: z.string(),
+  duration_sec: z.number(),
+  distance_m: z.number(),
+  calories_kcal: z.number().int(),
+  avg_heart_rate_bpm: z.number().int(),
+  max_heart_rate_bpm: z.number().int(),
+  avg_speed_kmh: z.number(),
+  floors: z.number().int(),
+  records_count: z.number().int(),
+});
+
+export type ActivitySession = z.infer<typeof ActivitySessionSchema>;
+
+export const SessionStatsPointSchema = z.object({
+  period: z.string(),
+  count: z.number().int(),
+  total_distance_m: z.number(),
+  total_duration_sec: z.number(),
+  avg_heart_rate: z.number().int(),
+});
+
+export type SessionStatsPoint = z.infer<typeof SessionStatsPointSchema>;
+
+export const ActivityRecordPointSchema = z.object({
+  timestamp: z.string(),
+  heart_rate_bpm: z.number().int(),
+  speed_kmh: z.number(),
+  altitude_m: z.number(),
+});
+
+export type ActivityRecordPoint = z.infer<typeof ActivityRecordPointSchema>;
+
+// ─────────────────────────────────────────────
+// Chat Schemas
+// ─────────────────────────────────────────────
+
+export const ChatStatsSchema = z.object({
+  total: z.number().int(),
+  total_waiting: z.number().int(),
+  total_active: z.number().int(),
+  total_resolved: z.number().int(),
+  total_messages: z.number().int(),
+});
+
+export type ChatStats = z.infer<typeof ChatStatsSchema>;
+
+export const ChatConversationSchema = z.object({
+  id: z.number().int(),
+  user_id: z.number().int(),
+  user_name: z.string().optional(),
+  user_avatar: z.string().optional(),
+  assigned_agent_id: z.number().int().nullable().optional(),
+  status: z.enum(["waiting", "active", "resolved"]),
+  priority: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  resolved_at: z.string().nullable().optional(),
+  last_message_at: z.string(),
+});
+
+export type ChatConversation = z.infer<typeof ChatConversationSchema>;
+
+export const ChatMessageSchema = z.object({
+  id: z.number().int(),
+  conversation_id: z.number().int(),
+  sender_type: z.enum(["user", "agent", "system"]),
+  sender_id: z.number().int(),
+  content: z.string(),
+  msg_type: z.enum(["text", "image", "file", "event"]),
+  is_read: z.boolean(),
+  created_at: z.string(),
+});
+
+export type ChatMessage = z.infer<typeof ChatMessageSchema>;
+
+// C2C 单聊 / 群聊（管理员视角）
+export const C2CConversationSchema = z.object({
+  id: z.number().int(),
+  type: z.number().int(), // 1=单聊 2=群聊
+  type_label: z.enum(["direct", "group"]),
+  name: z.string(),
+  member_count: z.number().int(),
+  last_msg_at: z.string().nullable().optional(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export type C2CConversation = z.infer<typeof C2CConversationSchema>;
+
+// C2C 消息（管理员视角）
+export const C2CMessageSchema = z.object({
+  id: z.number().int(),
+  conversation_id: z.number().int(),
+  sender_id: z.number().int(),
+  msg_type: z.string(),
+  content: z.string(),
+  status: z.number().int(), // 1=已送达 2=已读
+  created_at: z.string(),
+});
+
+export type C2CMessage = z.infer<typeof C2CMessageSchema>;
+
+// C2C 成员（管理员视角）
+export const C2CMemberSchema = z.object({
+  user_id: z.number().int(),
+  name: z.string(),
+  role: z.number().int(), // 1=群主 2=管理员 3=普通成员
+});
+
+export type C2CMember = z.infer<typeof C2CMemberSchema>;

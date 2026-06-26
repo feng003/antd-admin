@@ -15,12 +15,13 @@ import {
   Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { APP_BRAND_NAME, APP_FAVICON_SRC } from "@/utils/constants";
+import { APP_BRAND_NAME, APP_FAVICON_SRC, API_BASE_URL } from "@/utils/constants";
 import { useAuthStore } from "@/stores/auth";
 import { useSettingsStore } from "@/stores/settings";
 import type { MenuItem as MenuItemType } from "@/api/schemas";
 import type { MenuProps } from "antd";
 import { UserMenu } from "../UserMenu";
+import { AUTH_ENDPOINTS } from "@/api/auth";
 import "./index.css";
 
 const { Sider } = Layout;
@@ -192,8 +193,15 @@ export function Sidebar() {
         if (isMobile) {
           setSidebarCollapsed(false);
         }
-        logout();
-        void navigate({ to: "/login" });
+        // 先清服务端 RT Cookie，再清本地 store
+        // fire-and-forget：即使请求失败，本地 store 仍然清除（最坏情况 RT Cookie 自然过期）
+        void fetch(`${API_BASE_URL}${AUTH_ENDPOINTS.logout}`, {
+          method: "POST",
+          credentials: "include",
+        }).finally(() => {
+          logout();
+          void navigate({ to: "/login" });
+        });
       },
     },
   ];
