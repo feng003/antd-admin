@@ -24,14 +24,15 @@ export interface ListAuditLogsReq {
   operator_name?: string;
   action?: string;
   resource_type?: string;
+  [key: string]: string | number | null | undefined;
 }
 
 export interface ListAuditLogsRes {
-  items: AuditLog[];
+  list: AuditLog[];
   total: number;
 }
 
 /** GET /api/admin/sys-audit-logs */
 export async function getAuditLogs(req: ListAuditLogsReq): Promise<ListAuditLogsRes> {
-  return httpClient.get(`${BASE}/sys-audit-logs`, { params: req as any });
+  return httpClient.get(`${BASE}/sys-audit-logs`, { params: req });
 }

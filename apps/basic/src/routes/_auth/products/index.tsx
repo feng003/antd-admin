@@ -108,7 +108,10 @@ function ProductsPage() {
       key: "status",
       width: 90,
       render: (status: number) => {
-        const s = STATUS_MAP[status] ?? { label: String(status), color: "default" };
+        const s = STATUS_MAP[status] ?? {
+          label: String(status),
+          color: "default",
+        };
         return (
           <Badge status={s.color as "success" | "warning" | "error" | "default"} text={s.label} />
         );
@@ -133,7 +136,7 @@ function ProductsPage() {
       dataIndex: "created_at",
       key: "created_at",
       width: 170,
-      render: (v: number) => new Date(v * 1000).toLocaleString("zh-CN"),
+      render: (v: string) => new Date(v).toLocaleString("zh-CN"),
     },
     {
       title: "操作",
@@ -147,8 +150,11 @@ function ProductsPage() {
               {
                 key: "view",
                 icon: <Eye size={token.fontSize} />,
-                label: "查看详情",
-                onClick: () => console.log("navigate to product", record.id),
+                label: (
+                  <Link to="/products/$id/edit" params={{ id: record.id.toString() }}>
+                    查看详情
+                  </Link>
+                ),
               },
               {
                 key: "edit",
@@ -215,7 +221,11 @@ function ProductsPage() {
             showTotal: (total) => `共 ${total} 条`,
             onChange: (page, pageSize) => {
               void navigate({
-                search: { ...search, page, page_size: pageSize ?? search.page_size },
+                search: {
+                  ...search,
+                  page,
+                  page_size: pageSize ?? search.page_size,
+                },
               });
             },
           }

@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button, App, Dropdown, theme, Badge, Flex, Form, Input, Select, Modal, Tag } from "antd";
 import type { TablePaginationConfig } from "antd/es/table/interface";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MoreVertical, Trash2, Pencil, UserCog } from "lucide-react";
 import { z } from "zod/v4";
 import { DataTable } from "@/components/DataTable";
@@ -114,15 +114,17 @@ function EditSysUserModal({ open, record, onCancel, onSuccess }: EditModalProps)
     onError: (err) => void message.error(err instanceof Error ? err.message : "更新失败"),
   });
 
-  // Populate form when record changes
-  if (open && record && form.getFieldValue("real_name") === undefined) {
-    form.setFieldsValue({
-      real_name: record.real_name ?? "",
-      email: record.email ?? "",
-      phone: record.phone ?? "",
-      status: record.status,
-    });
-  }
+  // Populate form when modal opens or record changes (#6: moved to useEffect)
+  useEffect(() => {
+    if (open && record) {
+      form.setFieldsValue({
+        real_name: record.real_name ?? "",
+        email: record.email ?? "",
+        phone: record.phone ?? "",
+        status: record.status,
+      });
+    }
+  }, [open, record, form]);
 
   return (
     <BaseFormModal
@@ -185,19 +187,20 @@ function AssignRolesModal({ open, user, onCancel, onSuccess }: AssignRolesModalP
     enabled: open && user != null,
   });
 
-  // 当当前角色加载完成时，初始化已选项（只初始化一次）
+  // 当当前角色加载完成时，初始化已选项（#6: moved to useEffect）
   const initializedRef = useRef(false);
-  if (open && currentRolesData && !initializedRef.current) {
-    const ids = (currentRolesData.list ?? []).map((r) => r.id);
-    if (ids.length > 0 || selectedKeys.length === 0) {
-      setSelectedKeys(ids);
-      initializedRef.current = true;
+  useEffect(() => {
+    if (open && currentRolesData && !initializedRef.current) {
+      const ids = (currentRolesData.list ?? []).map((r) => r.id);
+      if (ids.length > 0 || selectedKeys.length === 0) {
+        setSelectedKeys(ids);
+        initializedRef.current = true;
+      }
     }
-  }
-  // 关闭时重置初始化标记
-  if (!open) {
-    initializedRef.current = false;
-  }
+    if (!open) {
+      initializedRef.current = false;
+    }
+  }, [open, currentRolesData, selectedKeys.length]);
 
   const allRoles = rolesData?.list ?? [];
 
@@ -238,7 +241,11 @@ function AssignRolesModal({ open, user, onCancel, onSuccess }: AssignRolesModalP
           <Tag
             key={r.id}
             color={selectedKeys.includes(r.id) ? "blue" : "default"}
-            style={{ cursor: "pointer", userSelect: "none", padding: "2px 10px" }}
+            style={{
+              cursor: "pointer",
+              userSelect: "none",
+              padding: "2px 10px",
+            }}
             onClick={() =>
               setSelectedKeys((prev) =>
                 prev.includes(r.id) ? prev.filter((k) => k !== r.id) : [...prev, r.id],
@@ -411,7 +418,11 @@ function SysUsersPage() {
             showTotal: (total) => `共 ${total} 条`,
             onChange: (page, pageSize) => {
               void navigate({
-                search: { ...search, page, page_size: pageSize ?? search.page_size },
+                search: {
+                  ...search,
+                  page,
+                  page_size: pageSize ?? search.page_size,
+                },
               });
             },
           }

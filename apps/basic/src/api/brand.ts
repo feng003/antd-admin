@@ -6,7 +6,7 @@ export interface Brand {
   logo: string;
   description: string;
   sort_order: number;
-  created_at: number;
+  created_at: string; // ISO 8601 字符串（与后端 pgx 默认一致）
 }
 
 export interface CreateBrandReq {

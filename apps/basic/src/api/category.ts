@@ -35,8 +35,10 @@ export interface UpdateCategoryReq {
  */
 export async function getCategoryTree(type?: string): Promise<Category[]> {
   const url = type ? `${BASE}/categories?type=${type}` : `${BASE}/categories`;
-  const res = await httpClient.get<any>(url);
-  return res.tree || [];
+  const res = await httpClient.get<{ tree?: Category[] } | Category[]>(url);
+  // 后端可能返回 { tree: [...] } 或直接返回数组，兼容两种格式
+  if (Array.isArray(res)) return res;
+  return res.tree ?? [];
 }
 
 /** POST /api/admin/categories */

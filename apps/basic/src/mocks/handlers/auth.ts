@@ -9,7 +9,7 @@ import {
 } from "../createHandler";
 import {
   AuthTokensSchema,
-  AuthUserResponseSchema,
+  UserSchema,
   LoginRequestSchema,
   PermissionsListSchema,
   RegisterRequestSchema,
@@ -119,20 +119,23 @@ export const authHandlers = [
     if (isRegisteredAuth(auth)) {
       const session = mockRegisteredSession;
       if (session) {
-        return successWithSchema(AuthUserResponseSchema, {
+        return successWithSchema(UserSchema, {
           id: "reg-mock",
           username: session.username,
           avatar: null,
           email: session.email,
           roles: ["editor"],
+          permissions: ["user:view"],
         });
       }
     }
     if (isGuestAuth(auth)) {
-      return successWithSchema(AuthUserResponseSchema, GUEST_AUTH_USER_BODY);
+      return successWithSchema(UserSchema, {
+        ...GUEST_AUTH_USER_BODY,
+        permissions: [],
+      });
     }
-    const { permissions: _permissions, ...userWithoutPermissions } = MOCK_USERS[0]!;
-    return successWithSchema(AuthUserResponseSchema, userWithoutPermissions);
+    return successWithSchema(UserSchema, MOCK_USERS[0]!);
   }),
 
   http.get("/api/admin/permissions", ({ request }) => {

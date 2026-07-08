@@ -34,7 +34,7 @@ function CategoriesPage() {
       queryClient.invalidateQueries({ queryKey: ["categoryTree"] }); // product form usage
       handleCloseModal();
     },
-    onError: (err: any) => message.error(err.message || "创建失败"),
+    onError: (err: unknown) => message.error(err instanceof Error ? err.message : "创建失败"),
   });
 
   const updateMutation = useMutation({
@@ -45,7 +45,7 @@ function CategoriesPage() {
       queryClient.invalidateQueries({ queryKey: ["categoryTree"] });
       handleCloseModal();
     },
-    onError: (err: any) => message.error(err.message || "更新失败"),
+    onError: (err: unknown) => message.error(err instanceof Error ? err.message : "更新失败"),
   });
 
   const deleteMutation = useMutation({
@@ -55,7 +55,7 @@ function CategoriesPage() {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       queryClient.invalidateQueries({ queryKey: ["categoryTree"] });
     },
-    onError: (err: any) => message.error(err.message || "删除失败"),
+    onError: (err: unknown) => message.error(err instanceof Error ? err.message : "删除失败"),
   });
 
   const handleOpenModal = (category?: Category, parent?: Category) => {

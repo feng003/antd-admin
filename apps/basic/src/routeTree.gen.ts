@@ -32,6 +32,7 @@ import { Route as AuthAuditLogsIndexRouteImport } from './routes/_auth/audit-log
 import { Route as AuthActivitiesIndexRouteImport } from './routes/_auth/activities/index'
 import { Route as Auth403IndexRouteImport } from './routes/_auth/403/index'
 import { Route as AuthProductsCreateRouteImport } from './routes/_auth/products/create'
+import { Route as AuthOrdersOrderNoRouteImport } from './routes/_auth/orders/$orderNo'
 import { Route as AuthCmsMediaIndexRouteImport } from './routes/_auth/cms/media/index'
 import { Route as AuthCmsArticlesIndexRouteImport } from './routes/_auth/cms/articles/index'
 import { Route as AuthProductsIdEditRouteImport } from './routes/_auth/products/$id.edit'
@@ -150,6 +151,11 @@ const AuthProductsCreateRoute = AuthProductsCreateRouteImport.update({
   path: '/products/create',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthOrdersOrderNoRoute = AuthOrdersOrderNoRouteImport.update({
+  id: '/orders/$orderNo',
+  path: '/orders/$orderNo',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthCmsMediaIndexRoute = AuthCmsMediaIndexRouteImport.update({
   id: '/cms/media/',
   path: '/cms/media/',
@@ -171,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/404/': typeof R404IndexRoute
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/orders/$orderNo': typeof AuthOrdersOrderNoRoute
   '/products/create': typeof AuthProductsCreateRoute
   '/403/': typeof Auth403IndexRoute
   '/activities/': typeof AuthActivitiesIndexRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByTo {
   '/404': typeof R404IndexRoute
   '/login': typeof LoginIndexRoute
   '/register': typeof RegisterIndexRoute
+  '/orders/$orderNo': typeof AuthOrdersOrderNoRoute
   '/products/create': typeof AuthProductsCreateRoute
   '/403': typeof Auth403IndexRoute
   '/activities': typeof AuthActivitiesIndexRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/404/': typeof R404IndexRoute
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
+  '/_auth/orders/$orderNo': typeof AuthOrdersOrderNoRoute
   '/_auth/products/create': typeof AuthProductsCreateRoute
   '/_auth/403/': typeof Auth403IndexRoute
   '/_auth/activities/': typeof AuthActivitiesIndexRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/404/'
     | '/login/'
     | '/register/'
+    | '/orders/$orderNo'
     | '/products/create'
     | '/403/'
     | '/activities/'
@@ -283,6 +293,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/login'
     | '/register'
+    | '/orders/$orderNo'
     | '/products/create'
     | '/403'
     | '/activities'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/404/'
     | '/login/'
     | '/register/'
+    | '/_auth/orders/$orderNo'
     | '/_auth/products/create'
     | '/_auth/403/'
     | '/_auth/activities/'
@@ -505,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProductsCreateRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/orders/$orderNo': {
+      id: '/_auth/orders/$orderNo'
+      path: '/orders/$orderNo'
+      fullPath: '/orders/$orderNo'
+      preLoaderRoute: typeof AuthOrdersOrderNoRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/cms/media/': {
       id: '/_auth/cms/media/'
       path: '/cms/media'
@@ -530,6 +549,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
+  AuthOrdersOrderNoRoute: typeof AuthOrdersOrderNoRoute
   AuthProductsCreateRoute: typeof AuthProductsCreateRoute
   Auth403IndexRoute: typeof Auth403IndexRoute
   AuthActivitiesIndexRoute: typeof AuthActivitiesIndexRoute
@@ -554,6 +574,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthOrdersOrderNoRoute: AuthOrdersOrderNoRoute,
   AuthProductsCreateRoute: AuthProductsCreateRoute,
   Auth403IndexRoute: Auth403IndexRoute,
   AuthActivitiesIndexRoute: AuthActivitiesIndexRoute,

@@ -10,7 +10,7 @@ type MutationLifecycle<TValues> = {
 export type CrudToastLifecycles<TCreate, TUpdate> = {
   createLifecycle?: MutationLifecycle<TCreate>;
   updateLifecycle?: MutationLifecycle<TUpdate>;
-  deleteLifecycle?: MutationLifecycle<string>;
+  deleteLifecycle?: MutationLifecycle<string | number>;
 };
 
 export function useCrudToasts<TCreate, TUpdate>(options: {
@@ -32,7 +32,10 @@ export function useCrudToasts<TCreate, TUpdate>(options: {
     () => ({
       createLifecycle: {
         onSuccess: () => {
-          message.success({ content: "Created successfully", key: keys.create });
+          message.success({
+            content: "Created successfully",
+            key: keys.create,
+          });
         },
         onError: () => {
           message.error({ content: "Create failed", key: keys.create });
@@ -40,10 +43,17 @@ export function useCrudToasts<TCreate, TUpdate>(options: {
       },
       updateLifecycle: {
         onMutate: () => {
-          message.loading({ content: "Updating…", key: keys.update, duration: 0 });
+          message.loading({
+            content: "Updating…",
+            key: keys.update,
+            duration: 0,
+          });
         },
         onSuccess: () => {
-          message.success({ content: "Updated successfully", key: keys.update });
+          message.success({
+            content: "Updated successfully",
+            key: keys.update,
+          });
         },
         onError: () => {
           message.error({ content: "Update failed", key: keys.update });
@@ -51,10 +61,17 @@ export function useCrudToasts<TCreate, TUpdate>(options: {
       },
       deleteLifecycle: {
         onMutate: () => {
-          message.loading({ content: "Deleting…", key: keys.delete, duration: 0 });
+          message.loading({
+            content: "Deleting…",
+            key: keys.delete,
+            duration: 0,
+          });
         },
         onSuccess: () => {
-          message.success({ content: "Deleted successfully", key: keys.delete });
+          message.success({
+            content: "Deleted successfully",
+            key: keys.delete,
+          });
         },
         onError: () => {
           message.error({ content: "Delete failed", key: keys.delete });

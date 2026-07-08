@@ -1,5 +1,5 @@
 import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
-import { Form, Input, Button, Card, App, theme, Typography, Flex, Checkbox, Space } from "antd";
+import { Form, Input, Button, Card, App, theme, Typography, Flex, Space } from "antd";
 import type { CSSProperties } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { httpClient } from "@/utils/http";
@@ -132,7 +132,6 @@ function LoginPage() {
               onFinish={(values) => {
                 loginMutation.mutate(LoginRequestSchema.parse(values));
               }}
-              initialValues={{ username: "admin", password: "admin", remember: true }}
               requiredMark={false}
             >
               <Form.Item
@@ -157,24 +156,6 @@ function LoginPage() {
                 />
               </Form.Item>
 
-              <Flex
-                justify="space-between"
-                align="center"
-                style={{ marginBottom: token.marginLG }}
-                wrap="wrap"
-              >
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Auto login</Checkbox>
-                </Form.Item>
-                <Typography.Link
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  style={{ fontSize: token.fontSizeSM }}
-                >
-                  Forgot password?
-                </Typography.Link>
-              </Flex>
-
               <Form.Item style={{ marginBottom: 0, marginTop: token.marginLG }}>
                 <Button
                   type="primary"
@@ -187,14 +168,16 @@ function LoginPage() {
                 </Button>
               </Form.Item>
             </Form>
-            <Flex justify="center" style={{ marginTop: token.margin }}>
-              <Typography.Text type="secondary">
-                Don&apos;t have an account?{" "}
-                <Link to="/register" style={{ color: token.colorPrimary }}>
-                  Sign up
-                </Link>
-              </Typography.Text>
-            </Flex>
+            {import.meta.env.DEV ? (
+              <Flex justify="center" style={{ marginTop: token.margin }}>
+                <Typography.Text type="secondary">
+                  Don&apos;t have an account?{" "}
+                  <Link to="/register" style={{ color: token.colorPrimary }}>
+                    Sign up
+                  </Link>
+                </Typography.Text>
+              </Flex>
+            ) : null}
           </Card>
         </Flex>
         <Flex

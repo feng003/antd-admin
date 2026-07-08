@@ -7,7 +7,7 @@ type MutationLifecycle<TValues> = {
   onError?: (values: TValues) => void;
 };
 
-export type ResourceListData<TItem extends { id: string }> = {
+export type ResourceListData<TItem extends { id: string | number }> = {
   list: readonly TItem[];
   total: number;
 };
@@ -18,29 +18,29 @@ type OptimisticFlags = {
 };
 
 type UseResourceCRUDOptions<
-  TListData extends ResourceListData<{ id: string }>,
+  TListData extends ResourceListData<{ id: string | number }>,
   TCreateValues,
-  TUpdateValues extends { id: string },
+  TUpdateValues extends { id: string | number },
 > = {
   queryKey: readonly unknown[];
   invalidateKey?: readonly unknown[];
   queryFn: () => Promise<unknown>;
   select: (raw: unknown) => TListData;
   createFn: (values: TCreateValues) => Promise<unknown>;
-  updateFn: (values: TUpdateValues) => Promise<unknown>;
-  deleteFn: (id: string) => Promise<unknown>;
+  updateFn?: (values: TUpdateValues) => Promise<unknown>;
+  deleteFn?: (id: string | number) => Promise<unknown>;
   createLifecycle?: MutationLifecycle<TCreateValues>;
   updateLifecycle?: MutationLifecycle<TUpdateValues>;
-  deleteLifecycle?: MutationLifecycle<string>;
+  deleteLifecycle?: MutationLifecycle<string | number>;
   optimistic?: OptimisticFlags;
 };
 
 export type ResourceCRUDResult<TListData, TCreateValues, TUpdateValues> = {
   data: TListData | undefined;
   isLoading: boolean;
-  createMutation: UseMutationResult<unknown, Error, TCreateValues>;
-  updateMutation: UseMutationResult<unknown, Error, TUpdateValues>;
-  deleteMutation: UseMutationResult<unknown, Error, string>;
+  createMutation: UseMutationResult<unknown, Error, TCreateValues> | undefined;
+  updateMutation: UseMutationResult<unknown, Error, TUpdateValues> | undefined;
+  deleteMutation: UseMutationResult<unknown, Error, string | number> | undefined;
 };
 
 /** @deprecated Prefer `ResourceCRUDResult` — alias kept for plan wording compatibility */
@@ -53,8 +53,8 @@ export type CrudResult<TListData, TCreateValues, TUpdateValues> = ResourceCRUDRe
 type RollbackCtx<TListData> = { snapshot: TListData | undefined };
 
 export function applyOptimisticListUpdate<
-  TItem extends { id: string },
-  TUpdate extends { id: string },
+  TItem extends { id: string | number },
+  TUpdate extends { id: string | number },
 >(data: ResourceListData<TItem>, values: TUpdate): { list: TItem[]; total: number } {
   const { id, ...patch } = values as TUpdate & Record<string, unknown>;
   return {
@@ -65,9 +65,9 @@ export function applyOptimisticListUpdate<
   };
 }
 
-export function applyOptimisticListDelete<TItem extends { id: string }>(
+export function applyOptimisticListDelete<TItem extends { id: string | number }>(
   data: ResourceListData<TItem>,
-  id: string,
+  id: string | number,
 ): { list: TItem[]; total: number } {
   return {
     list: data.list.filter((row) => row.id !== id),
@@ -76,9 +76,9 @@ export function applyOptimisticListDelete<TItem extends { id: string }>(
 }
 
 export function useResourceCRUD<
-  TListData extends ResourceListData<{ id: string }>,
+  TListData extends ResourceListData<{ id: string | number }>,
   TCreateValues,
-  TUpdateValues extends { id: string },
+  TUpdateValues extends { id: string | number },
 >(
   options: UseResourceCRUDOptions<TListData, TCreateValues, TUpdateValues>,
 ): ResourceCRUDResult<TListData, TCreateValues, TUpdateValues> {
@@ -107,67 +107,71 @@ export function useResourceCRUD<
     },
   });
 
-  const updateMutation = useMutation({
-    mutationFn: options.updateFn,
-    onMutate: async (values): Promise<RollbackCtx<TListData>> => {
-      await queryClient.cancelQueries({ queryKey });
-      const previous = queryClient.getQueryData<TListData>(queryKey);
-      const applied = Boolean(opt?.update && previous);
-      if (applied) {
-        queryClient.setQueryData<TListData>(
-          queryKey,
-          applyOptimisticListUpdate(
-            previous as ResourceListData<{ id: string }>,
-            values as { id: string } & Record<string, unknown>,
-          ) as unknown as TListData,
-        );
-      }
-      options.updateLifecycle?.onMutate?.(values);
-      return { snapshot: applied ? previous : undefined };
-    },
-    onSuccess: (_data, values) => {
-      void queryClient.invalidateQueries({ queryKey: invalidateKey });
-      options.updateLifecycle?.onSuccess?.(values);
-    },
-    onError: (_error, values, context) => {
-      const snap = context?.snapshot;
-      if (snap !== undefined) {
-        queryClient.setQueryData(queryKey, snap);
-      }
-      options.updateLifecycle?.onError?.(values);
-    },
-  });
+  const updateMutation = options.updateFn
+    ? useMutation({
+        mutationFn: options.updateFn,
+        onMutate: async (values): Promise<RollbackCtx<TListData>> => {
+          await queryClient.cancelQueries({ queryKey });
+          const previous = queryClient.getQueryData<TListData>(queryKey);
+          const applied = Boolean(opt?.update && previous);
+          if (applied) {
+            queryClient.setQueryData<TListData>(
+              queryKey,
+              applyOptimisticListUpdate(
+                previous as ResourceListData<{ id: string | number }>,
+                values as { id: string | number } & Record<string, unknown>,
+              ) as unknown as TListData,
+            );
+          }
+          options.updateLifecycle?.onMutate?.(values);
+          return { snapshot: applied ? previous : undefined };
+        },
+        onSuccess: (_data, values) => {
+          void queryClient.invalidateQueries({ queryKey: invalidateKey });
+          options.updateLifecycle?.onSuccess?.(values);
+        },
+        onError: (_error, values, context) => {
+          const snap = context?.snapshot;
+          if (snap !== undefined) {
+            queryClient.setQueryData(queryKey, snap);
+          }
+          options.updateLifecycle?.onError?.(values);
+        },
+      })
+    : undefined;
 
-  const deleteMutation = useMutation({
-    mutationFn: options.deleteFn,
-    onMutate: async (id): Promise<RollbackCtx<TListData>> => {
-      await queryClient.cancelQueries({ queryKey });
-      const previous = queryClient.getQueryData<TListData>(queryKey);
-      const applied = Boolean(opt?.delete && previous);
-      if (applied) {
-        queryClient.setQueryData<TListData>(
-          queryKey,
-          applyOptimisticListDelete(
-            previous as ResourceListData<{ id: string }>,
-            id,
-          ) as unknown as TListData,
-        );
-      }
-      options.deleteLifecycle?.onMutate?.(id);
-      return { snapshot: applied ? previous : undefined };
-    },
-    onSuccess: (_data, id) => {
-      void queryClient.invalidateQueries({ queryKey: invalidateKey });
-      options.deleteLifecycle?.onSuccess?.(id);
-    },
-    onError: (_error, id, context) => {
-      const snap = context?.snapshot;
-      if (snap !== undefined) {
-        queryClient.setQueryData(queryKey, snap);
-      }
-      options.deleteLifecycle?.onError?.(id);
-    },
-  });
+  const deleteMutation = options.deleteFn
+    ? useMutation({
+        mutationFn: options.deleteFn,
+        onMutate: async (id): Promise<RollbackCtx<TListData>> => {
+          await queryClient.cancelQueries({ queryKey });
+          const previous = queryClient.getQueryData<TListData>(queryKey);
+          const applied = Boolean(opt?.delete && previous);
+          if (applied) {
+            queryClient.setQueryData<TListData>(
+              queryKey,
+              applyOptimisticListDelete(
+                previous as ResourceListData<{ id: string | number }>,
+                id,
+              ) as unknown as TListData,
+            );
+          }
+          options.deleteLifecycle?.onMutate?.(id);
+          return { snapshot: applied ? previous : undefined };
+        },
+        onSuccess: (_data, id) => {
+          void queryClient.invalidateQueries({ queryKey: invalidateKey });
+          options.deleteLifecycle?.onSuccess?.(id);
+        },
+        onError: (_error, id, context) => {
+          const snap = context?.snapshot;
+          if (snap !== undefined) {
+            queryClient.setQueryData(queryKey, snap);
+          }
+          options.deleteLifecycle?.onError?.(id);
+        },
+      })
+    : undefined;
 
   return {
     data: query.data,

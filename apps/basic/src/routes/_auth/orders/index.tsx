@@ -1,14 +1,26 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Button, Space, App, Dropdown, theme, Badge, Flex } from "antd";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import {
+  Button,
+  Space,
+  App,
+  Dropdown,
+  theme,
+  Badge,
+  Flex,
+  Modal,
+  InputNumber,
+  Input,
+  Form,
+} from "antd";
 import type { TablePaginationConfig } from "antd/es/table/interface";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { MoreVertical, Eye, RefreshCcw } from "lucide-react";
 import { z } from "zod/v4";
 import { DataTable } from "@/components/DataTable";
 import { useTableFitHeight } from "@/hooks/useTableFitHeight";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getOrderList, refundOrder } from "@/api/order";
-import type { OrderItem } from "@/api/order";
+import type { OrderItem, RefundReq } from "@/api/order";
 
 const OrderSearchParamsSchema = z.object({
   page: z.number().int().positive().catch(1),
@@ -25,7 +37,10 @@ export const Route = createFileRoute("/_auth/orders/")({
 
 const ORDER_STATUS_MAP: Record<
   number,
-  { label: string; color: "warning" | "success" | "default" | "error" | "processing" }
+  {
+    label: string;
+    color: "warning" | "success" | "default" | "error" | "processing";
+  }
 > = {
   0: { label: "待付款", color: "warning" },
   1: { label: "已付款", color: "processing" },
@@ -37,7 +52,7 @@ const ORDER_STATUS_MAP: Record<
 function OrdersPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
-  const { message, modal } = App.useApp();
+  const { message } = App.useApp();
   const { token } = theme.useToken();
   const queryClient = useQueryClient();
 
@@ -68,8 +83,8 @@ function OrdersPage() {
   });
 
   const refundMutation = useMutation({
-    mutationFn: ({ orderNo, reason }: { orderNo: string; reason: string }) =>
-      refundOrder(orderNo, { refund_amount: 0, reason }),
+    mutationFn: ({ orderNo, req }: { orderNo: string; req: RefundReq }) =>
+      refundOrder(orderNo, req),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["orders"] });
       void message.success("退款申请已提交");
@@ -77,15 +92,39 @@ function OrdersPage() {
     onError: (err) => void message.error(err instanceof Error ? err.message : "操作失败"),
   });
 
-  const confirmRefund = (record: OrderItem) => {
-    modal.confirm({
-      title: `确认对订单 ${record.order_no} 发起退款？`,
-      content: "该操作将强制取消订单并触发退款流程。",
-      okText: "确认退款",
-      okType: "danger",
-      cancelText: "取消",
-      onOk: () => refundMutation.mutate({ orderNo: record.order_no, reason: "管理员手动退款" }),
+  // #5 退款金额由后台填写，通过 modal 采集金额 + 原因后提交
+  const [refundModalOpen, setRefundModalOpen] = useState(false);
+  const [refundRecord, setRefundRecord] = useState<OrderItem | null>(null);
+  const [refundForm] = Form.useForm<{
+    refund_amount: number;
+    reason: string;
+  }>();
+
+  const openRefundModal = (record: OrderItem) => {
+    setRefundRecord(record);
+    // 默认退款金额 = 订单总额（分转元）
+    refundForm.setFieldsValue({
+      refund_amount: record.total_amount / 100,
+      reason: "管理员手动退款",
     });
+    setRefundModalOpen(true);
+  };
+
+  const handleRefundOk = async () => {
+    if (!refundRecord) return;
+    try {
+      const values = await refundForm.validateFields();
+      refundMutation.mutate({
+        orderNo: refundRecord.order_no,
+        req: {
+          refund_amount: Math.round(values.refund_amount * 100), // 元转分
+          reason: values.reason,
+        },
+      });
+      setRefundModalOpen(false);
+    } catch {
+      // form validation failed — AntD displays field errors
+    }
   };
 
   const columns = [
@@ -114,7 +153,10 @@ function OrdersPage() {
       key: "status",
       width: 100,
       render: (status: number) => {
-        const s = ORDER_STATUS_MAP[status] ?? { label: String(status), color: "default" as const };
+        const s = ORDER_STATUS_MAP[status] ?? {
+          label: String(status),
+          color: "default" as const,
+        };
         return <Badge status={s.color} text={s.label} />;
       },
     },
@@ -144,8 +186,11 @@ function OrdersPage() {
               {
                 key: "view",
                 icon: <Eye size={token.fontSize} />,
-                label: "查看详情",
-                onClick: () => console.log("navigate to order", record.order_no),
+                label: (
+                  <Link to="/orders/$orderNo" params={{ orderNo: record.order_no }}>
+                    查看详情
+                  </Link>
+                ),
               },
               {
                 key: "refund",
@@ -153,7 +198,7 @@ function OrdersPage() {
                 label: "退款",
                 danger: true,
                 disabled: record.status === 3 || record.status === 4,
-                onClick: () => confirmRefund(record),
+                onClick: () => openRefundModal(record),
               },
             ],
           }}
@@ -189,7 +234,11 @@ function OrdersPage() {
             showTotal: (total) => `共 ${total} 条`,
             onChange: (page, pageSize) => {
               void navigate({
-                search: { ...search, page, page_size: pageSize ?? search.page_size },
+                search: {
+                  ...search,
+                  page,
+                  page_size: pageSize ?? search.page_size,
+                },
               });
             },
           }
@@ -236,6 +285,38 @@ function OrdersPage() {
         pagination={tablePagination}
         scroll={tableScrollY != null ? { x: "max-content", y: tableScrollY } : { x: "max-content" }}
       />
+
+      {/* #5 退款金额由后台填写 */}
+      <Modal
+        title={`退款 — 订单 ${refundRecord?.order_no ?? ""}`}
+        open={refundModalOpen}
+        onOk={handleRefundOk}
+        onCancel={() => setRefundModalOpen(false)}
+        confirmLoading={refundMutation.isPending}
+        okText="确认退款"
+        okType="danger"
+        cancelText="取消"
+      >
+        <Form form={refundForm} layout="vertical">
+          <Form.Item
+            name="refund_amount"
+            label="退款金额（元）"
+            rules={[
+              { required: true, message: "请输入退款金额" },
+              { type: "number", min: 0.01, message: "退款金额必须大于 0" },
+            ]}
+          >
+            <InputNumber min={0.01} precision={2} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            name="reason"
+            label="退款原因"
+            rules={[{ required: true, message: "请输入退款原因" }]}
+          >
+            <Input.TextArea rows={3} placeholder="请输入退款原因" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Flex>
   );
 }

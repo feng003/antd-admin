@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import {
   Form,
   Input,
@@ -42,6 +43,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
   const [form] = Form.useForm();
   const { message } = App.useApp();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const isEdit = !!initialData;
 
@@ -107,7 +109,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
       if (existing) return existing;
 
       return {
-        specs: specs.map((sp) => ({ key_name: sp.keyName, value_name: sp.valueName })),
+        specs: specs.map((sp) => ({
+          key_name: sp.keyName,
+          value_name: sp.valueName,
+        })),
         sale_price: 0,
         stock: 0,
         sku_code: "",
@@ -128,9 +133,12 @@ export function ProductForm({ initialData }: ProductFormProps) {
     onSuccess: () => {
       message.success("创建成功");
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      window.history.back();
+      void navigate({
+        to: "/products",
+        search: { page: 1, page_size: 20, status: null, category_id: null },
+      });
     },
-    onError: (err: any) => message.error(err.message || "创建失败"),
+    onError: (err: unknown) => message.error(err instanceof Error ? err.message : "创建失败"),
   });
 
   const updateMutation = useMutation({
@@ -138,9 +146,12 @@ export function ProductForm({ initialData }: ProductFormProps) {
     onSuccess: () => {
       message.success("更新成功");
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      window.history.back();
+      void navigate({
+        to: "/products",
+        search: { page: 1, page_size: 20, status: null, category_id: null },
+      });
     },
-    onError: (err: any) => message.error(err.message || "更新失败"),
+    onError: (err: unknown) => message.error(err instanceof Error ? err.message : "更新失败"),
   });
 
   const onFinish = (values: any) => {
@@ -356,7 +367,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
                         mode="tags"
                         maxCount={1}
                         options={
-                          specTemplates?.map((t) => ({ label: t.name, value: t.name })) || []
+                          specTemplates?.map((t) => ({
+                            label: t.name,
+                            value: t.name,
+                          })) || []
                         }
                         onChange={(val: any) => {
                           const v = Array.isArray(val) ? val[0] : val;
@@ -374,7 +388,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
                               currentVals.length === 0 ||
                               currentVals[0]?.name === "默认"
                             ) {
-                              const prefilledVals = tpl.values.map((tv) => ({ name: tv.name }));
+                              const prefilledVals = tpl.values.map((tv) => ({
+                                name: tv.name,
+                              }));
                               form.setFieldValue(
                                 ["spec_keys", field.name, "values"],
                                 prefilledVals,
@@ -498,7 +514,21 @@ export function ProductForm({ initialData }: ProductFormProps) {
             >
               保存
             </Button>
-            <Button onClick={() => window.history.back()}>取消</Button>
+            <Button
+              onClick={() =>
+                void navigate({
+                  to: "/products",
+                  search: {
+                    page: 1,
+                    page_size: 20,
+                    status: null,
+                    category_id: null,
+                  },
+                })
+              }
+            >
+              取消
+            </Button>
           </Space>
         </Form.Item>
       </Form>

@@ -99,7 +99,7 @@ export async function updateArticle(id: number, req: Partial<CreateArticleReq>):
  * PATCH /api/admin/cms/articles/:id/status
  */
 export async function updateArticleStatus(id: number, status: ArticleStatus): Promise<void> {
-  return httpClient.post(`${BASE}/articles/${id}/status`, { status });
+  return httpClient.patch(`${BASE}/articles/${id}/status`, { status });
 }
 
 /**

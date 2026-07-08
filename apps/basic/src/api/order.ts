@@ -20,7 +20,37 @@ export const OrderItemSchema = z.object({
 
 export type OrderItem = z.infer<typeof OrderItemSchema>;
 
-// ──────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// Order Detail (GET /api/admin/orders/:order_no)
+// ─────────────────────────────────────────────────────────────
+
+export const OrderDetailItemSchema = z.object({
+  product_id: z.number(),
+  product_name: z.string(),
+  unit_price: z.number(), // 分
+  quantity: z.number().int(),
+  sub_total: z.number(), // 分
+  current_price: z.number().nullable().optional(),
+  cover_image: z.string().nullable().optional(),
+  is_available: z.boolean().nullable().optional(),
+});
+
+export type OrderDetailItem = z.infer<typeof OrderDetailItemSchema>;
+
+export const OrderDetailSchema = z.object({
+  id: z.number(),
+  order_no: z.string(),
+  status: z.number(),
+  total_amount: z.number(), // 分
+  paid_at: z.string().nullable().optional(),
+  cancel_reason: z.string().nullable().optional(),
+  created_at: z.string(), // ISO 8601
+  items: z.array(OrderDetailItemSchema),
+});
+
+export type OrderDetail = z.infer<typeof OrderDetailSchema>;
+
+// ─────────────────────────────────────────────────────────────
 // Endpoints
 // ──────────────────────────────────────────────────────────────
 
@@ -41,9 +71,12 @@ export interface ListOrdersParams {
  * GET /api/admin/orders
  * 后台全量订单列表（offset 分页 + 多维筛选）
  */
-export async function getOrderList(
-  params?: ListOrdersParams,
-): Promise<{ list: OrderItem[]; total: number; page: number; page_size: number }> {
+export async function getOrderList(params?: ListOrdersParams): Promise<{
+  list: OrderItem[];
+  total: number;
+  page: number;
+  page_size: number;
+}> {
   return httpClient.get(`${BASE}/orders`, { params });
 }
 
@@ -51,7 +84,7 @@ export async function getOrderList(
  * GET /api/admin/orders/:order_no
  * 订单详情
  */
-export async function getOrderDetail(orderNo: string): Promise<unknown> {
+export async function getOrderDetail(orderNo: string): Promise<OrderDetail> {
   return httpClient.get(`${BASE}/orders/${orderNo}`);
 }
 

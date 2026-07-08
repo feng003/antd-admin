@@ -21,7 +21,7 @@ export const ProductListItemSchema = z.object({
   min_price: z.number(), // 分
   max_price: z.number(), // 分
   sold_count: z.number(),
-  created_at: z.number(),
+  created_at: z.string(), // ISO 8601 字符串（与后端 pgx 默认一致）
 });
 
 export type ProductListItem = z.infer<typeof ProductListItemSchema>;

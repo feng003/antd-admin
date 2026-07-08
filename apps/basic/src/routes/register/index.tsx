@@ -15,6 +15,10 @@ import "../login/index.css";
 
 export const Route = createFileRoute("/register/")({
   beforeLoad: () => {
+    // #9 注册仅开发态可用（B 端管理后台不支持自助注册）
+    if (!import.meta.env.DEV) {
+      throw redirect({ to: "/login" });
+    }
     const { isAuthenticated } = useAuthStore.getState();
     if (isAuthenticated) {
       throw redirect({ to: "/dashboard" });
@@ -126,7 +130,12 @@ function RegisterPage() {
                 const payload = RegisterRequestSchema.parse(values);
                 registerMutation.mutate(payload);
               }}
-              initialValues={{ username: "", password: "", confirmPassword: "", email: "" }}
+              initialValues={{
+                username: "",
+                password: "",
+                confirmPassword: "",
+                email: "",
+              }}
               validateTrigger={"onBlur"}
               requiredMark={false}
             >
@@ -141,7 +150,12 @@ function RegisterPage() {
               <Form.Item
                 name="email"
                 label={<span style={{ fontWeight: 500 }}>Email address</span>}
-                rules={[{ type: "email", message: "Please enter a valid email address" }]}
+                rules={[
+                  {
+                    type: "email",
+                    message: "Please enter a valid email address",
+                  },
+                ]}
               >
                 <Input placeholder="you@example.com" size="large" />
               </Form.Item>
@@ -151,7 +165,10 @@ function RegisterPage() {
                 label={<span style={{ fontWeight: 500 }}>Password</span>}
                 rules={[
                   { required: true, message: "Please enter your password" },
-                  { min: 6, message: "Password must be at least 6 characters long" },
+                  {
+                    min: 6,
+                    message: "Password must be at least 6 characters long",
+                  },
                 ]}
               >
                 <Input.Password placeholder="Enter at least 6 characters" size="large" />
