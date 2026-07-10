@@ -4,8 +4,8 @@ import { AuthTokensSchema } from "@/api/schemas";
 import { getAccessToken, useAuthStore } from "@/stores/auth";
 
 export class ApiError extends Error {
-  code: number;
-  constructor(code: number, message: string) {
+  code: number | string;
+  constructor(code: number | string, message: string) {
     super(message);
     this.name = "ApiError";
     this.code = code;
@@ -61,8 +61,8 @@ async function doRefreshSessionTokens(): Promise<boolean> {
     }
 
     const json: unknown = await res.json();
-    const envelope = json as { code?: number; data?: unknown; message?: string };
-    if (envelope.code !== undefined && envelope.code !== 0) {
+    const envelope = json as { code?: number | string; data?: unknown; message?: string };
+    if (envelope.code !== undefined && envelope.code !== 0 && envelope.code !== "OK") {
       logout();
       navigateToLogin();
       return false;
@@ -155,9 +155,9 @@ async function request<T>(
   }
 
   const json: unknown = await res.json();
-  const envelope = json as { code?: number; data?: unknown; message?: string };
+  const envelope = json as { code?: number | string; data?: unknown; message?: string };
 
-  if (envelope.code !== undefined && envelope.code !== 0) {
+  if (envelope.code !== undefined && envelope.code !== 0 && envelope.code !== "OK") {
     throw new ApiError(envelope.code, envelope.message ?? "Unknown error");
   }
 

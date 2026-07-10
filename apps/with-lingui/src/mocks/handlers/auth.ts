@@ -51,7 +51,7 @@ export const authHandlers = [
         refreshToken: GUEST_REFRESH,
       });
     }
-    if (username === "admin" && password === "admin") {
+    if (username === "admin" && (password === "admin" || password === "Admin@2024")) {
       return successWithSchema(AuthTokensSchema, {
         accessToken: "mock-access-token",
         refreshToken: "mock-refresh-token",
