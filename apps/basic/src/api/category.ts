@@ -6,9 +6,9 @@ const BASE = "/api/admin";
 export const CategorySchema = z.object({
   id: z.number(),
   name: z.string(),
-  type: z.string().nullable(),
+  module_type: z.string().nullable(),
   parent_id: z.number().nullable(),
-  sort: z.number(),
+  sort_order: z.number(),
   children: z
     .array(z.lazy((): z.ZodTypeAny => CategorySchema))
     .nullable()
@@ -19,14 +19,14 @@ export type Category = z.infer<typeof CategorySchema>;
 
 export interface CreateCategoryReq {
   name: string;
-  type: string;
+  module_type: string;
   parent_id?: number;
-  sort?: number;
+  sort_order?: number;
 }
 
 export interface UpdateCategoryReq {
   name?: string;
-  sort?: number;
+  sort_order?: number;
 }
 
 /**

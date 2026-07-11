@@ -62,7 +62,10 @@ function CategoriesPage() {
     if (category) {
       setEditingCategory(category);
       setParentCategory(null);
-      form.setFieldsValue({ name: category.name, sort: category.sort });
+      form.setFieldsValue({
+        name: category.name,
+        sort_order: category.sort_order,
+      });
     } else {
       setEditingCategory(null);
       setParentCategory(parent || null);
@@ -84,13 +87,13 @@ function CategoriesPage() {
       if (editingCategory) {
         updateMutation.mutate({
           id: editingCategory.id,
-          req: { name: values.name, sort: values.sort },
+          req: { name: values.name, sort_order: values.sort_order },
         });
       } else {
         createMutation.mutate({
           name: values.name,
-          sort: values.sort || 0,
-          type: activeType,
+          sort_order: values.sort_order || 0,
+          module_type: activeType,
           parent_id: parentCategory ? parentCategory.id : undefined,
         });
       }
@@ -109,7 +112,7 @@ function CategoriesPage() {
 
   const columns = [
     { title: "分类名称", dataIndex: "name", key: "name" },
-    { title: "排序", dataIndex: "sort", key: "sort", width: 100 },
+    { title: "排序", dataIndex: "sort_order", key: "sort_order", width: 100 },
     {
       title: "操作",
       key: "action",
@@ -192,7 +195,7 @@ function CategoriesPage() {
           >
             <Input placeholder="输入分类名称" />
           </Form.Item>
-          <Form.Item name="sort" label="排序权重" initialValue={0}>
+          <Form.Item name="sort_order" label="排序权重" initialValue={0}>
             <InputNumber placeholder="数字越大越靠后" style={{ width: "100%" }} />
           </Form.Item>
         </Form>

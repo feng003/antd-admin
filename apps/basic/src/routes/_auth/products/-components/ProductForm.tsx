@@ -53,7 +53,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
   // 获取分类树
   const { data: categories } = useQuery({
     queryKey: ["categoryTree"],
-    queryFn: () => getCategoryTree(),
+    queryFn: () => getCategoryTree("product"),
   });
 
   // 获取品牌列表
