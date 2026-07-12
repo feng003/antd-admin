@@ -29,7 +29,10 @@ export const GUEST_AUTH_USER_BODY = {
   username: "guest",
   avatar: null as null,
   email: "guest@example.com",
+  real_name: "",
   roles: [] as string[],
+  permissions: [] as string[],
+  menus: [] as User["menus"],
 };
 
 export const MOCK_USERS: User[] = MOCK_IDENTITIES.map(([username, email], i) => ({
@@ -37,6 +40,8 @@ export const MOCK_USERS: User[] = MOCK_IDENTITIES.map(([username, email], i) => 
   username,
   avatar: vercelAvatarUrl(username),
   email,
+  real_name: "",
   roles: i === 0 ? ["admin"] : ["editor"],
   permissions: i === 0 ? ["user:view", "user:create", "user:edit", "user:delete"] : ["user:view"],
+  menus: [] as User["menus"],
 }));

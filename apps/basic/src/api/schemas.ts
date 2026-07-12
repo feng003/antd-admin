@@ -5,11 +5,39 @@ export const UserSchema = z.object({
   username: z.string(),
   avatar: z.string().nullable(),
   email: z.string().nullable(),
+  real_name: z.string().optional().default(""),
   roles: z.array(z.string()),
   permissions: z.array(z.string()),
+  menus: z
+    .array(z.lazy(() => BackendMenuItemSchema))
+    .optional()
+    .default([]),
 });
 
 export type User = z.infer<typeof UserSchema>;
+
+/** 后端返回的菜单节点 DTO（对应 Go 的 menuItemResp） */
+export interface BackendMenuItem {
+  id: number;
+  name: string;
+  code: string;
+  path: string; // 前端路由路径，如 /orders；分组节点为 ""
+  icon: string; // Lucide 图标名称，如 IconLucideLayoutDashboard
+  sort: number;
+  children: BackendMenuItem[];
+}
+
+export const BackendMenuItemSchema: z.ZodType<BackendMenuItem> = z.lazy(() =>
+  z.object({
+    id: z.number(),
+    name: z.string(),
+    code: z.string(),
+    path: z.string().default(""),
+    icon: z.string().default(""),
+    sort: z.number(),
+    children: z.array(BackendMenuItemSchema).default([]),
+  }),
+);
 
 /** GET `/api/auth/user` body (no `permissions`; load via `/api/auth/permissions`). */
 export const AuthUserResponseSchema = UserSchema.omit({ permissions: true });

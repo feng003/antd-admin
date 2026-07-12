@@ -2,17 +2,34 @@ import { Menu, Layout, theme, Flex, Grid, Drawer, Button } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "@tanstack/react-router";
 import {
+  Activity,
+  BarChart3,
   Book,
   Briefcase,
+  Camera,
   CircleDashed,
+  ClipboardList,
   Folder,
+  FolderKanban,
+  FolderTree,
   Home,
+  Image,
+  LayoutDashboard,
+  Lock,
+  MessageSquare,
   PanelLeft,
+  Settings,
+  Shield,
+  ShoppingBag,
+  ShoppingCart,
   SlidersHorizontal,
   Star,
+  Tags,
+  Trophy,
   User,
   Users,
   Zap,
+  FileText,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { APP_BRAND_NAME, APP_FAVICON_SRC, API_BASE_URL } from "@/utils/constants";
@@ -25,15 +42,6 @@ import { AUTH_ENDPOINTS } from "@/api/auth";
 import "./index.css";
 
 const { Sider } = Layout;
-/** API menu `name` → English labels for known keys; unknown keys pass through as `menu.name`. */
-const MENU_LABELS: Record<string, string> = {
-  Platform: "Platform",
-  Projects: "Projects",
-  Dashboard: "Dashboard",
-  Users: "Users",
-  "Design Engineering": "Design Engineering",
-  "Sales & Marketing": "Sales & Marketing",
-};
 
 type AntMenuItem = Required<MenuProps>["items"][number];
 type BuildMenuResult = {
@@ -42,18 +50,52 @@ type BuildMenuResult = {
   pathToKeyChain: Record<string, string[]>;
 };
 
+/** 后端 icon 字段（Lucide 格式）→ 实际 Lucide 组件映射 */
 const MENU_ICON_MAP: Record<string, LucideIcon> = {
-  IconLucideLayoutDashboard: Home,
-  IconLucideUsers: User,
+  // 通用
+  IconLucideLayoutDashboard: LayoutDashboard,
+  IconLucideHome: Home,
+  // 用户/账号
+  IconLucideUser: User,
+  IconLucideUsers: Users,
   IconLucideUserList: Users,
-  /** Back-compat for older menu payloads still using IconLucideHistory */
   IconLucideHistory: Users,
-  IconLucideStar: Star,
-  IconLucideSettings: SlidersHorizontal,
+  // 商品/电商
+  IconLucideShoppingBag: ShoppingBag,
+  IconLucideShoppingCart: ShoppingCart,
+  IconLucideClipboardList: ClipboardList,
   IconLucideBriefcase: Briefcase,
+  // 品牌/图片
+  IconLucideImage: Image,
+  // 内容/文章
+  IconLucideFileText: FileText,
+  IconLucideBook: Book,
   IconLucideBookOpen: Book,
-  IconLucideFolderKanban: Folder,
+  // 系统管理
+  IconLucideSettings: SlidersHorizontal,
+  IconLucideSlidersHorizontal: SlidersHorizontal,
+  IconLucideSettings2: Settings,
+  IconLucideShield: Shield,
+  IconLucideLock: Lock,
+  // 分类/标签
+  IconLucideFolderTree: FolderTree,
+  IconLucideTags: Tags,
+  // CMS
+  IconLucideFolder: Folder,
+  IconLucideFolderKanban: FolderKanban,
+  // 赛事
+  IconLucideTrophy: Trophy,
   IconLucideSparkles: Zap,
+  IconLucideZap: Zap,
+  // 动态
+  IconLucideCamera: Camera,
+  // 运动
+  IconLucideActivity: Activity,
+  IconLucideBarChart3: BarChart3,
+  // 聊天
+  IconLucideMessageSquare: MessageSquare,
+  // 收藏
+  IconLucideStar: Star,
 };
 
 function renderMenuIcon(icon: string | null, size = 16) {
@@ -68,52 +110,27 @@ function buildMenuItems(
   iconSize = 16,
   parentKeys: string[] = [],
 ): BuildMenuResult {
-  const sorted = menus.filter((m) => !m.hidden).sort((a, b) => a.sort - b.sort);
+  const sorted = menus.filter((m) => !m.hidden).sort((a, b) => b.sort - a.sort);
   const keyToPath: Record<string, string> = {};
   const pathToKeyChain: Record<string, string[]> = {};
   const items: AntMenuItem[] = [];
 
   for (const menu of sorted) {
-    const label = MENU_LABELS[menu.name] ?? menu.name;
+    const label = menu.name;
     const key = menu.id;
 
     if (menu.kind === "group") {
-      const built = buildMenuItems(menu.children, token, collapsed, iconSize, parentKeys);
+      // 将 group 渲染为可折叠的 SubMenu（inline 模式下点击展开/收起）
+      // group key 加入 parentKeys，确保子菜单激活时父级自动展开
+      const nextParents = [...parentKeys, key];
+      const built = buildMenuItems(menu.children, token, collapsed, iconSize, nextParents);
       Object.assign(keyToPath, built.keyToPath);
       Object.assign(pathToKeyChain, built.pathToKeyChain);
       if (built.items.length > 0) {
         items.push({
-          type: "group",
           key,
-          label: collapsed ? (
-            <span
-              style={{
-                width: "100%",
-                display: "inline-flex",
-                justifyContent: "center",
-              }}
-            >
-              <span
-                aria-label={String(label)}
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  background: token.colorTextQuaternary,
-                  display: "inline-block",
-                }}
-              />
-            </span>
-          ) : (
-            <span
-              style={{
-                fontSize: token.fontSizeSM,
-                color: token.colorTextQuaternary,
-              }}
-            >
-              {label}
-            </span>
-          ),
+          label,
+          icon: renderMenuIcon(menu.icon, iconSize),
           children: built.items,
         });
       }

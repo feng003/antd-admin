@@ -41,8 +41,10 @@ export const userHandlers = [
       username: String(body.username),
       avatar: null,
       email: typeof body.email === "string" ? body.email : null,
+      real_name: "",
       roles: (body.roles as string[]) ?? [],
       permissions: [] as string[],
+      menus: [],
     };
     users.push(newUser);
     return successWithSchema(UserSchema, newUser);

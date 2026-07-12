@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useAuthStore } from "@/stores/auth";
 import { MainLayout } from "@/components/Layout/MainLayout";
-import { canAccessPath, normalizeAppPath } from "@/utils/appMenu";
+import { canAccessPath, normalizeAppPath, extractAllowedPaths } from "@/utils/appMenu";
 import { fetchSessionAndApplyToStore } from "@/utils/session";
 
 export const Route = createFileRoute("/_auth")({
@@ -20,11 +20,14 @@ export const Route = createFileRoute("/_auth")({
       }
     }
 
-    const { user: nextUser } = useAuthStore.getState();
+    const { user: nextUser, menus } = useAuthStore.getState();
     const path = normalizeAppPath(location.pathname);
     if (path === "/403") return;
 
-    if (!canAccessPath(path, nextUser?.permissions, nextUser?.roles)) {
+    // 从动态菜单树中提取所有允许访问的路径集合
+    const allowedPaths = extractAllowedPaths(menus);
+
+    if (!canAccessPath(path, nextUser?.permissions, nextUser?.roles, allowedPaths)) {
       throw redirect({ to: "/403" });
     }
   },
